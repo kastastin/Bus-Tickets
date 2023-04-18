@@ -1,0 +1,238 @@
+.auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.container {
+  position: relative;
+  height: 25rem;
+  width: 24rem;
+  margin: 0 5%;
+  border-radius: 0.7rem;
+  background: rgb(14, 30, 59, 0.9);
+  overflow: hidden;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  height: 26.25rem;
+  width: 23.75rem;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent,
+    var(--primary),
+    var(--primary),
+    var(--primary)
+  );
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+}
+
+.container::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  height: 26.25rem;
+  width: 23.75rem;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent,
+    #45f3ff,
+    #45f3ff,
+    #45f3ff
+  );
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+  animation-delay: -3s;
+}
+
+.border-line {
+  position: absolute;
+  top: 0;
+  inset: 0;
+}
+
+.border-line::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  height: 26.25rem;
+  width: 23.75rem;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent,
+    var(--secondary),
+    var(--secondary),
+    var(--secondary)
+  );
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+  animation-delay: -1.5s;
+}
+
+.border-line::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  height: 26.25rem;
+  width: 23.75rem;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    transparent,
+    var(--secondary),
+    var(--secondary),
+    var(--secondary)
+  );
+  transform-origin: bottom right;
+  animation: animate 6s linear infinite;
+  animation-delay: -4.5s;
+}
+
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.container form {
+  inset: 4px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 2.5rem;
+  border-radius: 0.5rem;
+  background: var(--bg);
+  z-index: 10;
+}
+
+.container form h2 {
+  color: #fff;
+  font-weight: 500;
+  letter-spacing: 0.2rem;
+  text-align: center;
+  margin: 0;
+}
+
+.container form .input-container {
+  position: relative;
+  width: 100%;
+  margin-top: 1.5rem;
+}
+
+.container form .input-container:first-of-type {
+  margin-top: 0.5rem;
+}
+
+.container form .input-container input {
+  position: relative;
+  width: 100%;
+  padding: 1.25rem 0.7rem 0.7rem;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  color: #23242a;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.5s;
+  z-index: 10;
+}
+
+.container form .input-container span {
+  position: absolute;
+  left: 0;
+  padding: 1.5rem 0rem 1rem;
+  color: #fff;
+  font-size: 1rem;
+  letter-spacing: 0.05rem;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.container form .input-container input:valid ~ span,
+.container form .input-container input:focus ~ span {
+  transform: translateY(-2rem);
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.container form .input-container i {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  border-radius: 0.5rem;
+  background: #fff;
+  pointer-events: none;
+  overflow: hidden;
+  transition: 0.5s;
+}
+
+.container form .input-container input:valid ~ i,
+.container form .input-container input:focus ~ i {
+  height: 2.7rem;
+}
+
+.container form .links {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container button {
+  width: 7rem;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 0.3rem;
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05rem;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.container button:hover {
+  background-color: #45f3ff;
+  opacity: 0.95;
+}
+
+.container button:active {
+  opacity: 0.8;
+}
+
+.container .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.container .footer .link-to {
+  width: 4rem;
+  color: #fff;
+  font-size: 0.8rem;
+  transition: 0.3s;
+  text-align: center;
+}
+
+.container .footer .link-to:hover {
+  color: #45f3ff;
+}
