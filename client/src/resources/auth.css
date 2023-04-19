@@ -209,7 +209,8 @@
   transition: 0.3s;
 }
 
-.container button:hover {
+.container button:hover,
+.container button:focus {
   background-color: #45f3ff;
   opacity: 0.95;
 }
@@ -233,6 +234,7 @@
   text-align: center;
 }
 
-.container .footer .link-to:hover {
+.container .footer .link-to:hover,
+.container .footer .link-to:focus {
   color: #45f3ff;
 }

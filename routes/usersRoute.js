@@ -80,4 +80,6 @@ router.post("/log-in", async (request, response) => {
   }
 });
 
+// <-- Get User By Id -->
+
 module.exports = router;

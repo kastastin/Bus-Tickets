@@ -31,14 +31,14 @@ function Register() {
           </div>
           <div className="input-container">
             <Form.Item noStyle name="email">
-              <Input type="email" name="email" required="required" />
+              <Input type="email" required="required" />
             </Form.Item>
             <span>Email</span>
             <i></i>
           </div>
           <div className="input-container">
             <Form.Item noStyle name="password">
-              <Input type="password" name="password" required="required" />
+              <Input type="password" required="required" />
             </Form.Item>
             <span>Password</span>
             <i></i>
