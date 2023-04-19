@@ -1,11 +1,25 @@
-import { Form, Input } from "antd";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Form, Input, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../resources/auth.css";
 
 function Login() {
-  const onFinish = function (values) {
-    console.log(values);
+  const navigate = useNavigate();
+
+  const onFinish = async function (values) {
+    try {
+      const response = await axios.post("/api/users/log-in", values);
+      if (response.data.success) {
+        message.success(response.data.message);
+        localStorage.setItem("token", response.data.data);
+        navigate("/");
+      } else {
+        message.error(response.data.message);
+      }
+    } catch (error) {
+      message.error(error.message);
+    }
   };
 
   return (
