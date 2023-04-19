@@ -1,11 +1,19 @@
-import { Form, Input } from "antd";
+import axios from "axios";
+import { Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
 
 import "../resources/auth.css";
 
 function Register() {
-  const onFinish = function (values) {
-    console.log(values);
+  const onFinish = async function (values) {
+    try {
+      const response = await axios.post("/api/users/sign-up", values);
+      response.data.success
+        ? message.success(response.data.message)
+        : message.error(response.data.message);
+    } catch (error) {
+      message.error(error.message);
+    }
   };
 
   return (
