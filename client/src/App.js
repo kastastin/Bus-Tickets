@@ -12,7 +12,7 @@ import "./resources/global.css";
 
 function App() {
   message.config({
-    top: 25,
+    top: 15,
     duration: 4,
   });
 

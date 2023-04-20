@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models/usersModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 // <-- Create New User -->
 router.post("/sign-up", async (request, response) => {
@@ -81,5 +82,21 @@ router.post("/log-in", async (request, response) => {
 });
 
 // <-- Get User By Id -->
+router.post("/get-user-by-id", authMiddleware, async (request, response) => {
+  try {
+    const user = await User.findById(request.body.userID);
+    response.send({
+      success: true,
+      message: "User was found",
+      data: user,
+    });
+  } catch (error) {
+    response.send({
+      success: false,
+      message: error.message,
+      data: null,
+    });
+  }
+});
 
 module.exports = router;

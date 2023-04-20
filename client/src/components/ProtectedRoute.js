@@ -1,31 +1,38 @@
 import axios from "axios";
+import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function ProtectedRoute({ children }) {
-  const [loading, setLoading] = useState(true);
+  message.config({ maxCount: 1 });
+
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const validateToken = async () => {
       try {
-        const response = axios.post(
+        const response = await axios.post(
           "/api/users/get-user-by-id",
           {},
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Token ${localStorage.getItem("token")}`,
             },
           }
         );
 
-        if (response.status) {
+        if (response.data.success) {
           setLoading(false);
         } else {
+          localStorage.removeItem("token");
+          message.error(response.data.message);
           setLoading(false);
           navigate("/log-in");
         }
       } catch (error) {
+        localStorage.removeItem("token");
+        message.error(error.message);
         setLoading(false);
         navigate("/log-in");
       }
