@@ -1,11 +1,14 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { SetUser } from "../redux/usersSlice";
 
 function ProtectedRoute({ children }) {
   message.config({ maxCount: 1 });
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
@@ -24,6 +27,7 @@ function ProtectedRoute({ children }) {
 
         if (response.data.success) {
           setLoading(false);
+          dispatch(SetUser(response.data.data));
         } else {
           localStorage.removeItem("token");
           message.error(response.data.message);
@@ -43,7 +47,7 @@ function ProtectedRoute({ children }) {
     } else {
       navigate("/log-in");
     }
-  }, [navigate]);
+  }, [dispatch, navigate]);
 
   return <div>{loading ? <div>Loading</div> : <div>{children}</div>}</div>;
 }
