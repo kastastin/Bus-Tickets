@@ -2,6 +2,9 @@ import { message } from "antd";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
+import HomeAdmin from "./pages/admin/HomeAdmin";
+import BusesAdmin from "./pages/admin/BusesAdmin";
+import UsersAdmin from "./pages/admin/UsersAdmin";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PublicRoute from "./components/PublicRoute";
@@ -30,6 +33,30 @@ function App() {
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <HomeAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/buses"
+            element={
+              <ProtectedRoute>
+                <BusesAdmin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute>
+                <UsersAdmin />
               </ProtectedRoute>
             }
           />

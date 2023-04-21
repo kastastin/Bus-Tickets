@@ -5,6 +5,7 @@ import axios from "axios";
 import { message } from "antd";
 import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
 import { SetUser } from "../redux/usersSlice";
+import DefaultLayout from "./DefaultLayout";
 
 function ProtectedRoute({ children }) {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ function ProtectedRoute({ children }) {
       navigate("/log-in");
     }
   }, [dispatch, navigate]);
-  return <div>{children}</div>;
+  return <DefaultLayout>{children}</DefaultLayout>;
 }
 
 export default ProtectedRoute;
