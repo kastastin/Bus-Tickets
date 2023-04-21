@@ -6,6 +6,7 @@ function Home() {
 
   return (
     <div>
+      <p>Home</p>
       {user && (
         <p>
           User: {user.name}

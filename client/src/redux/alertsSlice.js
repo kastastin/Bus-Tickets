@@ -6,14 +6,14 @@ const alertsSlice = createSlice({
     loading: false,
   },
   reducers: {
-    ShowLoading: (state, action) => {
+    DisplayLoader: (state, action) => {
       state.loading = true;
     },
-    HideLoading: (state, action) => {
+    HideLoader: (state, action) => {
       state.loading = false;
     },
   },
 });
 
-export const { ShowLoading, HideLoading } = alertsSlice.actions;
+export const { DisplayLoader, HideLoader } = alertsSlice.actions;
 export default alertsSlice.reducer;

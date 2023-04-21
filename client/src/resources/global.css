@@ -1,3 +1,23 @@
+.loader-container {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(0, 0, 0, 0.3);
+  /* z-index: 10; */
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader img {
+  height: 7rem;
+  width: 7rem;
+}
+
 /* .h-screen {
   min-height: 100vh;
 }

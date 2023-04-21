@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
+import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
 import { SetUser } from "../redux/usersSlice";
 
 function ProtectedRoute({ children }) {
-  message.config({ maxCount: 1 });
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const validateToken = async () => {
       try {
+        dispatch(DisplayLoader());
         const response = await axios.post(
           "/api/users/get-user-by-id",
           {},
@@ -25,19 +24,18 @@ function ProtectedRoute({ children }) {
           }
         );
 
+        dispatch(HideLoader());
         if (response.data.success) {
-          setLoading(false);
           dispatch(SetUser(response.data.data));
         } else {
           localStorage.removeItem("token");
           message.error(response.data.message);
-          setLoading(false);
           navigate("/log-in");
         }
       } catch (error) {
+        dispatch(HideLoader());
         localStorage.removeItem("token");
         message.error(error.message);
-        setLoading(false);
         navigate("/log-in");
       }
     };
@@ -48,8 +46,7 @@ function ProtectedRoute({ children }) {
       navigate("/log-in");
     }
   }, [dispatch, navigate]);
-
-  return <div>{loading ? <div>Loading</div> : <div>{children}</div>}</div>;
+  return <div>{children}</div>;
 }
 
 export default ProtectedRoute;

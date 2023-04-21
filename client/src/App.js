@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Loader from "./components/Loader";
+import { useSelector } from "react-redux";
 
 import "./App.css";
 import "./resources/global.css";
@@ -16,8 +18,11 @@ function App() {
     duration: 4,
   });
 
+  const loader = useSelector((state) => state.alerts.loading);
+
   return (
     <div>
+      {loader && <Loader />}
       <BrowserRouter>
         <Routes>
           <Route

@@ -1,17 +1,24 @@
 import axios from "axios";
 import { Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
 
 import "../resources/auth.css";
 
 function Register() {
+  const dispatch = useDispatch();
+
   const onFinish = async function (values) {
     try {
+      dispatch(DisplayLoader());
       const response = await axios.post("/api/users/sign-up", values);
+      dispatch(HideLoader());
       response.data.success
         ? message.success(response.data.message)
         : message.error(response.data.message);
     } catch (error) {
+      dispatch(HideLoader());
       message.error(error.message);
     }
   };

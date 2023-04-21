@@ -1,15 +1,20 @@
 import axios from "axios";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
 
 import "../resources/auth.css";
 
 function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onFinish = async function (values) {
     try {
+      dispatch(DisplayLoader());
       const response = await axios.post("/api/users/log-in", values);
+      dispatch(HideLoader);
       if (response.data.success) {
         message.success(response.data.message);
         localStorage.setItem("token", response.data.data);
@@ -18,6 +23,7 @@ function Login() {
         message.error(response.data.message);
       }
     } catch (error) {
+      dispatch(HideLoader());
       message.error(error.message);
     }
   };
