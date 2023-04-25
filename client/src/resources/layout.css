@@ -1,70 +1,80 @@
 .layout-container {
-  height: 100vh;
-  width: 100%;
+  min-height: 100vh;
+  width: 100vw;
+  background: var(--bg);
+}
+
+.layout-container header {
+  height: 4rem;
   display: flex;
-  gap: 20px;
-  padding: 15px;
-}
-
-.body {
-  width: 100%;
-}
-
-.header {
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.45);
-  width: 100%;
-  padding: 20px;
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding: 0 20px;
-  border-radius: 5px;
-  background-color: var(--secondary);
-}
-
-.logo {
-  margin-top: 20px;
-  color: white;
-  font-size: 24px;
-  text-align: center;
-}
-
-.role {
-  margin-bottom: 100px;
-  color: white;
-  font-size: 18px;
-  text-align: center;
-}
-
-.menu-item {
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
-  padding: 5px 15px;
-  transition: 0.3s;
+  padding: 0 9rem;
+  border-bottom: 3px solid var(--secondary);
+}
+
+.admin-header {
+  padding: 0 2rem !important;
+}
+
+.layout-container header .logo {
+  height: 50%;
   cursor: pointer;
 }
 
-.menu-item__active {
-  border: 2px solid white;
-  border-radius: 5px;
+.layout-container header .logo div {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  text-decoration: none;
 }
 
-.menu-item i {
-  margin-right: 10px;
+.layout-container header .logo div:hover {
+  color: var(--primary);
+}
+
+.layout-container header .logo div h1 {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.layout-container header .logo div img {
+  height: 95%;
+}
+
+.layout-container header nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.layout-container header nav .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
   color: white;
-  font-size: 20px;
 }
 
-.menu-item span {
-  color: white;
-  font-size: 20px;
+.layout-container header nav .nav-item__active {
+  border-top: 2px solid var(--primary);
+  border-bottom: 2px solid var(--primary);
+  border-radius: 0.3rem;
+  color: var(--primary);
 }
 
-.content {
-  padding: 10px;
+.layout-container header nav .nav-item:hover {
+  color: var(--primary);
+  cursor: pointer;
+}
+
+.layout-container header nav .nav-item .nav-item-name {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.layout-container main {
+  height: calc(100vh - 4rem);
+  padding: 1rem;
+  color: #fff;
 }

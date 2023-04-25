@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { message } from "antd";
 
+import logo from "../resources/logo.svg";
 import "../resources/layout.css";
 
 function DefaultLayout({ children }) {
+  message.config({ top: 2 });
+
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.users);
-  const [isReduced, setIsReduced] = useState(false);
 
   const menu = {
     user: [
@@ -29,59 +32,42 @@ function DefaultLayout({ children }) {
 
   return (
     <div className="layout-container">
-      <div className="sidebar">
-        <div className="sidebar-header">
-          <p className="logo">BS</p>
-          <p className="role">
-            Name: {user?.name} <br />
-            Role: {user?.isAdmin ? "Admin" : "User"}
-          </p>
+      <header className={user?.isAdmin && "admin-header"}>
+        <div className="logo">
+          <div
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            <img src={logo} alt="Bus Tickets Logo" />
+            <h1>Bus Tickets</h1>
+          </div>
         </div>
-        <div className="d-flex flex-column gap-3">
+        <nav>
           {currentMenu.map((menuItem, index) => {
             return (
               <div
-                className={`menu-item ${
-                  currentPath === menuItem.path && "menu-item__active"
+                className={`nav-item ${
+                  currentPath === menuItem.path && "nav-item__active"
                 }`}
+                onClick={() => {
+                  if (menuItem.path === "/logout") {
+                    localStorage.removeItem("token");
+                    navigate("/log-in");
+                  } else {
+                    navigate(menuItem.path);
+                  }
+                }}
                 key={index}
               >
                 <i className={menuItem.img}></i>
-                {!isReduced && (
-                  <span
-                    onClick={() => {
-                      if (menuItem.path === "/logout") {
-                        localStorage.removeItem("token");
-                        navigate("/log-in");
-                      } else {
-                        navigate(menuItem.path);
-                      }
-                    }}
-                  >
-                    {menuItem.name}
-                  </span>
-                )}
+                <p className="nav-item-name">{menuItem.name}</p>
               </div>
             );
           })}
-        </div>
-      </div>
-      <div className="body">
-        <div className="header">
-          {isReduced ? (
-            <i
-              className="ri-skip-right-line"
-              onClick={() => setIsReduced(false)}
-            ></i>
-          ) : (
-            <i
-              className="ri-skip-left-line"
-              onClick={() => setIsReduced(true)}
-            ></i>
-          )}
-        </div>
-        <div className="content">{children}</div>
-      </div>
+        </nav>
+      </header>
+      <main>{children}</main>
     </div>
   );
 }
