@@ -12,8 +12,6 @@ function Home() {
           User: {user.name}
           <br />
           Email: {user.email}
-          <br />
-          Password: {user.password}
         </p>
       )}
     </div>

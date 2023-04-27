@@ -252,3 +252,11 @@
   background-size: 100% 0.12rem;
   color: var(--primary);
 }
+
+/* Adaptive */
+@media (max-width: 450px) {
+  .container form .input-container input {
+    padding: 1.5rem 0.7rem 0.7rem;
+    font-size: 0.8rem;
+  }
+}

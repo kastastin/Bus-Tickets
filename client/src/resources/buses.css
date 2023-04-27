@@ -1,8 +1,8 @@
-.buses-container {
+/* .buses-container {
   height: calc(100vh - 4rem);
   padding: 0 1.5rem;
   color: #fff;
-}
+} */
 
 .buses-header {
   height: 5rem;
@@ -34,4 +34,22 @@
   border: 2px solid var(--secondary);
   color: var(--primary);
   cursor: pointer;
+}
+
+/* Adaptive */
+@media (max-width: 450px) {
+  .buses-header {
+    height: 4rem;
+    padding: 0;
+  }
+
+  .buses-container .buses-header .title {
+    font-size: 1.5rem;
+  }
+
+  .buses-container .buses-header button {
+    height: 2rem;
+    width: 7rem;
+    font-size: 0.8rem;
+  }
 }

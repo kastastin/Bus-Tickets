@@ -16,6 +16,7 @@
 
 body {
   overflow: hidden;
+  overflow-x: hidden;
 }
 
 /* Align Message Icon */

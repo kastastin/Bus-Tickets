@@ -60,7 +60,7 @@ function DefaultLayout({ children }) {
                 }}
                 key={index}
               >
-                <i className={menuItem.img}></i>
+                <i className={`${menuItem.img} nav-img`}></i>
                 <p className="nav-item-name">{menuItem.name}</p>
               </div>
             );
