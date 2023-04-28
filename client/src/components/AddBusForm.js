@@ -3,7 +3,6 @@ import { message } from "antd";
 import { Col, Form, Input, Modal, Row } from "antd";
 import { useDispatch } from "react-redux";
 
-
 import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
 import { axiosInstance } from "../helpers/axiosInstance";
 import "../resources/addBusForm.css";
@@ -34,7 +33,6 @@ function AddBusForm({ isFormActive, setIsFormActive, type = "add" }) {
   return (
     <Modal
       width={800}
-      // centered
       style={{
         top: "4.5rem",
       }}

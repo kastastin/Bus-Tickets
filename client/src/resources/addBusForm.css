@@ -16,7 +16,7 @@
   justify-content: flex-end;
 }
 
-.btns button {
+.btns Button {
   height: 2.5rem;
   width: 5rem;
   border: 2px solid var(--bg);
