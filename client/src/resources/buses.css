@@ -30,6 +30,11 @@
   transition: 0.5s;
 }
 
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+.buses-container .buses-header button:first-of-type {
+  display: none;
+}
+
 .buses-container .buses-header button:hover {
   border: 2px solid var(--secondary);
   color: var(--primary);
