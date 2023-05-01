@@ -1,53 +1,76 @@
 import React, { useEffect, useState } from "react";
 import L from "leaflet";
-import {
-  MapContainer,
-  Marker,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
 import "leaflet/dist/leaflet.css";
-import "../../resources/map.css";
-import Modal from "../../components/Modal";
-import "../../resources/modal.css";
+import "leaflet-geosearch/dist/geosearch.css";
 import startMarker from "../../resources/icons/startMarker.svg";
+import "../../resources/map.css";
+import "../../resources/modal.css";
+import Modal from "../../components/Modal";
 
 function Map({ isMapActive, setIsMapActive }) {
   const defaultCoords = [50.448, 30.522];
+  const startIcon = new L.Icon({
+    iconUrl: startMarker,
+    iconRetinaUrl: startMarker,
+    iconSize: [60, 60],
+    iconAnchor: [29, 45],
+    popupAnchor: [0, -40],
+  });
 
   const CurrentPosition = function () {
     const map = useMap();
 
     useEffect(() => {
-      map.locate().on("locationfound", function (e) {
+      map.locate().on("locationfound", (e) => {
         map.flyTo(e.latlng);
       });
-    }, [map]);
+    });
 
     return null;
   };
 
   const SetMarker = function () {
+    const map = useMap();
     const [position, setPosition] = useState(null);
-    const startIcon = new L.Icon({
-      iconUrl: startMarker,
-      iconRetinaUrl: startMarker,
-      iconSize: [60, 60],
-      iconAnchor: [30, 45],
-      popupAnchor: [0, -40],
+
+    useEffect(() => {
+      map.on("click", (e) => {
+        setPosition(e.latlng);
+      });
     });
 
-    useMapEvents({
-      click(e) {
-        setPosition(e.latlng);
+    if (!position) return;
+
+    return (
+      <Marker position={position} icon={startIcon} draggable={true}></Marker>
+    );
+  };
+
+  const Search = function () {
+    const map = useMap();
+
+    const searchControl = new GeoSearchControl({
+      provider: new OpenStreetMapProvider(),
+      style: "bar",
+      showPopup: true,
+      marker: {
+        icon: startIcon,
+        draggable: true,
       },
     });
 
-    return position === null ? null : (
-      <Marker position={position} icon={startIcon}></Marker>
-    );
+    useEffect(() => {
+      const searchHandler = function () {
+        // setIsMarkerExist(true);
+      };
+
+      map.addControl(searchControl);
+      map.on("geosearch/showlocation", searchHandler);
+      return () => map.removeControl(searchControl);
+    });
   };
 
   return (
@@ -70,6 +93,7 @@ function Map({ isMapActive, setIsMapActive }) {
               <TileLayer url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png" />
               <CurrentPosition />
               <SetMarker />
+              <Search />
             </MapContainer>
           </div>
         </div>
