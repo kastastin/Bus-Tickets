@@ -43,7 +43,24 @@
   border: 2px solid red;
 }
 
+.map-wrapper .map-main .form .task {
+  height: 5rem;
+  padding-top: 0.5rem;
+  width: 80%;
+  border-top: 3px solid var(--secondary);
+  border-radius: 40%;
+  font-size: 2rem;
+  font-weight: 500;
+  text-align: center;
+}
+
 .leaflet-container {
   height: 90%;
   width: 90%;
+  border-radius: 0.3rem;
+}
+
+.leaflet-container:hover {
+  border: 2px solid var(--secondary);
+  cursor: pointer;
 }
