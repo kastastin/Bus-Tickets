@@ -14,12 +14,12 @@
   top: 4.8rem;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #fff;
-  border: 3px solid var(--secondary);
-  border-radius: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 3px solid var(--secondary);
+  border-radius: 0.5rem;
+  background-color: #fff;
   color: black;
 }
 
@@ -37,4 +37,3 @@
 }
 
 /* adaptive */
-

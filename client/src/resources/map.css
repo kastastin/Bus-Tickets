@@ -1,0 +1,49 @@
+.map-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.map-wrapper .map-header {
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem;
+  background-color: var(--primary);
+}
+
+.map-wrapper .map-header .title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.map-wrapper .map-header .step {
+  position: absolute;
+  left: 1.5rem;
+  font-size: 18px;
+}
+
+.map-wrapper .map-main {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  padding: 1.5rem;
+  border: 1px solid black;
+}
+
+.map-wrapper .map-main .form,
+.map-wrapper .map-main .map {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  border: 2px solid red;
+}
+
+.leaflet-container {
+  height: 90%;
+  width: 90%;
+}
