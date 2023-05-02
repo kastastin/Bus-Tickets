@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import L from "leaflet";
-import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
 import "leaflet/dist/leaflet.css";
@@ -11,6 +11,9 @@ import "../../resources/modal.css";
 import Modal from "../../components/Modal";
 
 function Map({ isMapActive, setIsMapActive }) {
+  const [departure, setDeparture] = useState("");
+  const [arrival, setArrival] = useState("");
+
   const defaultCoords = [50.448, 30.522];
   const startIcon = new L.Icon({
     iconUrl: startMarker,
@@ -20,36 +23,7 @@ function Map({ isMapActive, setIsMapActive }) {
     popupAnchor: [0, -40],
   });
 
-  const CurrentPosition = function () {
-    const map = useMap();
-
-    useEffect(() => {
-      map.locate().on("locationfound", (e) => {
-        map.flyTo(e.latlng);
-      });
-    });
-
-    return null;
-  };
-
-  const SetMarker = function () {
-    const map = useMap();
-    const [position, setPosition] = useState(null);
-
-    useEffect(() => {
-      map.on("click", (e) => {
-        setPosition(e.latlng);
-      });
-    });
-
-    if (!position) return;
-
-    return (
-      <Marker position={position} icon={startIcon} draggable={true}></Marker>
-    );
-  };
-
-  const Search = function () {
+  const SearchDeparture = function () {
     const map = useMap();
 
     const searchControl = new GeoSearchControl({
@@ -60,11 +34,45 @@ function Map({ isMapActive, setIsMapActive }) {
         icon: startIcon,
         draggable: true,
       },
+      searchLabel: "Enter departure address...",
     });
 
     useEffect(() => {
-      const searchHandler = function () {
-        // setIsMarkerExist(true);
+      const searchHandler = function (e) {
+        const addressArr = e.location.label.split(", ");
+        const town = addressArr[0];
+        const country = addressArr.at(-1);
+        const address = `${town}, ${country}`;
+        setDeparture(address);
+      };
+
+      map.addControl(searchControl);
+      map.on("geosearch/showlocation", searchHandler);
+      return () => map.removeControl(searchControl);
+    });
+  };
+
+  const SearchArrival = function () {
+    const map = useMap();
+
+    const searchControl = new GeoSearchControl({
+      provider: new OpenStreetMapProvider(),
+      style: "bar",
+      showPopup: true,
+      marker: {
+        icon: startIcon,
+        draggable: true,
+      },
+      searchLabel: "Enter departure address...",
+    });
+
+    useEffect(() => {
+      const searchHandler = function (e) {
+        const addressArr = e.location.label.split(", ");
+        const town = addressArr[0];
+        const country = addressArr.at(-1);
+        const address = `${town}, ${country}`;
+        setArrival(address);
       };
 
       map.addControl(searchControl);
@@ -80,22 +88,39 @@ function Map({ isMapActive, setIsMapActive }) {
           <p className="step">Step 1/3</p>
           <p className="title">Add New Bus</p>
         </div>
-        <div className="map-main">
-          <div className="form">
-            <div className="task">Indicate the bus route</div>
-          </div>
-          <div className="map">
+        <div className="task">Choose deaprture and arrival</div>
+        <div className="maps-wrapper">
+          <div className="departure-map">
             <MapContainer
               center={defaultCoords}
-              zoom={11}
+              zoom={9}
               attributionControl={false}
             >
               <TileLayer url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png" />
-              <CurrentPosition />
-              <SetMarker />
-              <Search />
+              <SearchDeparture />
             </MapContainer>
+            <div className="departure-wrapper">
+              <div className="title">Departure from:</div>
+              <input type="text" disabled value={departure}></input>
+            </div>
           </div>
+          <div className="arrival-map">
+            <MapContainer
+              center={defaultCoords}
+              zoom={9}
+              attributionControl={false}
+            >
+              <TileLayer url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png" />
+              <SearchArrival />
+            </MapContainer>
+            <div className="arrival-wrapper">
+              <div className="title">Arrival in:</div>
+              <input type="text" disabled value={arrival}></input>
+            </div>
+          </div>
+        </div>
+        <div className="map-footer">
+          <button type="submit">Next Step</button>
         </div>
       </div>
     </Modal>
