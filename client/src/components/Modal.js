@@ -15,7 +15,7 @@ function Modal({ isModalActive, setIsFormActive, children }) {
         >
           <div className="modal">
             <i
-              className="ri-close-circle-line"
+              className="ri-close-circle-line close"
               onClick={() => setIsFormActive(false)}
             ></i>
             {children}

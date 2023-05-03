@@ -3,16 +3,18 @@ import L from "leaflet";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
+import startMarker from "../../resources/icons/startMarker.svg";
+import Modal from "../../components/Modal";
+// import Seats from "./Seats";
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
-import startMarker from "../../resources/icons/startMarker.svg";
 import "../../resources/map.css";
 import "../../resources/modal.css";
-import Modal from "../../components/Modal";
 
 function Map({ isMapActive, setIsMapActive }) {
-  const [departure, setDeparture] = useState("");
   const [arrival, setArrival] = useState("");
+  const [departure, setDeparture] = useState("");
+  const [isNoteHighlight, setIsNoteHighlight] = useState(false);
 
   const defaultCoords = [50.448, 30.522];
   const startIcon = new L.Icon({
@@ -23,60 +25,50 @@ function Map({ isMapActive, setIsMapActive }) {
     popupAnchor: [0, -40],
   });
 
+  const createSearchControl = function (type) {
+    return new GeoSearchControl({
+      searchLabel: `Enter ${type} address...`,
+      style: "bar",
+      marker: { icon: startIcon },
+      maxMarkers: 1,
+      showPopup: true,
+      popupFormat: ({ query, result }) => result.label.split(", ")[0],
+      retainZoomLevel: true,
+      provider: new OpenStreetMapProvider(),
+    });
+  };
+
+  const getAddress = function (e, type) {
+    const addressArr = e.location.label.split(", ");
+    const town = addressArr[0];
+    const country = addressArr.at(-1);
+    const address = `${town}, ${country}`;
+    if (type === "departure") setDeparture(address);
+    if (type === "arrival") setArrival(address);
+  };
+
   const SearchDeparture = function () {
     const map = useMap();
-
-    const searchControl = new GeoSearchControl({
-      provider: new OpenStreetMapProvider(),
-      style: "bar",
-      showPopup: true,
-      marker: {
-        icon: startIcon,
-        draggable: true,
-      },
-      searchLabel: "Enter departure address...",
-    });
+    const searchControl = createSearchControl("departure");
 
     useEffect(() => {
-      const searchHandler = function (e) {
-        const addressArr = e.location.label.split(", ");
-        const town = addressArr[0];
-        const country = addressArr.at(-1);
-        const address = `${town}, ${country}`;
-        setDeparture(address);
-      };
-
       map.addControl(searchControl);
-      map.on("geosearch/showlocation", searchHandler);
+      map.on("geosearch/showlocation", function (e) {
+        getAddress(e, "departure");
+      });
       return () => map.removeControl(searchControl);
     });
   };
 
   const SearchArrival = function () {
     const map = useMap();
-
-    const searchControl = new GeoSearchControl({
-      provider: new OpenStreetMapProvider(),
-      style: "bar",
-      showPopup: true,
-      marker: {
-        icon: startIcon,
-        draggable: true,
-      },
-      searchLabel: "Enter departure address...",
-    });
+    const searchControl = createSearchControl("arrival");
 
     useEffect(() => {
-      const searchHandler = function (e) {
-        const addressArr = e.location.label.split(", ");
-        const town = addressArr[0];
-        const country = addressArr.at(-1);
-        const address = `${town}, ${country}`;
-        setArrival(address);
-      };
-
       map.addControl(searchControl);
-      map.on("geosearch/showlocation", searchHandler);
+      map.on("geosearch/showlocation", function (e) {
+        getAddress(e, "arrival");
+      });
       return () => map.removeControl(searchControl);
     });
   };
@@ -120,7 +112,32 @@ function Map({ isMapActive, setIsMapActive }) {
           </div>
         </div>
         <div className="map-footer">
-          <button type="submit">Next Step</button>
+          <button
+            onMouseEnter={() => {
+              if (!departure || !arrival || departure === arrival) {
+                setIsNoteHighlight(true);
+              }
+            }}
+            onMouseLeave={() => {
+              setIsNoteHighlight(false);
+            }}
+            onClick={() => {
+              if (isNoteHighlight) return;
+              console.log('Next Step')
+              // setIsMapActive(false);
+              // return <Seats></Seats>;
+            }}
+          >
+            Next Step
+          </button>
+          <i
+            className={`ri-error-warning-line ${
+              isNoteHighlight && "color-red"
+            }`}
+          ></i>
+          <p className={`note ${isNoteHighlight && "color-red"}`}>
+            Use search bar on the map to choose departure and arrival
+          </p>
         </div>
       </div>
     </Modal>
