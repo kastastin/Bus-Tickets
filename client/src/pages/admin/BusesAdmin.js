@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Modal from "../../components/Modal";
-import "../../resources/buses.css";
+import "../../resources/css/buses.css";
 
 function BusesAdmin() {
   const [isModalActive, setIsModalActive] = useState(false);

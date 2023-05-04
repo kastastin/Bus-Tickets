@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
 
-import "../resources/auth.css";
+import "../resources/css/auth.css";
 
 function Register() {
   const dispatch = useDispatch();

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { message } from "antd";
 
 import logo from "../resources/logo.svg";
-import "../resources/layout.css";
+import "../resources/css/layout.css";
 
 function DefaultLayout({ children }) {
   message.config({ top: 2 });

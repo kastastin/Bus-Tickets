@@ -13,7 +13,7 @@ import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
 
 import "./App.css";
-import "./resources/global.css";
+import "./resources/css/global.css";
 
 function App() {
   message.config({

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 import Map from "./AddBusForm/Map";
-import Seats from "./AddBusForm/Seats";
+import Seats from "./AddBusForm/Seats/Seats";
 import BusInfo from "./AddBusForm/BusInfo";
-import "../resources/modal.css";
+import "../resources/css/modal.css";
 
 function Modal({ isModalActive, setIsModalActive }) {
   const [taskNumber, setTaskNumber] = useState(1);
@@ -11,21 +11,15 @@ function Modal({ isModalActive, setIsModalActive }) {
 
   const tasks = [
     "Choose deaprture and arrival",
-    "Choose bus type and available seats",
+    "Bus layout seats",
+    "Enter additional information",
   ];
 
   const notes = [
     "Use search bar on the map to choose departure and arrival",
-    "Note for seats",
+    "Choose bus type",
+    "Fill in the new information and check the old one",
   ];
-
-  const addInfoToLocalStorage = function () {
-    const newBusData = {
-      departure: localStorage.getItem("addresses")[0],
-      arrival: localStorage.getItem("addresses")[1],
-    };
-    localStorage.setItem("newBusData", JSON.stringify(newBusData));
-  };
 
   const Step = function () {
     switch (taskNumber) {
@@ -53,6 +47,8 @@ function Modal({ isModalActive, setIsModalActive }) {
       <div>
         <button
           onMouseEnter={() => {
+            if (localStorage.getItem("address")) return;
+
             if (!localStorage.getItem("addresses")) {
               setIsNoteHighlight(true);
             }
@@ -61,9 +57,11 @@ function Modal({ isModalActive, setIsModalActive }) {
             setIsNoteHighlight(false);
           }}
           onClick={() => {
+            if (localStorage.getItem("address") && taskNumber === 2) {
+              setTaskNumber(3);
+            }
             if (!localStorage.getItem("addresses")) return;
 
-            addInfoToLocalStorage();
             setTaskNumber(2);
           }}
         >
@@ -105,7 +103,7 @@ function Modal({ isModalActive, setIsModalActive }) {
               </div>
 
               <div className="modal-footer">
-                <Footer data={localStorage.getItem("addresses")} />
+                <Footer />
               </div>
             </div>
           </div>

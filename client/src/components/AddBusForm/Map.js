@@ -6,22 +6,30 @@ import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 import startMarker from "../../resources/icons/startMarker.svg";
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
-import "../../resources/map.css";
-import "../../resources/modal.css";
+import "../../resources/css/map.css";
+import "../../resources/css/modal.css";
 
 function Map() {
   const [arrival, setArrival] = useState("");
   const [departure, setDeparture] = useState("");
+  const [departureCoords, setDepartureCoords] = useState([]);
+  const [arrivalCoords, setArrivalCoords] = useState([]);
 
   useEffect(() => {
     const addresses = [departure, arrival];
 
     if (!!departure && !!arrival && departure !== arrival) {
+      const newBusAddress = {
+        departure: { town: departure, coords: departureCoords },
+        arrval: { town: arrival, coords: arrivalCoords },
+      };
+
       localStorage.setItem("addresses", JSON.stringify(addresses));
+      localStorage.setItem("address", JSON.stringify(newBusAddress));
     } else {
       localStorage.removeItem("addresses");
     }
-  }, [arrival, departure]);
+  }, [departure, arrival, departureCoords, arrivalCoords]);
 
   const defaultCoords = [50.448, 30.522];
   const startIcon = new L.Icon({
@@ -49,8 +57,14 @@ function Map() {
     const town = addressArr[0];
     const country = addressArr.at(-1);
     const address = `${town}, ${country}`;
-    if (type === "departure") setDeparture(address);
-    if (type === "arrival") setArrival(address);
+    if (type === "departure") {
+      setDeparture(address);
+      setDepartureCoords([e.location.y, e.location.x]);
+    }
+    if (type === "arrival") {
+      setArrival(address);
+      setArrivalCoords([e.location.y, e.location.x]);
+    }
   };
 
   const SearchDeparture = function () {
