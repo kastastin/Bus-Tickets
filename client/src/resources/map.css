@@ -1,47 +1,5 @@
-.map-wrapper {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.map-wrapper .map-header {
-  height: 4rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: var(--primary);
-}
-
-.map-wrapper .map-header .title {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
-.map-wrapper .map-header .step {
-  position: absolute;
-  left: 1.5rem;
-  font-size: 18px;
-}
-
-.map-wrapper .task {
-  margin-top: 0.5rem;
-  font-size: 1.3rem;
-  /* font-weight: 500; */
-  text-align: center;
-}
-
-.map-wrapper .maps-wrapper {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  margin-top: 0.5rem;
-  /* padding: 1rem; */
-}
-
-.map-wrapper .maps-wrapper .departure-map,
-.map-wrapper .maps-wrapper .arrival-map {
+.departure-map,
+.arrival-map {
   width: 50%;
   height: 100%;
   display: flex;
@@ -50,41 +8,42 @@
   align-items: center;
 }
 
-.map-wrapper .maps-wrapper .departure-map .departure-wrapper,
-.map-wrapper .maps-wrapper .arrival-map .arrival-wrapper {
+.departure-map .departure-wrapper,
+.arrival-map .arrival-wrapper {
   width: 80%;
   display: flex;
   gap: 1rem;
 }
 
-.map-wrapper .maps-wrapper .departure-map .departure-wrapper .title {
+.departure-map .departure-wrapper .title {
+  font-size: 1.2rem;
+  width: 40%;
+}
+
+.arrival-map .arrival-wrapper .title {
   font-size: 1.2rem;
   width: 30%;
 }
 
-.map-wrapper .maps-wrapper .arrival-map .arrival-wrapper .title {
-  font-size: 1.2rem;
-  width: 20%;
-}
-
-.map-wrapper .maps-wrapper .departure-map .departure-wrapper input {
+.departure-map .departure-wrapper input {
   width: 65%;
   font-size: 1rem;
   padding-left: 0.5rem;
 }
 
-.map-wrapper .maps-wrapper .arrival-map .arrival-wrapper input {
+.arrival-map .arrival-wrapper input {
   width: 75%;
   font-size: 1rem;
   padding-left: 0.5rem;
 }
 
 .map-wrapper .map-footer {
-  height: 4rem;
+  height: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.3rem;
+  /* padding: 0 !important; */
 }
 
 .map-wrapper .map-footer i {
