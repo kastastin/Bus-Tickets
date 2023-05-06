@@ -21,7 +21,7 @@ function Map() {
     if (!!departure && !!arrival && departure !== arrival) {
       const newBusAddress = {
         departure: { town: departure, coords: departureCoords },
-        arrval: { town: arrival, coords: arrivalCoords },
+        arrival: { town: arrival, coords: arrivalCoords },
       };
 
       localStorage.setItem("addresses", JSON.stringify(addresses));

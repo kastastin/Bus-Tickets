@@ -33,7 +33,16 @@ function Seats() {
     const doorsNumberID = useId();
 
     const busTypeHandler = function (e) {
-      switch (e.target.value) {
+      const type = e.target.value;
+
+      const busType = {
+        type: type,
+        seats: busFormOptions[type]["seats"],
+      };
+
+      localStorage.setItem("busType", JSON.stringify(busType));
+
+      switch (type) {
         case "standard":
           setBusType(<StandardBus />);
           setFormOptions(busFormOptions.standard);

@@ -23,13 +23,13 @@ function Modal({ isModalActive, setIsModalActive }) {
 
   const Step = function () {
     switch (taskNumber) {
-      case 1:
+      case 3:
         return <Map setTaskNumber={setTaskNumber} />;
 
       case 2:
         return <Seats taskNumber={taskNumber} setTaskNumber={setTaskNumber} />;
 
-      case 3:
+      case 1:
         return (
           <BusInfo taskNumber={taskNumber} setTaskNumber={setTaskNumber} />
         );
@@ -47,9 +47,9 @@ function Modal({ isModalActive, setIsModalActive }) {
       <div>
         <button
           onMouseEnter={() => {
-            if (localStorage.getItem("address")) return;
+            // if (localStorage.getItem("address")) return;
 
-            if (!localStorage.getItem("addresses")) {
+            if (!localStorage.getItem("addresses") && taskNumber === 1) {
               setIsNoteHighlight(true);
             }
           }}

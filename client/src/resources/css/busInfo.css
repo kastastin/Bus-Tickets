@@ -1,0 +1,120 @@
+.bus-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bus-info-wrapper .arrow {
+  position: absolute;
+  height: 30%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bus-info-wrapper .arrow i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  cursor: default;
+}
+
+.addresses {
+  position: relative;
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.addresses .title,
+.addresses input {
+  text-align: center;
+}
+
+.dates {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.dates div .title,
+.dates div input {
+  text-align: center;
+}
+
+.bottom-part {
+  margin: 0 auto;
+  height: 60%;
+  padding: 1rem 4.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.bottom-part div {
+  display: flex;
+}
+
+.bottom-part div .title {
+  width: 8rem;
+}
+
+.bottom-part div input {
+  padding-left: 0.5rem;
+}
+
+/* .bus-layout {
+  height: 20%;
+  width: 20%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.bus-layout .type,
+.bus-layout .seats {
+  display: flex;
+}
+
+.bus-layout .type .title,
+.bus-layout .seats .title {
+  width: 3rem;
+}
+
+.bus-layout .type input {
+  width: 5rem;
+  text-align: center;
+}
+
+.bus-layout .seats input {
+  width: 2rem;
+  text-align: center;
+}
+
+.driver {
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.driver .driver-name,
+.driver .driver-contacts {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bus-number {
+  display: flex;
+  justify-content: center;
+} */
