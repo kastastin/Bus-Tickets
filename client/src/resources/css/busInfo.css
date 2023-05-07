@@ -4,6 +4,10 @@
   width: 100%;
 }
 
+.bus-info-wrapper input {
+  border: 2px solid #444;
+}
+
 .bus-info-wrapper .arrow {
   position: absolute;
   height: 30%;
@@ -11,6 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: -1;
 }
 
 .bus-info-wrapper .arrow i {
@@ -69,52 +74,3 @@
 .bottom-part div input {
   padding-left: 0.5rem;
 }
-
-/* .bus-layout {
-  height: 20%;
-  width: 20%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.bus-layout .type,
-.bus-layout .seats {
-  display: flex;
-}
-
-.bus-layout .type .title,
-.bus-layout .seats .title {
-  width: 3rem;
-}
-
-.bus-layout .type input {
-  width: 5rem;
-  text-align: center;
-}
-
-.bus-layout .seats input {
-  width: 2rem;
-  text-align: center;
-}
-
-.driver {
-  height: 20%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.driver .driver-name,
-.driver .driver-contacts {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.bus-number {
-  display: flex;
-  justify-content: center;
-} */

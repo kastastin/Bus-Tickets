@@ -18,7 +18,7 @@ function Modal({ isModalActive, setIsModalActive }) {
   const notes = [
     "Use search bar on the map to choose departure and arrival",
     "Choose bus type",
-    "Fill in the new information and check the old one",
+    "Enter additional information",
   ];
 
   const Step = function () {
@@ -47,8 +47,6 @@ function Modal({ isModalActive, setIsModalActive }) {
       <div>
         <button
           onMouseEnter={() => {
-            // if (localStorage.getItem("address")) return;
-
             if (!localStorage.getItem("addresses") && taskNumber === 1) {
               setIsNoteHighlight(true);
             }
@@ -60,9 +58,9 @@ function Modal({ isModalActive, setIsModalActive }) {
             if (localStorage.getItem("address") && taskNumber === 2) {
               setTaskNumber(3);
             }
-            if (!localStorage.getItem("addresses")) return;
-
-            setTaskNumber(2);
+            if (localStorage.getItem("addresses")) {
+              setTaskNumber(2);
+            }
           }}
         >
           Next Step
