@@ -10,29 +10,29 @@
 
 .departure-map .departure-wrapper,
 .arrival-map .arrival-wrapper {
-  width: 80%;
+  width: 90%;
   display: flex;
   gap: 1rem;
 }
 
 .departure-map .departure-wrapper .title {
   font-size: 1.2rem;
-  width: 40%;
+  width: 50%;
 }
 
 .arrival-map .arrival-wrapper .title {
   font-size: 1.2rem;
-  width: 30%;
+  width: 50%;
 }
 
 .departure-map .departure-wrapper input {
-  width: 65%;
+  width: 75%;
   font-size: 1rem;
   padding-left: 0.5rem;
 }
 
 .arrival-map .arrival-wrapper input {
-  width: 75%;
+  width: 145%;
   font-size: 1rem;
   padding-left: 0.5rem;
 }
@@ -43,7 +43,6 @@
   justify-content: center;
   align-items: center;
   gap: 0.3rem;
-  /* padding: 0 !important; */
 }
 
 .map-wrapper .map-footer i {
@@ -88,3 +87,4 @@
 .leaflet-popup-content {
   text-align: center;
 }
+

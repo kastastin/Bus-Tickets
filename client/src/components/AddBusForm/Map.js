@@ -10,8 +10,10 @@ import "../../resources/css/map.css";
 import "../../resources/css/modal.css";
 
 function Map() {
-  const [arrival, setArrival] = useState("");
-  const [departure, setDeparture] = useState("");
+  const address = JSON.parse(localStorage.getItem("address"));
+
+  const [arrival, setArrival] = useState(address.arrival.town || "");
+  const [departure, setDeparture] = useState(address.departure.town || "");
   const [departureCoords, setDepartureCoords] = useState([]);
   const [arrivalCoords, setArrivalCoords] = useState([]);
 

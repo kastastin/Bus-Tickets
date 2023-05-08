@@ -79,10 +79,11 @@
 }
 
 .right .bus-wrapper.standard .seat-wrapper {
+  height: calc(67vh / 9);
   transform: scale(0.90);
 }
 
 .right .bus-wrapper.standard .seat-wrapper span {
-  transform: translate(-50%, -10%);
+  transform: translate(-50%, -12%);
   font-size: 0.8rem;
 }

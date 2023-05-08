@@ -108,7 +108,8 @@
   color: var(--secondary) !important;
 }
 
-.modal-wrapper .modal-footer button {
+.modal-wrapper .modal-footer button,
+.modal-wrapper .modal-footer .prev-btn {
   position: absolute;
   right: 1rem;
   height: 2rem;
@@ -118,6 +119,14 @@
   background-color: var(--primary);
   font-size: 18px;
   cursor: pointer;
+}
+
+.modal-wrapper .modal-footer button {
+  right: 1rem;
+}
+
+.modal-wrapper .modal-footer .prev-btn {
+  left: 1rem;
 }
 
 .modal-wrapper .modal-footer button:hover {

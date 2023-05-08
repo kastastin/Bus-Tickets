@@ -50,7 +50,7 @@ function Modal({ isModalActive, setIsModalActive }) {
   const tasks = [
     "Choose deaprture and arrival",
     "Bus layout seats",
-    "Enter additional information",
+    "Enter additional information correctly",
   ];
 
   const notes = [
@@ -84,45 +84,67 @@ function Modal({ isModalActive, setIsModalActive }) {
     return (
       <div>
         {taskNumber !== 3 && (
-          <button
-            onMouseEnter={() => {
-              if (!localStorage.getItem("addresses") && taskNumber === 1) {
-                setIsNoteHighlight(true);
-              }
-            }}
-            onMouseLeave={() => {
-              setIsNoteHighlight(false);
-            }}
-            onClick={() => {
-              if (localStorage.getItem("address") && taskNumber === 2) {
-                setTaskNumber(3);
-              }
-              if (localStorage.getItem("addresses")) {
-                setTaskNumber(2);
-              }
-            }}
-          >
-            Next Step
-          </button>
+          <>
+            <button
+              onMouseEnter={() => {
+                if (!localStorage.getItem("addresses") && taskNumber === 1) {
+                  setIsNoteHighlight(true);
+                }
+              }}
+              onMouseLeave={() => {
+                setIsNoteHighlight(false);
+              }}
+              onClick={() => {
+                if (localStorage.getItem("address") && taskNumber === 2) {
+                  setTaskNumber(3);
+                }
+                if (localStorage.getItem("addresses")) {
+                  setTaskNumber(2);
+                }
+              }}
+            >
+              Next Step
+            </button>
+            {taskNumber === 2 && (
+              <button
+                className="prev-btn"
+                onClick={() => {
+                  setTaskNumber(1);
+                }}
+              >
+                Prev Step
+              </button>
+            )}
+          </>
         )}
         {taskNumber === 3 && (
-          <button
-            onMouseEnter={() => {
-              if (!localStorage.getItem("busData")) {
-                setIsNoteHighlight(true);
-              }
-            }}
-            onMouseLeave={() => {
-              setIsNoteHighlight(false);
-            }}
-            onClick={() => {
-              if (localStorage.getItem("busData")) {
-                formHandler();
-              }
-            }}
-          >
-            Add Bus
-          </button>
+          <>
+            <button
+              onMouseEnter={() => {
+                if (!localStorage.getItem("busData")) {
+                  setIsNoteHighlight(true);
+                }
+              }}
+              onMouseLeave={() => {
+                setIsNoteHighlight(false);
+              }}
+              onClick={() => {
+                if (localStorage.getItem("busData")) {
+                  formHandler();
+                }
+              }}
+            >
+              Add Bus
+            </button>
+            <button
+              className="prev-btn"
+              onClick={() => {
+                setTaskNumber(2);
+              }}
+            >
+              Prev Step
+            </button>
+          </>
         )}
         <i
           className={`ri-error-warning-line ${isNoteHighlight && "color-red"}`}

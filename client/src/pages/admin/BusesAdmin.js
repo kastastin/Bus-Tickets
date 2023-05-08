@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { message } from "antd";
 
 import Modal from "../../components/Modal";
 import "../../resources/css/buses.css";
@@ -12,7 +13,9 @@ function BusesAdmin() {
         <h2 className="title">Buses List</h2>
         <button
           onClick={() => {
-            setIsModalActive(true);
+            window.innerWidth > 991
+              ? setIsModalActive(true)
+              : message.error("Your screen is too small. Try using another device!");
           }}
         >
           Add New Bus
