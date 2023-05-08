@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { axiosInstance } from "../helpers/axiosInstance";
+import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
+import { message } from "antd";
 
 import Map from "./AddBusForm/Map";
 import Seats from "./AddBusForm/Seats/Seats";
@@ -6,6 +10,40 @@ import BusInfo from "./AddBusForm/BusInfo";
 import "../resources/css/modal.css";
 
 function Modal({ isModalActive, setIsModalActive }) {
+  const dispatch = useDispatch();
+
+  const formHandler = async () => {
+    try {
+      dispatch(DisplayLoader());
+      const busData = JSON.parse(localStorage.getItem("busData"));
+
+      let response = null;
+      response = await axiosInstance.post("/api/buses/add-bus", {
+        departureTown: busData.departure.town,
+        departureCoords: busData.departure.coords,
+        departureDate: busData.departure.date,
+        arrivalTown: busData.arrival.town,
+        arrivalCoords: busData.arrival.coords,
+        arrivalDate: busData.arrival.date,
+        seats: busData.seats,
+        type: busData.type,
+        price: busData.price,
+        number: busData.number,
+        driverName: busData.driverName,
+        driverContacts: busData.driverContact,
+      });
+      if (response.data.success) {
+        message.success(response.data.message);
+      } else {
+        message.error(response.data.message);
+      }
+      dispatch(HideLoader());
+    } catch (error) {
+      message.error(error.message);
+      dispatch(HideLoader());
+    }
+  };
+
   const [taskNumber, setTaskNumber] = useState(1);
   localStorage.removeItem("addresses");
 
@@ -23,13 +61,13 @@ function Modal({ isModalActive, setIsModalActive }) {
 
   const Step = function () {
     switch (taskNumber) {
-      case 3:
+      case 1:
         return <Map setTaskNumber={setTaskNumber} />;
 
       case 2:
         return <Seats taskNumber={taskNumber} setTaskNumber={setTaskNumber} />;
 
-      case 1:
+      case 3:
         return (
           <BusInfo taskNumber={taskNumber} setTaskNumber={setTaskNumber} />
         );
@@ -45,26 +83,47 @@ function Modal({ isModalActive, setIsModalActive }) {
 
     return (
       <div>
-        <button
-          onMouseEnter={() => {
-            if (!localStorage.getItem("addresses") && taskNumber === 1) {
-              setIsNoteHighlight(true);
-            }
-          }}
-          onMouseLeave={() => {
-            setIsNoteHighlight(false);
-          }}
-          onClick={() => {
-            if (localStorage.getItem("address") && taskNumber === 2) {
-              setTaskNumber(3);
-            }
-            if (localStorage.getItem("addresses")) {
-              setTaskNumber(2);
-            }
-          }}
-        >
-          Next Step
-        </button>
+        {taskNumber !== 3 && (
+          <button
+            onMouseEnter={() => {
+              if (!localStorage.getItem("addresses") && taskNumber === 1) {
+                setIsNoteHighlight(true);
+              }
+            }}
+            onMouseLeave={() => {
+              setIsNoteHighlight(false);
+            }}
+            onClick={() => {
+              if (localStorage.getItem("address") && taskNumber === 2) {
+                setTaskNumber(3);
+              }
+              if (localStorage.getItem("addresses")) {
+                setTaskNumber(2);
+              }
+            }}
+          >
+            Next Step
+          </button>
+        )}
+        {taskNumber === 3 && (
+          <button
+            onMouseEnter={() => {
+              if (!localStorage.getItem("busData")) {
+                setIsNoteHighlight(true);
+              }
+            }}
+            onMouseLeave={() => {
+              setIsNoteHighlight(false);
+            }}
+            onClick={() => {
+              if (localStorage.getItem("busData")) {
+                formHandler();
+              }
+            }}
+          >
+            Add Bus
+          </button>
+        )}
         <i
           className={`ri-error-warning-line ${isNoteHighlight && "color-red"}`}
         ></i>

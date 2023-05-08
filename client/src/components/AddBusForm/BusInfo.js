@@ -4,35 +4,6 @@ import { IMaskInput } from "react-imask";
 import "../../resources/css/busInfo.css";
 
 function BusInfo() {
-  const [isBusDataCorrect, setIsBusDataCorrect] = useState(false);
-
-  const checkBusData = function () {
-    function getAllValues(obj) {
-      const values = [];
-      for (const key in obj) {
-        if (typeof obj[key] === "object") {
-          getAllValues(obj[key]);
-        } else {
-          values.push(obj[key]);
-          // if (obj[key] !== "no-valid") {
-          //   setIsBusDataCorrect(true);
-          // } else {
-          //   setIsBusDataCorrect(false);
-          // }
-        }
-      }
-      return values;
-    }
-
-    const values = getAllValues(busData);
-
-    if (values.includes("no-valid")) {
-      setIsBusDataCorrect(false);
-    } else {
-      setIsBusDataCorrect(true);
-    }
-  };
-
   const busType = JSON.parse(localStorage.getItem("busType")) || {
     type: "mini",
     seats: 16,
@@ -40,48 +11,87 @@ function BusInfo() {
 
   const address = JSON.parse(localStorage.getItem("address"));
 
-  const busData = {
+  const [busData, setBusData] = useState({
     departure: {
       town: address.departure.town,
       coords: address.departure.coords,
-      date: "no-valid",
+      date: new Date().toISOString().slice(0, 16),
     },
     arrival: {
       town: address.arrival.town,
       coords: address.arrival.coords,
-      date: "no-valid",
+      date: "",
     },
     seats: busType.seats,
     type: busType.type,
-    number: "no-valid",
-    driverName: "no-valid",
-    driverContact: "no-valid",
-  };
+    price: "",
+    number: "",
+    driverName: "",
+    driverContact: "",
+  });
 
   const [dateTimeDeparture, setDateTimeDeparture] = useState(
     new Date().toISOString().slice(0, 16)
   );
   const [dateTimeArrival, setDateTimeArrival] = useState(dateTimeDeparture);
+
   const [isDateCorrect, setIsDateCorrect] = useState(false);
+  const [isPriceCorrect, setIsPriceCorrect] = useState(false);
+  const [isNumberCorrect, setIsNumberCorrect] = useState(false);
+  const [isDriverNameCorrect, setIsDriverNameCorrect] = useState(false);
+  const [isDriverContactCorrect, setIsDriverContactCorrect] = useState(false);
+
+  const isPositiveNumber = function (value) {
+    const regex = /^[0-9]\d*$/;
+    return !regex.test(value);
+  };
 
   useEffect(() => {
+    localStorage.setItem("busData", JSON.stringify(busData));
+
     if (
-      new Date(dateTimeDeparture).getTime() <
+      new Date(dateTimeDeparture).getTime() >=
       new Date(dateTimeArrival).getTime()
     ) {
-      busData.departure.date = dateTimeDeparture;
-      busData.arrival.date = dateTimeArrival;
-      setIsDateCorrect(true);
-    } else {
+      localStorage.removeItem("busData");
       setIsDateCorrect(false);
-      setDateTimeArrival(dateTimeDeparture);
-      busData.departure.date = "no-valid";
-      busData.arrival.date = "no-valid";
+    } else {
+      setIsDateCorrect(true);
     }
-  }, [dateTimeDeparture, dateTimeArrival, busData.departure, busData.arrival]);
 
-  const inputBorder = {
-    border: `2px solid ${isDateCorrect ? "#444" : "var(--secondary)"}`,
+    if (isPositiveNumber(busData.price)) {
+      localStorage.removeItem("busData");
+      setIsPriceCorrect(false);
+    } else {
+      setIsPriceCorrect(true);
+    }
+
+    if (busData.number.length < 4) {
+      localStorage.removeItem("busData");
+      setIsNumberCorrect(false);
+    } else {
+      setIsNumberCorrect(true);
+    }
+
+    if (busData.driverName.length < 3) {
+      localStorage.removeItem("busData");
+      setIsDriverNameCorrect(false);
+    } else {
+      setIsDriverNameCorrect(true);
+    }
+
+    if (busData.driverContact.length !== 12) {
+      localStorage.removeItem("busData");
+      setIsDriverContactCorrect(false);
+    } else {
+      setIsDriverContactCorrect(true);
+    }
+  }, [busData, dateTimeDeparture, dateTimeArrival]);
+
+  const getBorderStyle = function (isValid) {
+    return {
+      border: `2px solid ${isValid ? "#444" : "var(--secondary)"}`,
+    };
   };
 
   return (
@@ -108,7 +118,13 @@ function BusInfo() {
             value={dateTimeDeparture}
             onChange={(e) => {
               setDateTimeDeparture(e.target.value);
-              checkBusData();
+              setBusData((prevBusData) => ({
+                ...prevBusData,
+                departure: {
+                  ...prevBusData.departure,
+                  date: e.target.value,
+                },
+              }));
             }}
             min={dateTimeDeparture}
           />
@@ -116,12 +132,18 @@ function BusInfo() {
         <div className="arrival-date-wrapper">
           <div className="title">Date</div>
           <input
-            style={inputBorder}
+            style={getBorderStyle(isDateCorrect)}
             type="datetime-local"
             value={dateTimeArrival}
             onChange={(e) => {
               setDateTimeArrival(e.target.value);
-              checkBusData();
+              setBusData((prevBusData) => ({
+                ...prevBusData,
+                arrival: {
+                  ...prevBusData.arrival,
+                  date: e.target.value,
+                },
+              }));
             }}
             min={dateTimeDeparture}
           />
@@ -136,14 +158,34 @@ function BusInfo() {
           <div className="title">Types:</div>
           <input type="text" value={busType.type} disabled />
         </div>
-        <div className="bus-number">
-          <div className="title">Bus Number:</div>
+        {/*  */}
+        <div className="price">
+          <div className="title">Price:</div>
           <input
+            style={getBorderStyle(isPriceCorrect)}
             type="text"
             onChange={(e) => {
               const { value } = e.target;
-              busData.number = value.length > 3 ? value : "no-valid";
-              checkBusData();
+              setBusData((prevData) => ({
+                ...prevData,
+                price: value,
+              }));
+            }}
+            placeholder="100"
+          />
+        </div>
+        {/*  */}
+        <div className="bus-number">
+          <div className="title">Bus Number:</div>
+          <input
+            style={getBorderStyle(isNumberCorrect)}
+            type="text"
+            onChange={(e) => {
+              const { value } = e.target;
+              setBusData((prevData) => ({
+                ...prevData,
+                number: value,
+              }));
             }}
             placeholder="AA8965BK (min 4 signs)"
           />
@@ -151,11 +193,14 @@ function BusInfo() {
         <div className="driver-name">
           <div className="title">Driver's name:</div>
           <input
+            style={getBorderStyle(isDriverNameCorrect)}
             type="text"
             onChange={(e) => {
               const { value } = e.target;
-              busData.driverName = value.length > 2 ? value : "no-valid";
-              checkBusData();
+              setBusData((prevData) => ({
+                ...prevData,
+                driverName: value,
+              }));
             }}
             placeholder="Bob (min 3 signs)"
           />
@@ -163,12 +208,15 @@ function BusInfo() {
         <div className="driver-contacts">
           <div className="title">Driver's contacts:</div>
           <IMaskInput
+            style={getBorderStyle(isDriverContactCorrect)}
             mask="+{38} (000) 000-00-00"
             unmask="typed"
             onAccept={(value, mask) => {
               const phone = mask._unmaskedValue;
-              busData.driverContact = phone.length === 12 ? phone : "no-valid";
-              checkBusData();
+              setBusData((prevData) => ({
+                ...prevData,
+                driverContact: phone,
+              }));
             }}
             placeholder="+38 (050) 320-10-30"
           />
