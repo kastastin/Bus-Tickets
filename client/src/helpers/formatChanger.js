@@ -8,8 +8,18 @@ function getDateAndTime(value) {
     .replace(/\//g, ".");
 
   const timeString = dateTime.toLocaleString("en-US", timeOptions);
-  
+
   return `${dateString} | ${timeString}`;
 }
 
-export { getDateAndTime };
+function getFormattedPhone(value) {
+  const countryCode = value.substring(0, 3);
+  const number = value.substring(3);
+
+  return `+${countryCode} (${number.substring(0, 3)}) ${number.substring(
+    3,
+    6
+  )}-${number.substring(6)}`;
+}
+
+export { getDateAndTime, getFormattedPhone };

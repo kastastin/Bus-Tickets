@@ -9,7 +9,7 @@ import Seats from "./AddBusForm/Seats/Seats";
 import BusInfo from "./AddBusForm/BusInfo";
 import "../resources/css/modal.css";
 
-function Modal({ isModalActive, setIsModalActive }) {
+function Modal({ isModalActive, setIsModalActive, isEdit, chosenBus }) {
   const dispatch = useDispatch();
 
   const formHandler = async () => {
@@ -61,14 +61,30 @@ function Modal({ isModalActive, setIsModalActive }) {
   const Step = function () {
     switch (taskNumber) {
       case 1:
-        return <Map setTaskNumber={setTaskNumber} />;
+        return (
+          <Map
+            setTaskNumber={setTaskNumber}
+            isEdit={isEdit}
+            chosenBus={chosenBus}
+          />
+        );
 
       case 2:
-        return <Seats taskNumber={taskNumber} setTaskNumber={setTaskNumber} />;
+        return (
+          <Seats
+            setTaskNumber={setTaskNumber}
+            isEdit={isEdit}
+            chosenBus={chosenBus}
+          />
+        );
 
       case 3:
         return (
-          <BusInfo taskNumber={taskNumber} setTaskNumber={setTaskNumber} />
+          <BusInfo
+            setTaskNumber={setTaskNumber}
+            isEdit={isEdit}
+            chosenBus={chosenBus}
+          />
         );
 
       default:

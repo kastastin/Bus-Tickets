@@ -9,11 +9,28 @@ import "leaflet-geosearch/dist/geosearch.css";
 import "../../resources/css/map.css";
 import "../../resources/css/modal.css";
 
-function Map() {
-  const address = JSON.parse(localStorage.getItem("address"));
+function Map({ isEdit, chosenBus }) {
+  const address = {
+    departure: {
+      town: chosenBus?.departureTown,
+      coords: chosenBus?.departureCoords,
+    },
+    arrival: {
+      town: chosenBus?.arrivalTown,
+      coords: chosenBus?.arrivalCoords,
+    },
+  };
 
-  const [arrival, setArrival] = useState(address ? address.arrival.town : "");
-  const [departure, setDeparture] = useState(address ? address.departure.town : "");
+  if (!isEdit) {
+    address.departure.town = "";
+    address.departure.coords = "";
+    address.arrival.town = "";
+    address.departure.coords = "";
+  }
+
+  const [arrival, setArrival] = useState(address?.arrival?.town || "");
+  const [departure, setDeparture] = useState(address?.departure?.town || "");
+
   const [departureCoords, setDepartureCoords] = useState([]);
   const [arrivalCoords, setArrivalCoords] = useState([]);
 
@@ -31,7 +48,6 @@ function Map() {
     } else {
       localStorage.removeItem("addresses");
     }
-
   }, [departure, arrival, departureCoords, arrivalCoords]);
 
   const defaultCoords = [50.448, 30.522];

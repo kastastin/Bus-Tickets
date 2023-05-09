@@ -1,15 +1,32 @@
 import React, { useEffect, useState } from "react";
 import { IMaskInput } from "react-imask";
 
+import { getFormattedPhone } from "../../helpers/formatChanger";
 import "../../resources/css/busInfo.css";
 
-function BusInfo() {
-  const busType = JSON.parse(localStorage.getItem("busType")) || {
-    type: "mini",
-    seats: 16,
-  };
+function BusInfo({ isEdit, chosenBus }) {
+  const busType = isEdit
+    ? {
+        type: chosenBus?.type,
+        seats: chosenBus?.seats,
+      }
+    : JSON.parse(localStorage.getItem("busType")) || {
+        type: "mini",
+        seats: 16,
+      };
 
-  const address = JSON.parse(localStorage.getItem("address"));
+  const address = isEdit
+    ? {
+        departure: {
+          town: chosenBus?.departureTown,
+          coords: chosenBus?.departureCoords,
+        },
+        arrival: {
+          town: chosenBus?.arrivalTown,
+          coords: chosenBus?.arrivalCoords,
+        },
+      }
+    : JSON.parse(localStorage.getItem("address"));
 
   const [busData, setBusData] = useState({
     departure: {
@@ -31,9 +48,11 @@ function BusInfo() {
   });
 
   const [dateTimeDeparture, setDateTimeDeparture] = useState(
-    new Date().toISOString().slice(0, 16)
+    isEdit ? chosenBus?.departureDate : new Date().toISOString().slice(0, 16)
   );
-  const [dateTimeArrival, setDateTimeArrival] = useState(dateTimeDeparture);
+  const [dateTimeArrival, setDateTimeArrival] = useState(
+    isEdit ? chosenBus?.arrivalDate : dateTimeDeparture
+  );
 
   const [isDateCorrect, setIsDateCorrect] = useState(false);
   const [isPriceCorrect, setIsPriceCorrect] = useState(false);
@@ -126,7 +145,7 @@ function BusInfo() {
                 },
               }));
             }}
-            min={dateTimeDeparture}
+            min={new Date().toISOString().slice(0, 16)}
           />
         </div>
         <div className="arrival-date-wrapper">
@@ -166,12 +185,13 @@ function BusInfo() {
             type="text"
             onChange={(e) => {
               const { value } = e.target;
+              e.target.value = value;
               setBusData((prevData) => ({
                 ...prevData,
                 price: value,
               }));
             }}
-            placeholder="100"
+            placeholder={isEdit ? chosenBus?.price : "100"}
           />
         </div>
         {/*  */}
@@ -187,7 +207,7 @@ function BusInfo() {
                 number: value,
               }));
             }}
-            placeholder="AA8965BK (min 4 signs)"
+            placeholder={isEdit ? chosenBus?.number : "AA8965BK (min 4 signs)"}
           />
         </div>
         <div className="driver-name">
@@ -202,7 +222,7 @@ function BusInfo() {
                 driverName: value,
               }));
             }}
-            placeholder="Bob (min 3 signs)"
+            placeholder={isEdit ? chosenBus?.driverName : "Bob (min 3 signs)"}
           />
         </div>
         <div className="driver-contacts">
@@ -218,7 +238,11 @@ function BusInfo() {
                 driverContact: phone,
               }));
             }}
-            placeholder="+38 (050) 320-10-30"
+            placeholder={
+              isEdit
+                ? getFormattedPhone(chosenBus?.driverContacts)
+                : "+38 (050) 320-10-30"
+            }
           />
         </div>
       </div>

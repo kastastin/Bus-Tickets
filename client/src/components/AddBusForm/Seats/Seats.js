@@ -6,27 +6,34 @@ import LargeBus from "./LargeBus";
 
 import "../../../resources/css/seats.css";
 
-function Seats() {
+function Seats({ isEdit, chosenBus }) {
   const busFormOptions = {
     mini: {
       seats: 16,
       doors: 1,
       type: "Mini",
+      component: <MiniBus />,
     },
     standard: {
       seats: 23,
       doors: 2,
       type: "Standard",
+      component: <StandardBus />,
     },
     large: {
       seats: 32,
       doors: 2,
       type: "Large",
+      component: <LargeBus />,
     },
   };
 
-  const [busType, setBusType] = useState(<MiniBus />);
-  const [formOptions, setFormOptions] = useState(busFormOptions.mini);
+  const [formOptions, setFormOptions] = useState(
+    isEdit ? busFormOptions[chosenBus["type"]] : busFormOptions.mini
+  );
+  const [busType, setBusType] = useState(
+    isEdit ? formOptions.component : <MiniBus />
+  );
 
   const Form = function () {
     const seatsNumberID = useId();
