@@ -5,7 +5,7 @@
 } */
 
 .buses-header {
-  height: 5rem;
+  height: 3.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,4 +52,18 @@
     width: 7rem;
     font-size: 0.8rem;
   }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.actions i {
+  cursor: pointer;
+}
+
+.actions i:hover {
+  color: var(--secondary);
 }

@@ -32,11 +32,10 @@ function Modal({ isModalActive, setIsModalActive }) {
         driverName: busData.driverName,
         driverContacts: busData.driverContact,
       });
-      if (response.data.success) {
-        message.success(response.data.message);
-      } else {
-        message.error(response.data.message);
-      }
+      response.data.success
+        ? message.success(response.data.message)
+        : message.error(response.data.message);
+
       dispatch(HideLoader());
     } catch (error) {
       message.error(error.message);

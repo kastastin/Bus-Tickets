@@ -25,4 +25,19 @@ router.post("/add-bus", async (request, response) => {
   }
 });
 
+// <-- Get Buses -->
+router.post("/get-buses", authMiddleware, async (request, response) => {
+  try {
+    const buses = await Bus.find();
+
+    return response.status(200).send({
+      success: true,
+      message: "Buses were fetched successfully",
+      data: buses,
+    });
+  } catch (error) {
+    response.status(500).send({ success: false, message: error.message });
+  }
+});
+
 module.exports = router;

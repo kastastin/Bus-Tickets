@@ -14,6 +14,7 @@ function Register() {
       dispatch(DisplayLoader());
       const response = await axios.post("/api/users/sign-up", values);
       dispatch(HideLoader());
+      
       response.data.success
         ? message.success(response.data.message)
         : message.error(response.data.message);

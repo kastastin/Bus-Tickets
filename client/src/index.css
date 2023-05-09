@@ -35,3 +35,9 @@ p {
 a {
   text-decoration: none;
 }
+
+.ant-pagination-item:not(.ant-pagination-item-active) a {
+  border-radius: 0.3rem;
+  background-color: #fff;
+  opacity: 0.5;
+}

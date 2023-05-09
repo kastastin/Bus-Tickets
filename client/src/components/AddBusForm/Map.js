@@ -12,8 +12,8 @@ import "../../resources/css/modal.css";
 function Map() {
   const address = JSON.parse(localStorage.getItem("address"));
 
-  const [arrival, setArrival] = useState(address.arrival.town || "");
-  const [departure, setDeparture] = useState(address.departure.town || "");
+  const [arrival, setArrival] = useState(address ? address.arrival.town : "");
+  const [departure, setDeparture] = useState(address ? address.departure.town : "");
   const [departureCoords, setDepartureCoords] = useState([]);
   const [arrivalCoords, setArrivalCoords] = useState([]);
 
@@ -31,6 +31,7 @@ function Map() {
     } else {
       localStorage.removeItem("addresses");
     }
+
   }, [departure, arrival, departureCoords, arrivalCoords]);
 
   const defaultCoords = [50.448, 30.522];

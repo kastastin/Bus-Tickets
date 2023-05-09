@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
@@ -10,6 +10,7 @@ import DefaultLayout from "./DefaultLayout";
 function ProtectedRoute({ children }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.users);
 
   useEffect(() => {
     const validateToken = async () => {
@@ -47,7 +48,7 @@ function ProtectedRoute({ children }) {
       navigate("/log-in");
     }
   }, [dispatch, navigate]);
-  return <DefaultLayout>{children}</DefaultLayout>;
+  return <>{user !== null && <DefaultLayout>{children}</DefaultLayout>}</>;
 }
 
 export default ProtectedRoute;
