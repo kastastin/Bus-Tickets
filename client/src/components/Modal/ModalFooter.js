@@ -5,9 +5,14 @@ function ModalFooter({
   setTaskNumber,
   localBus,
   setLocalBus,
+  setIsModalActive,
   formHandler,
   notes,
   isDataCorrect,
+  isModalEdit,
+  getBuses,
+  mapData,
+  setMapData,
 }) {
   const [isNoteHighlight, setIsNoteHighlight] = useState(
     localStorage.getItem("addresses")
@@ -32,6 +37,22 @@ function ModalFooter({
               }
               if (localBus.departureTown && taskNumber === 1) {
                 setTaskNumber(2);
+
+                if (isModalEdit && !!mapData.departureTown) {
+                  setLocalBus((prevState) => ({
+                    ...prevState,
+                    departureTown: mapData.departureTown,
+                    departureCoords: mapData.departureCoords,
+                  }));
+                }
+
+                if (isModalEdit && !!mapData.arrivalTown) {
+                  setLocalBus((prevState) => ({
+                    ...prevState,
+                    arrivalTown: mapData.arrivalTown,
+                    arrivalCoords: mapData.arrivalCoords,
+                  }));
+                }
               }
             }}
           >
@@ -53,20 +74,18 @@ function ModalFooter({
         <>
           <button
             onMouseEnter={() => {
-              if (!Object.values(isDataCorrect).every((val) => val === true)) {
+              if (!Object.values(isDataCorrect).every((val) => val === true))
                 setIsNoteHighlight(true);
-              }
             }}
             onMouseLeave={() => {
               setIsNoteHighlight(false);
             }}
             onClick={() => {
-              if (Object.values(isDataCorrect).every(val => val === true)) {
+              if (Object.values(isDataCorrect).every((val) => val === true))
                 formHandler();
-              }
             }}
           >
-            Add Bus
+            {isModalEdit ? "Edit Bus" : "Add Bus"}
           </button>
           <button
             className="prev-btn"

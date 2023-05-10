@@ -20,59 +20,54 @@ function BusInfo({
         arrivalDate: new Date().toISOString().slice(0, 16),
       }));
     }
-
     // eslint-disable-next-line
   }, []);
 
-  const checkDate = function () {
-    const isValid =
-      new Date(localBus.departureDate).getTime() >=
-      new Date(localBus.arrivalDate).getTime();
-
+  useEffect(() => {
+    // Date verification
     setIsDataCorrect((prevState) => ({
       ...prevState,
-      date: isValid,
+      date:
+        new Date(localBus.departureDate).getTime() <
+        new Date(localBus.arrivalDate).getTime(),
     }));
-  };
 
-  const checkPrice = function (value) {
-    const intValue = parseInt(localBus.price);
-    const isValid =
-      intValue >= 0 && Number.isInteger(intValue) && intValue <= 5000;
-
+    // Price verification
     setIsDataCorrect((prevState) => ({
       ...prevState,
-      price: isValid,
+      price:
+        parseInt(localBus.price) >= 0 &&
+        parseInt(localBus.price) <= 5000 &&
+        typeof parseInt(localBus.price) === "number" &&
+        !isNaN(localBus.price),
     }));
-  };
 
-  const checkNumber = function (value) {
-    const isValid = value.length >= 4;
-
+    // Bus Number verification
     setIsDataCorrect((prevState) => ({
       ...prevState,
-      number: isValid,
+      number: localBus.number.length >= 4,
     }));
-  };
 
-  const checkName = function (value) {
-    const isValid = value.length >= 3;
-
+    // Driver Name verification
     setIsDataCorrect((prevState) => ({
       ...prevState,
-      name: isValid,
+      name: localBus.driverName.length >= 3,
     }));
-  };
 
-  const checkContact = function (value) {
-    console.log(value.length);
-    const isValid = value.length === 11; // 12
-
+    // Driver Contacts verification
     setIsDataCorrect((prevState) => ({
       ...prevState,
-      contact: isValid,
+      contact: localBus.driverContacts.length === 12,
     }));
-  };
+  }, [
+    localBus.arrivalDate,
+    localBus.departureDate,
+    localBus.price,
+    localBus.number,
+    localBus.driverName,
+    localBus.driverContacts,
+    setIsDataCorrect,
+  ]);
 
   const getBorderStyle = function (isValid) {
     return {
@@ -107,8 +102,6 @@ function BusInfo({
                 ...prevState,
                 departureDate: e.target.value,
               }));
-
-              checkDate();
             }}
             min={new Date().toISOString().slice(0, 16)}
           />
@@ -124,8 +117,6 @@ function BusInfo({
                 ...prevState,
                 arrivalDate: e.target.value,
               }));
-
-              checkDate();
             }}
             min={localBus.departureDate}
           />
@@ -145,16 +136,13 @@ function BusInfo({
           <input
             style={getBorderStyle(isDataCorrect.price)}
             type="text"
-            title="From 1 to 4999"
+            title="From 1 to 5000"
+            value={localBus.price}
             onChange={(e) => {
-              const { value } = e.target;
-              e.target.value = value;
               setLocalBus((prevData) => ({
                 ...prevData,
-                price: value,
+                price: e.target.value,
               }));
-
-              checkPrice(localBus.price);
             }}
             placeholder="100"
           />
@@ -165,14 +153,12 @@ function BusInfo({
             style={getBorderStyle(isDataCorrect.number)}
             type="text"
             title="Min 4 characters"
+            value={localBus.number}
             onChange={(e) => {
-              const { value } = e.target;
               setLocalBus((prevData) => ({
                 ...prevData,
-                number: value,
+                number: e.target.value,
               }));
-
-              checkNumber(localBus.number);
             }}
             placeholder="AA8965BK"
           />
@@ -183,14 +169,12 @@ function BusInfo({
             style={getBorderStyle(isDataCorrect.name)}
             type="text"
             title="Min 3 characters"
+            value={localBus.driverName}
             onChange={(e) => {
-              const { value } = e.target;
               setLocalBus((prevData) => ({
                 ...prevData,
-                driverName: value,
+                driverName: e.target.value,
               }));
-
-              checkName(localBus.driverName);
             }}
             placeholder="Bob"
           />
@@ -202,15 +186,18 @@ function BusInfo({
             mask="+{38} (000) 000-00-00"
             unmask="typed"
             onAccept={(value, mask) => {
+              value = localBus.driverContacts;
               const phone = mask._unmaskedValue;
               setLocalBus((prevData) => ({
                 ...prevData,
                 driverContacts: phone,
               }));
-
-              checkContact(localBus.driverContacts);
             }}
-            placeholder="+38 (050) 320-10-30"
+            placeholder={
+              !!localBus.driverContacts
+                ? getFormattedPhone(localBus.driverContacts)
+                : "+38 (050) 320-10-30"
+            }
           />
         </div>
       </div>

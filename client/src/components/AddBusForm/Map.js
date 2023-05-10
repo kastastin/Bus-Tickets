@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
@@ -8,16 +8,12 @@ import "leaflet-geosearch/dist/geosearch.css";
 import "../../resources/css/map.css";
 import "../../resources/css/modal.css";
 
-function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
-  const [map, setMap] = useState({
-    departureTown: "",
-    departureCoords: [],
-    arrivalTown: "",
-    arrivalCoords: [],
-  });
+function Map({ isModalEdit, localBus, setLocalBus, chosenBus, mapData, setMapData }) {
+  console.log(localBus);
 
   useEffect(() => {
-    const { departureTown, departureCoords, arrivalTown, arrivalCoords } = map;
+    const { departureTown, departureCoords, arrivalTown, arrivalCoords } =
+      mapData;
 
     if (!!departureTown && !!arrivalTown && departureTown !== arrivalTown) {
       setLocalBus((prevState) => ({
@@ -28,7 +24,7 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
         arrivalCoords: arrivalCoords,
       }));
     }
-  }, [map, setLocalBus]);
+  }, [mapData, setLocalBus]);
 
   const defaultCoords = [50.448, 30.522];
 
@@ -52,7 +48,7 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
     const coords = [e.location.y, e.location.x];
 
     if (type === "departure") {
-      setMap((prevState) => ({
+      setMapData((prevState) => ({
         ...prevState,
         departureTown: address,
         departureCoords: coords,
@@ -60,7 +56,7 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
     }
 
     if (type === "arrival") {
-      setMap((prevState) => ({
+      setMapData((prevState) => ({
         ...prevState,
         arrivalTown: address,
         arrivalCoords: coords,
@@ -72,6 +68,8 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
     const map = useMap();
     const searchControl = createSearchControl("departure", startIcon);
 
+    console.log("mapData ", mapData);
+
     useEffect(() => {
       map.addControl(searchControl);
       map.on("geosearch/showlocation", function (e) {
@@ -79,6 +77,20 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
       });
       return () => map.removeControl(searchControl);
     });
+
+    useEffect(() => {
+      if (localBus.departureCoords.length !== 0) {
+        map.setView(localBus.departureCoords);
+      }
+      // eslint-disable-next-line
+    }, [localBus.departureCoords]);
+
+    useEffect(() => {
+      if (mapData.departureCoords.length !== 0) {
+        map.setView(mapData.departureCoords);
+      }
+      // eslint-disable-next-line
+    }, [mapData.departureCoords]);
   };
 
   const SearchArrival = function () {
@@ -92,17 +104,28 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
       });
       return () => map.removeControl(searchControl);
     });
+
+    useEffect(() => {
+      if (localBus.arrivalCoords.length !== 0) {
+        map.setView(localBus.arrivalCoords);
+      }
+      
+      // eslint-disable-next-line
+    }, [localBus.arrivalCoords]);
+
+    useEffect(() => {
+      if (mapData.arrivalCoords.length !== 0) {
+        map.setView(mapData.arrivalCoords);
+      }
+      // eslint-disable-next-line
+    }, [mapData.arrivalCoords]);
   };
 
   return (
     <>
       <div className="departure-map">
         <MapContainer
-          center={
-            localBus.departureCoords.length === 2
-              ? localBus.departureCoords
-              : defaultCoords
-          }
+          center={defaultCoords}
           zoom={9}
           attributionControl={false}
         >
@@ -110,7 +133,7 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
           <SearchDeparture />
           {!!localBus.departureTown && (
             <Marker position={localBus.departureCoords} icon={startIcon}>
-              <Popup autoOpen>
+              <Popup>
                 <span>{localBus.departureTown}</span>
               </Popup>
             </Marker>
@@ -121,17 +144,13 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
           <input
             type="text"
             disabled
-            value={localBus.departureTown || map.departureTown}
+            value={mapData.departureTown || localBus.departureTown}
           ></input>
         </div>
       </div>
       <div className="arrival-map">
         <MapContainer
-          center={
-            localBus.arrivalCoords.length === 2
-              ? localBus.arrivalCoords
-              : defaultCoords
-          }
+          center={defaultCoords}
           zoom={9}
           attributionControl={false}
         >
@@ -139,7 +158,7 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
           <SearchArrival />
           {!!localBus.arrivalTown && (
             <Marker position={localBus.arrivalCoords} icon={finishIcon}>
-              <Popup autoOpen>
+              <Popup>
                 <span>{localBus.arrivalTown}</span>
               </Popup>
             </Marker>
@@ -150,7 +169,7 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
           <input
             type="text"
             disabled
-            value={localBus.arrivalTown || map.arrivalTown}
+            value={mapData.arrivalTown || localBus.arrivalTown}
           ></input>
         </div>
       </div>

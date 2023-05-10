@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { HideLoader, DisplayLoader } from "../../redux/alertsSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
 import { getDateAndTime } from "../../helpers/formatChanger";
+import { isEmpty } from "../../helpers/cheker";
 import Modal from "../../components/Modal/Modal";
 import "../../resources/css/buses.css";
 
@@ -33,6 +34,25 @@ function BusesAdmin() {
     }
   };
 
+  const removeBus = async (busID) => {
+    try {
+      dispatch(DisplayLoader());
+      const response = await axiosInstance.post("/api/buses/remove-bus", {
+        _id: busID,
+      });
+      dispatch(HideLoader());
+
+      response.data.success
+        ? message.success(response.data.message)
+        : message.error(response.data.message);
+
+      getBusesList();
+    } catch (error) {
+      dispatch(HideLoader());
+      message.error(error.message);
+    }
+  };
+
   useEffect(() => {
     getBusesList();
     // eslint-disable-next-line
@@ -47,11 +67,11 @@ function BusesAdmin() {
     if (window.innerWidth < 375) setPageSize(2);
   }, []);
 
-  const clickHandler = function (value = null) {
+  const clickHandler = function (value) {
     if (window.innerWidth > 991) {
-      if (value) setChosenBuses(value);
+      if (!isEmpty(value)) setChosenBuses(value);
       setIsModalActive(true);
-      setisModalEdit(true);
+      setisModalEdit(!isEmpty(value));
     } else {
       message.error("Your screen is too small. Try using another device!");
     }
@@ -107,7 +127,7 @@ function BusesAdmin() {
           <i
             className="ri-delete-bin-6-fill"
             onClick={() => {
-              console.log("Delete");
+              removeBus(record._id);
             }}
           ></i>
         </div>
@@ -119,7 +139,7 @@ function BusesAdmin() {
     <div className="buses-container">
       <div className="buses-header">
         <h2 className="title">Buses List</h2>
-        <button onClick={clickHandler}>Add New Bus</button>
+        <button onClick={() => clickHandler({})}>Add New Bus</button>
       </div>
 
       <Table
@@ -140,6 +160,7 @@ function BusesAdmin() {
           setIsModalActive={setIsModalActive}
           isModalEdit={isModalEdit}
           chosenBus={chosenBus}
+          getBuses={getBusesList}
         />
       )}
     </div>

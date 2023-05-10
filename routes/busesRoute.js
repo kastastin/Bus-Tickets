@@ -40,4 +40,32 @@ router.post("/get-buses", authMiddleware, async (request, response) => {
   }
 });
 
+// <-- Edit Bus -->
+router.post("/edit-bus", authMiddleware, async (request, response) => {
+  try {
+    await Bus.findByIdAndUpdate(request.body._id, request.body);
+
+    return response.status(200).send({
+      success: true,
+      message: "Bus was edit successfully",
+    });
+  } catch (error) {
+    response.status(500).send({ success: false, message: error.message });
+  }
+});
+
+// <-- Delete Bus -->
+router.post("/remove-bus", authMiddleware, async (request, response) => {
+  try {
+    await Bus.findByIdAndDelete(request.body._id);
+
+    return response.status(200).send({
+      success: true,
+      message: "Bus was removed successfully",
+    });
+  } catch (error) {
+    response.status(500).send({ success: false, message: error.message });
+  }
+});
+
 module.exports = router;

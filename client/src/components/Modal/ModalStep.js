@@ -13,6 +13,8 @@ function ModalStep({
   chosenBus,
   isDataCorrect,
   setIsDataCorrect,
+  mapData,
+  setMapData,
 }) {
   switch (taskNumber) {
     case 1:
@@ -23,6 +25,8 @@ function ModalStep({
           localBus={localBus}
           setLocalBus={setLocalBus}
           chosenBus={chosenBus}
+          mapData={mapData}
+          setMapData={setMapData}
         />
       );
 
