@@ -1,4 +1,4 @@
-import React, { useId, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 
 import MiniBus from "./MiniBus";
 import StandardBus from "./StandardBus";
@@ -6,7 +6,21 @@ import LargeBus from "./LargeBus";
 
 import "../../../resources/css/seats.css";
 
-function Seats({ isEdit, chosenBus }) {
+function Seats({ isModalEdit, localBus, setLocalBus, chosenBus }) {
+  const [component, setComponent] = useState(<StandardBus />);
+
+  useEffect(() => {
+    if (!!!localBus.type) {
+      setLocalBus((prevState) => ({
+        ...prevState,
+        seats: 23,
+        type: "standard",
+      }));
+    }
+
+    // eslint-disable-next-line
+  }, []);
+
   const busFormOptions = {
     mini: {
       seats: 16,
@@ -28,13 +42,6 @@ function Seats({ isEdit, chosenBus }) {
     },
   };
 
-  const [formOptions, setFormOptions] = useState(
-    isEdit ? busFormOptions[chosenBus["type"]] : busFormOptions.mini
-  );
-  const [busType, setBusType] = useState(
-    isEdit ? formOptions.component : <MiniBus />
-  );
-
   const Form = function () {
     const seatsNumberID = useId();
     const doorsNumberID = useId();
@@ -42,28 +49,27 @@ function Seats({ isEdit, chosenBus }) {
     const busTypeHandler = function (e) {
       const type = e.target.value;
 
-      const busType = {
-        type: type,
+      setLocalBus((prevState) => ({
+        ...prevState,
         seats: busFormOptions[type]["seats"],
-      };
-
-      localStorage.setItem("busType", JSON.stringify(busType));
+        type: type,
+      }));
 
       switch (type) {
+        case "mini":
+          setComponent(<MiniBus />);
+          break;
+
         case "standard":
-          setBusType(<StandardBus />);
-          setFormOptions(busFormOptions.standard);
+          setComponent(<StandardBus />);
           break;
 
         case "large":
-          setBusType(<LargeBus />);
-          setFormOptions(busFormOptions.large);
+          setComponent(<LargeBus />);
           break;
 
         default:
-          setBusType(<MiniBus />);
-          setFormOptions(busFormOptions.mini);
-          break;
+          return;
       }
     };
 
@@ -76,7 +82,11 @@ function Seats({ isEdit, chosenBus }) {
               type="number"
               name="seatsNumber"
               id={seatsNumberID}
-              defaultValue={formOptions.seats}
+              defaultValue={
+                !!localBus.type
+                  ? busFormOptions[localBus.type]["seats"]
+                  : busFormOptions.standard.seats
+              }
               disabled
             />
           </div>
@@ -87,7 +97,11 @@ function Seats({ isEdit, chosenBus }) {
               type="number"
               name="doorsNumber"
               id={doorsNumberID}
-              defaultValue={formOptions.doors}
+              defaultValue={
+                !!localBus.type
+                  ? busFormOptions[localBus.type]["doors"]
+                  : busFormOptions.standard.doors
+              }
               disabled
             />
           </div>
@@ -97,7 +111,11 @@ function Seats({ isEdit, chosenBus }) {
               Choose bus type:
               <select
                 name="busType"
-                defaultValue={formOptions.type.toLowerCase()}
+                defaultValue={
+                  !!localBus.type
+                    ? localBus.type.toLowerCase()
+                    : busFormOptions.standard.type.toLowerCase()
+                }
                 onChange={busTypeHandler}
               >
                 <option value="mini">Mini</option>
@@ -116,7 +134,7 @@ function Seats({ isEdit, chosenBus }) {
       <div className="left">
         <Form />
       </div>
-      <div className="right">{busType}</div>
+      <div className="right">{component}</div>
     </>
   );
 }

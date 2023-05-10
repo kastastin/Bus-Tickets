@@ -1,69 +1,42 @@
 import React, { useEffect, useState } from "react";
-import L from "leaflet";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
-import startMarker from "../../resources/icons/startMarker.svg";
+import { startIcon, finishIcon } from "./MapIcons";
 import "leaflet/dist/leaflet.css";
 import "leaflet-geosearch/dist/geosearch.css";
 import "../../resources/css/map.css";
 import "../../resources/css/modal.css";
 
-function Map({ isEdit, chosenBus }) {
-  const address = {
-    departure: {
-      town: chosenBus?.departureTown,
-      coords: chosenBus?.departureCoords,
-    },
-    arrival: {
-      town: chosenBus?.arrivalTown,
-      coords: chosenBus?.arrivalCoords,
-    },
-  };
-
-  if (!isEdit) {
-    address.departure.town = "";
-    address.departure.coords = "";
-    address.arrival.town = "";
-    address.departure.coords = "";
-  }
-
-  const [arrival, setArrival] = useState(address?.arrival?.town || "");
-  const [departure, setDeparture] = useState(address?.departure?.town || "");
-
-  const [departureCoords, setDepartureCoords] = useState([]);
-  const [arrivalCoords, setArrivalCoords] = useState([]);
-
-  useEffect(() => {
-    const addresses = [departure, arrival];
-
-    if (!!departure && !!arrival && departure !== arrival) {
-      const newBusAddress = {
-        departure: { town: departure, coords: departureCoords },
-        arrival: { town: arrival, coords: arrivalCoords },
-      };
-
-      localStorage.setItem("addresses", JSON.stringify(addresses));
-      localStorage.setItem("address", JSON.stringify(newBusAddress));
-    } else {
-      localStorage.removeItem("addresses");
-    }
-  }, [departure, arrival, departureCoords, arrivalCoords]);
-
-  const defaultCoords = [50.448, 30.522];
-  const startIcon = new L.Icon({
-    iconUrl: startMarker,
-    iconRetinaUrl: startMarker,
-    iconSize: [60, 60],
-    iconAnchor: [29, 45],
-    popupAnchor: [0, -40],
+function Map({ isModalEdit, localBus, setLocalBus, chosenBus }) {
+  const [map, setMap] = useState({
+    departureTown: "",
+    departureCoords: [],
+    arrivalTown: "",
+    arrivalCoords: [],
   });
 
-  const createSearchControl = function (type) {
+  useEffect(() => {
+    const { departureTown, departureCoords, arrivalTown, arrivalCoords } = map;
+
+    if (!!departureTown && !!arrivalTown && departureTown !== arrivalTown) {
+      setLocalBus((prevState) => ({
+        ...prevState,
+        departureTown: departureTown,
+        departureCoords: departureCoords,
+        arrivalTown: arrivalTown,
+        arrivalCoords: arrivalCoords,
+      }));
+    }
+  }, [map, setLocalBus]);
+
+  const defaultCoords = [50.448, 30.522];
+
+  const createSearchControl = function (type, icon) {
     return new GeoSearchControl({
       searchLabel: `Enter ${type} address...`,
       style: "bar",
-      marker: { icon: startIcon },
+      marker: { icon: icon },
       showPopup: true,
       popupFormat: ({ query, result }) => result.label.split(", ")[0],
       retainZoomLevel: true,
@@ -76,19 +49,28 @@ function Map({ isEdit, chosenBus }) {
     const town = addressArr[0];
     const country = addressArr.at(-1);
     const address = `${town}, ${country}`;
+    const coords = [e.location.y, e.location.x];
+
     if (type === "departure") {
-      setDeparture(address);
-      setDepartureCoords([e.location.y, e.location.x]);
+      setMap((prevState) => ({
+        ...prevState,
+        departureTown: address,
+        departureCoords: coords,
+      }));
     }
+
     if (type === "arrival") {
-      setArrival(address);
-      setArrivalCoords([e.location.y, e.location.x]);
+      setMap((prevState) => ({
+        ...prevState,
+        arrivalTown: address,
+        arrivalCoords: coords,
+      }));
     }
   };
 
   const SearchDeparture = function () {
     const map = useMap();
-    const searchControl = createSearchControl("departure");
+    const searchControl = createSearchControl("departure", startIcon);
 
     useEffect(() => {
       map.addControl(searchControl);
@@ -101,7 +83,7 @@ function Map({ isEdit, chosenBus }) {
 
   const SearchArrival = function () {
     const map = useMap();
-    const searchControl = createSearchControl("arrival");
+    const searchControl = createSearchControl("arrival", finishIcon);
 
     useEffect(() => {
       map.addControl(searchControl);
@@ -116,30 +98,60 @@ function Map({ isEdit, chosenBus }) {
     <>
       <div className="departure-map">
         <MapContainer
-          center={defaultCoords}
+          center={
+            localBus.departureCoords.length === 2
+              ? localBus.departureCoords
+              : defaultCoords
+          }
           zoom={9}
           attributionControl={false}
         >
           <TileLayer url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png" />
           <SearchDeparture />
+          {!!localBus.departureTown && (
+            <Marker position={localBus.departureCoords} icon={startIcon}>
+              <Popup autoOpen>
+                <span>{localBus.departureTown}</span>
+              </Popup>
+            </Marker>
+          )}
         </MapContainer>
         <div className="departure-wrapper">
           <div className="title">Departure from:</div>
-          <input type="text" disabled value={departure}></input>
+          <input
+            type="text"
+            disabled
+            value={localBus.departureTown || map.departureTown}
+          ></input>
         </div>
       </div>
       <div className="arrival-map">
         <MapContainer
-          center={defaultCoords}
+          center={
+            localBus.arrivalCoords.length === 2
+              ? localBus.arrivalCoords
+              : defaultCoords
+          }
           zoom={9}
           attributionControl={false}
         >
           <TileLayer url="https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png" />
           <SearchArrival />
+          {!!localBus.arrivalTown && (
+            <Marker position={localBus.arrivalCoords} icon={finishIcon}>
+              <Popup autoOpen>
+                <span>{localBus.arrivalTown}</span>
+              </Popup>
+            </Marker>
+          )}
         </MapContainer>
         <div className="arrival-wrapper">
           <div className="title">Arrival in:</div>
-          <input type="text" disabled value={arrival}></input>
+          <input
+            type="text"
+            disabled
+            value={localBus.arrivalTown || map.arrivalTown}
+          ></input>
         </div>
       </div>
     </>

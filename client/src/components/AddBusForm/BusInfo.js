@@ -1,111 +1,78 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IMaskInput } from "react-imask";
 
 import { getFormattedPhone } from "../../helpers/formatChanger";
 import "../../resources/css/busInfo.css";
 
-function BusInfo({ isEdit, chosenBus }) {
-  const busType = isEdit
-    ? {
-        type: chosenBus?.type,
-        seats: chosenBus?.seats,
-      }
-    : JSON.parse(localStorage.getItem("busType")) || {
-        type: "mini",
-        seats: 16,
-      };
+function BusInfo({
+  isModalEdit,
+  localBus,
+  setLocalBus,
+  chosenBus,
+  isDataCorrect,
+  setIsDataCorrect,
+}) {
+  useEffect(() => {
+    if (!!!localBus.departureDate) {
+      setLocalBus((prevState) => ({
+        ...prevState,
+        departureDate: new Date().toISOString().slice(0, 16),
+        arrivalDate: new Date().toISOString().slice(0, 16),
+      }));
+    }
 
-  const address = isEdit
-    ? {
-        departure: {
-          town: chosenBus?.departureTown,
-          coords: chosenBus?.departureCoords,
-        },
-        arrival: {
-          town: chosenBus?.arrivalTown,
-          coords: chosenBus?.arrivalCoords,
-        },
-      }
-    : JSON.parse(localStorage.getItem("address"));
+    // eslint-disable-next-line
+  }, []);
 
-  const [busData, setBusData] = useState({
-    departure: {
-      town: address.departure.town,
-      coords: address.departure.coords,
-      date: new Date().toISOString().slice(0, 16),
-    },
-    arrival: {
-      town: address.arrival.town,
-      coords: address.arrival.coords,
-      date: "",
-    },
-    seats: busType.seats,
-    type: busType.type,
-    price: "",
-    number: "",
-    driverName: "",
-    driverContact: "",
-  });
+  const checkDate = function () {
+    const isValid =
+      new Date(localBus.departureDate).getTime() >=
+      new Date(localBus.arrivalDate).getTime();
 
-  const [dateTimeDeparture, setDateTimeDeparture] = useState(
-    isEdit ? chosenBus?.departureDate : new Date().toISOString().slice(0, 16)
-  );
-  const [dateTimeArrival, setDateTimeArrival] = useState(
-    isEdit ? chosenBus?.arrivalDate : dateTimeDeparture
-  );
-
-  const [isDateCorrect, setIsDateCorrect] = useState(false);
-  const [isPriceCorrect, setIsPriceCorrect] = useState(false);
-  const [isNumberCorrect, setIsNumberCorrect] = useState(false);
-  const [isDriverNameCorrect, setIsDriverNameCorrect] = useState(false);
-  const [isDriverContactCorrect, setIsDriverContactCorrect] = useState(false);
-
-  const isPositiveNumber = function (value) {
-    const regex = /^[0-9]\d*$/;
-    return !regex.test(value);
+    setIsDataCorrect((prevState) => ({
+      ...prevState,
+      date: isValid,
+    }));
   };
 
-  useEffect(() => {
-    localStorage.setItem("busData", JSON.stringify(busData));
+  const checkPrice = function (value) {
+    const intValue = parseInt(localBus.price);
+    const isValid =
+      intValue >= 0 && Number.isInteger(intValue) && intValue <= 5000;
 
-    if (
-      new Date(dateTimeDeparture).getTime() >=
-      new Date(dateTimeArrival).getTime()
-    ) {
-      localStorage.removeItem("busData");
-      setIsDateCorrect(false);
-    } else {
-      setIsDateCorrect(true);
-    }
+    setIsDataCorrect((prevState) => ({
+      ...prevState,
+      price: isValid,
+    }));
+  };
 
-    if (isPositiveNumber(busData.price)) {
-      localStorage.removeItem("busData");
-      setIsPriceCorrect(false);
-    } else {
-      setIsPriceCorrect(true);
-    }
+  const checkNumber = function (value) {
+    const isValid = value.length >= 4;
 
-    if (busData.number.length < 4) {
-      localStorage.removeItem("busData");
-      setIsNumberCorrect(false);
-    } else {
-      setIsNumberCorrect(true);
-    }
+    setIsDataCorrect((prevState) => ({
+      ...prevState,
+      number: isValid,
+    }));
+  };
 
-    if (busData.driverName.length < 3) {
-      localStorage.removeItem("busData");
-      setIsDriverNameCorrect(false);
-    } else {
-      setIsDriverNameCorrect(true);
-    }
+  const checkName = function (value) {
+    const isValid = value.length >= 3;
 
-    if (busData.driverContact.length !== 12) {
-      localStorage.removeItem("busData");
-      setIsDriverContactCorrect(false);
-    } else {
-      setIsDriverContactCorrect(true);
-    }
-  }, [busData, dateTimeDeparture, dateTimeArrival]);
+    setIsDataCorrect((prevState) => ({
+      ...prevState,
+      name: isValid,
+    }));
+  };
+
+  const checkContact = function (value) {
+    console.log(value.length);
+    const isValid = value.length === 11; // 12
+
+    setIsDataCorrect((prevState) => ({
+      ...prevState,
+      contact: isValid,
+    }));
+  };
 
   const getBorderStyle = function (isValid) {
     return {
@@ -121,12 +88,12 @@ function BusInfo({ isEdit, chosenBus }) {
       <div className="addresses">
         <div className="departure-wrapper">
           <div className="title">Departure From</div>
-          <input type="text" value={address.departure.town} disabled />
+          <input type="text" value={localBus.departureTown} disabled />
         </div>
 
         <div className="arrival-wrapper">
           <div className="title">Arrival In</div>
-          <input type="text" value={address.arrival.town} disabled />
+          <input type="text" value={localBus.arrivalTown} disabled />
         </div>
       </div>
       <div className="dates">
@@ -134,16 +101,14 @@ function BusInfo({ isEdit, chosenBus }) {
           <div className="title">Date</div>
           <input
             type="datetime-local"
-            value={dateTimeDeparture}
+            value={localBus.departureDate}
             onChange={(e) => {
-              setDateTimeDeparture(e.target.value);
-              setBusData((prevBusData) => ({
-                ...prevBusData,
-                departure: {
-                  ...prevBusData.departure,
-                  date: e.target.value,
-                },
+              setLocalBus((prevState) => ({
+                ...prevState,
+                departureDate: e.target.value,
               }));
+
+              checkDate();
             }}
             min={new Date().toISOString().slice(0, 16)}
           />
@@ -151,98 +116,101 @@ function BusInfo({ isEdit, chosenBus }) {
         <div className="arrival-date-wrapper">
           <div className="title">Date</div>
           <input
-            style={getBorderStyle(isDateCorrect)}
+            style={getBorderStyle(isDataCorrect.date)}
             type="datetime-local"
-            value={dateTimeArrival}
+            value={localBus.arrivalDate}
             onChange={(e) => {
-              setDateTimeArrival(e.target.value);
-              setBusData((prevBusData) => ({
-                ...prevBusData,
-                arrival: {
-                  ...prevBusData.arrival,
-                  date: e.target.value,
-                },
+              setLocalBus((prevState) => ({
+                ...prevState,
+                arrivalDate: e.target.value,
               }));
+
+              checkDate();
             }}
-            min={dateTimeDeparture}
+            min={localBus.departureDate}
           />
         </div>
       </div>
       <div className="bottom-part">
         <div className="seats">
           <div className="title">Seats:</div>
-          <input type="text" value={busType.seats} disabled />
+          <input type="text" value={localBus.seats} disabled />
         </div>
         <div className="type">
           <div className="title">Types:</div>
-          <input type="text" value={busType.type} disabled />
+          <input type="text" value={localBus.type} disabled />
         </div>
-        {/*  */}
         <div className="price">
           <div className="title">Price:</div>
           <input
-            style={getBorderStyle(isPriceCorrect)}
+            style={getBorderStyle(isDataCorrect.price)}
             type="text"
+            title="From 1 to 4999"
             onChange={(e) => {
               const { value } = e.target;
               e.target.value = value;
-              setBusData((prevData) => ({
+              setLocalBus((prevData) => ({
                 ...prevData,
                 price: value,
               }));
+
+              checkPrice(localBus.price);
             }}
-            placeholder={isEdit ? chosenBus?.price : "100"}
+            placeholder="100"
           />
         </div>
-        {/*  */}
         <div className="bus-number">
           <div className="title">Bus Number:</div>
           <input
-            style={getBorderStyle(isNumberCorrect)}
+            style={getBorderStyle(isDataCorrect.number)}
             type="text"
+            title="Min 4 characters"
             onChange={(e) => {
               const { value } = e.target;
-              setBusData((prevData) => ({
+              setLocalBus((prevData) => ({
                 ...prevData,
                 number: value,
               }));
+
+              checkNumber(localBus.number);
             }}
-            placeholder={isEdit ? chosenBus?.number : "AA8965BK (min 4 signs)"}
+            placeholder="AA8965BK"
           />
         </div>
         <div className="driver-name">
           <div className="title">Driver's name:</div>
           <input
-            style={getBorderStyle(isDriverNameCorrect)}
+            style={getBorderStyle(isDataCorrect.name)}
             type="text"
+            title="Min 3 characters"
             onChange={(e) => {
               const { value } = e.target;
-              setBusData((prevData) => ({
+              setLocalBus((prevData) => ({
                 ...prevData,
                 driverName: value,
               }));
+
+              checkName(localBus.driverName);
             }}
-            placeholder={isEdit ? chosenBus?.driverName : "Bob (min 3 signs)"}
+            placeholder="Bob"
           />
         </div>
         <div className="driver-contacts">
           <div className="title">Driver's contacts:</div>
           <IMaskInput
-            style={getBorderStyle(isDriverContactCorrect)}
+            style={getBorderStyle(isDataCorrect.contact)}
             mask="+{38} (000) 000-00-00"
             unmask="typed"
             onAccept={(value, mask) => {
               const phone = mask._unmaskedValue;
-              setBusData((prevData) => ({
+              setLocalBus((prevData) => ({
                 ...prevData,
-                driverContact: phone,
+                driverContacts: phone,
               }));
+
+              checkContact(localBus.driverContacts);
             }}
-            placeholder={
-              isEdit
-                ? getFormattedPhone(chosenBus?.driverContacts)
-                : "+38 (050) 320-10-30"
-            }
+            placeholder="+38 (050) 320-10-30"
           />
         </div>
       </div>

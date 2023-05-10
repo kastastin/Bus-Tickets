@@ -6,16 +6,17 @@ import { useDispatch } from "react-redux";
 import { HideLoader, DisplayLoader } from "../../redux/alertsSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
 import { getDateAndTime } from "../../helpers/formatChanger";
-import Modal from "../../components/Modal";
+import Modal from "../../components/Modal/Modal";
 import "../../resources/css/buses.css";
 
 function BusesAdmin() {
   const dispatch = useDispatch();
+
   const [buses, setBuses] = useState([]);
   const [chosenBus, setChosenBuses] = useState({});
   const [pageSize, setPageSize] = useState(10);
   const [isModalActive, setIsModalActive] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
+  const [isModalEdit, setisModalEdit] = useState(false);
 
   const getBusesList = async () => {
     try {
@@ -45,6 +46,16 @@ function BusesAdmin() {
     if (window.innerWidth < 768) setPageSize(3);
     if (window.innerWidth < 375) setPageSize(2);
   }, []);
+
+  const clickHandler = function (value = null) {
+    if (window.innerWidth > 991) {
+      if (value) setChosenBuses(value);
+      setIsModalActive(true);
+      setisModalEdit(true);
+    } else {
+      message.error("Your screen is too small. Try using another device!");
+    }
+  };
 
   const columns = [
     {
@@ -91,17 +102,7 @@ function BusesAdmin() {
         <div className="actions">
           <i
             className="ri-edit-2-fill"
-            onClick={() => {
-              if (window.innerWidth > 991) {
-                setChosenBuses(record);
-                setIsModalActive(true);
-                setIsEdit(true);
-              } else {
-                message.error(
-                  "Your screen is too small. Try using another device!"
-                );
-              }
-            }}
+            onClick={() => clickHandler(record)}
           ></i>
           <i
             className="ri-delete-bin-6-fill"
@@ -118,20 +119,7 @@ function BusesAdmin() {
     <div className="buses-container">
       <div className="buses-header">
         <h2 className="title">Buses List</h2>
-        <button
-          onClick={() => {
-            if (window.innerWidth > 991) {
-              setIsModalActive(true);
-              setIsEdit(false);
-            } else {
-              message.error(
-                "Your screen is too small. Try using another device!"
-              );
-            }
-          }}
-        >
-          Add New Bus
-        </button>
+        <button onClick={clickHandler}>Add New Bus</button>
       </div>
 
       <Table
@@ -150,7 +138,7 @@ function BusesAdmin() {
         <Modal
           isModalActive={isModalActive}
           setIsModalActive={setIsModalActive}
-          isEdit={isEdit}
+          isModalEdit={isModalEdit}
           chosenBus={chosenBus}
         />
       )}
