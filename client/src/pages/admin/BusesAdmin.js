@@ -3,11 +3,11 @@ import { Table, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 
+import Modal from "../../components/Modal/Modal";
 import { HideLoader, DisplayLoader } from "../../redux/alertsSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
 import { getDateAndTime } from "../../helpers/formatChanger";
 import { isEmpty } from "../../helpers/cheker";
-import Modal from "../../components/Modal/Modal";
 import "../../resources/css/buses.css";
 
 function BusesAdmin() {
@@ -60,8 +60,7 @@ function BusesAdmin() {
 
   useEffect(() => {
     setPageSize(10);
-    if (window.innerWidth < 1440) setPageSize(7);
-    if (window.innerWidth < 1280) setPageSize(5);
+    if (window.innerWidth < 1440) setPageSize(5);
     if (window.innerWidth < 1024) setPageSize(4);
     if (window.innerWidth < 768) setPageSize(3);
     if (window.innerWidth < 375) setPageSize(2);
@@ -144,8 +143,8 @@ function BusesAdmin() {
 
       <Table
         columns={columns}
-        dataSource={buses.map((bus) => ({ ...bus, key: bus._id }))}
         scroll={{ x: true }}
+        dataSource={buses.map((bus) => ({ ...bus, key: bus._id }))}
         pagination={{
           position: ["topLeft"],
           nextIcon: <RightOutlined style={{ color: "var(--primary)" }} />,

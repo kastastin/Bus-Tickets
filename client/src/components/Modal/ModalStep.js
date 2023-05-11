@@ -6,11 +6,8 @@ import BusInfo from "../AddBusForm/BusInfo";
 
 function ModalStep({
   taskNumber,
-  setTaskNumber,
-  isModalEdit,
   localBus,
   setLocalBus,
-  chosenBus,
   isDataCorrect,
   setIsDataCorrect,
   mapData,
@@ -20,11 +17,8 @@ function ModalStep({
     case 1:
       return (
         <Map
-          setTaskNumber={setTaskNumber}
-          isModalEdit={isModalEdit}
           localBus={localBus}
           setLocalBus={setLocalBus}
-          chosenBus={chosenBus}
           mapData={mapData}
           setMapData={setMapData}
         />
@@ -33,22 +27,16 @@ function ModalStep({
     case 2:
       return (
         <Seats
-          setTaskNumber={setTaskNumber}
-          isModalEdit={isModalEdit}
           localBus={localBus}
           setLocalBus={setLocalBus}
-          chosenBus={chosenBus}
         />
       );
 
     case 3:
       return (
         <BusInfo
-          setTaskNumber={setTaskNumber}
-          isModalEdit={isModalEdit}
           localBus={localBus}
           setLocalBus={setLocalBus}
-          chosenBus={chosenBus}
           isDataCorrect={isDataCorrect}
           setIsDataCorrect={setIsDataCorrect}
         />

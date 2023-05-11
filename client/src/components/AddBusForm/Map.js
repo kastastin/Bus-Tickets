@@ -8,8 +8,8 @@ import "leaflet-geosearch/dist/geosearch.css";
 import "../../resources/css/map.css";
 import "../../resources/css/modal.css";
 
-function Map({ isModalEdit, localBus, setLocalBus, chosenBus, mapData, setMapData }) {
-  console.log(localBus);
+function Map({ localBus, setLocalBus, mapData, setMapData }) {
+  const defaultCoords = [50.448, 30.522];
 
   useEffect(() => {
     const { departureTown, departureCoords, arrivalTown, arrivalCoords } =
@@ -25,8 +25,6 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus, mapData, setMapDat
       }));
     }
   }, [mapData, setLocalBus]);
-
-  const defaultCoords = [50.448, 30.522];
 
   const createSearchControl = function (type, icon) {
     return new GeoSearchControl({
@@ -68,8 +66,6 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus, mapData, setMapDat
     const map = useMap();
     const searchControl = createSearchControl("departure", startIcon);
 
-    console.log("mapData ", mapData);
-
     useEffect(() => {
       map.addControl(searchControl);
       map.on("geosearch/showlocation", function (e) {
@@ -109,7 +105,7 @@ function Map({ isModalEdit, localBus, setLocalBus, chosenBus, mapData, setMapDat
       if (localBus.arrivalCoords.length !== 0) {
         map.setView(localBus.arrivalCoords);
       }
-      
+
       // eslint-disable-next-line
     }, [localBus.arrivalCoords]);
 

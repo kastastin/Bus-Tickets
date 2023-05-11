@@ -6,7 +6,7 @@ import LargeBus from "./LargeBus";
 
 import "../../../resources/css/seats.css";
 
-function Seats({ isModalEdit, localBus, setLocalBus, chosenBus }) {
+function Seats({ localBus, setLocalBus }) {
   const [component, setComponent] = useState(<StandardBus />);
 
   useEffect(() => {
@@ -17,7 +17,6 @@ function Seats({ isModalEdit, localBus, setLocalBus, chosenBus }) {
         type: "standard",
       }));
     }
-
     // eslint-disable-next-line
   }, []);
 

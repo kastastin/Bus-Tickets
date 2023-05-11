@@ -5,14 +5,11 @@ function ModalFooter({
   setTaskNumber,
   localBus,
   setLocalBus,
-  setIsModalActive,
   formHandler,
-  notes,
   isDataCorrect,
   isModalEdit,
-  getBuses,
   mapData,
-  setMapData,
+  notes,
 }) {
   const [isNoteHighlight, setIsNoteHighlight] = useState(
     localStorage.getItem("addresses")

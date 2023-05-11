@@ -1,12 +1,13 @@
 import axios from "axios";
 import { Form, Input, message } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
 
 import "../resources/css/auth.css";
 
 function Register() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onFinish = async function (values) {
@@ -14,10 +15,13 @@ function Register() {
       dispatch(DisplayLoader());
       const response = await axios.post("/api/users/sign-up", values);
       dispatch(HideLoader());
-      
-      response.data.success
-        ? message.success(response.data.message)
-        : message.error(response.data.message);
+
+      if (response.data.success) {
+        navigate("/log-in");
+        message.success(response.data.message);
+      } else {
+        message.error(response.data.message);
+      }
     } catch (error) {
       dispatch(HideLoader());
       message.error(error.message);

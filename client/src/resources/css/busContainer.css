@@ -1,0 +1,63 @@
+.home {
+  height: calc(100vh - 9.5rem);
+  margin: 1.5rem 7.5rem 0 7.5rem;
+  color: #fff;
+}
+
+.home .buses-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.home-pagination {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -75%);
+}
+
+.bus-wrapper {
+  position: relative;
+  height: 7rem;
+  display: flex;
+  padding: 2rem;
+  border: 2px solid var(--primary);
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.bus-wrapper .arrow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: var(--primary);
+}
+
+.bus-wrapper .direction {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.bus-wrapper .title {
+  font-size: 0.8rem;
+}
+
+.bus-wrapper .data {
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.bus-wrapper .date {
+  font-size: 0.9rem;
+}
+
+.bus-wrapper .direction div {
+  width: 100%;
+}

@@ -5,10 +5,8 @@ import { getFormattedPhone } from "../../helpers/formatChanger";
 import "../../resources/css/busInfo.css";
 
 function BusInfo({
-  isModalEdit,
   localBus,
   setLocalBus,
-  chosenBus,
   isDataCorrect,
   setIsDataCorrect,
 }) {

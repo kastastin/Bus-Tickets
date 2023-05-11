@@ -32,7 +32,7 @@ function DefaultLayout({ children }) {
 
   return (
     <div className="layout-container">
-      <header className={user?.isAdmin && "admin-header"}>
+      <header className={user?.isAdmin ? "admin-header" : ""}>
         <div className="logo">
           <div
             onClick={() => {
