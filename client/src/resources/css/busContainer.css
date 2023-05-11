@@ -17,7 +17,7 @@
   transform: translate(-50%, -75%);
 }
 
-.bus-wrapper {
+.bus-book-wrapper {
   position: relative;
   height: 7rem;
   display: flex;
@@ -28,7 +28,12 @@
   justify-content: space-between;
 }
 
-.bus-wrapper .arrow {
+.bus-book-wrapper:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+
+.bus-book-wrapper .arrow {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -37,7 +42,11 @@
   color: var(--primary);
 }
 
-.bus-wrapper .direction {
+.bus-book-wrapper:hover .arrow {
+  color: var(--secondary);
+}
+
+.bus-book-wrapper .direction {
   width: 40%;
   display: flex;
   justify-content: center;
@@ -45,19 +54,19 @@
   text-align: center;
 }
 
-.bus-wrapper .title {
+.bus-book-wrapper .title {
   font-size: 0.8rem;
 }
 
-.bus-wrapper .data {
+.bus-book-wrapper .data {
   font-size: 1.5rem;
   color: var(--primary);
 }
 
-.bus-wrapper .date {
+.bus-book-wrapper .date {
   font-size: 0.9rem;
 }
 
-.bus-wrapper .direction div {
+.bus-book-wrapper .direction div {
   width: 100%;
 }

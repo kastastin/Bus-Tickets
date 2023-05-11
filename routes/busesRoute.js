@@ -40,6 +40,21 @@ router.post("/get-buses", authMiddleware, async (request, response) => {
   }
 });
 
+// <-- Get Bus -->
+router.post("/get-bus-by-id", authMiddleware, async (request, response) => {
+  try {
+    const bus = await Bus.findById(request.body._id);
+
+    return response.status(200).send({
+      success: true,
+      message: "Bus was fetched successfully",
+      data: bus,
+    });
+  } catch (error) {
+    response.status(500).send({ success: false, message: error.message });
+  }
+});
+
 // <-- Edit Bus -->
 router.post("/edit-bus", authMiddleware, async (request, response) => {
   try {

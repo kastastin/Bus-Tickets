@@ -1,14 +1,15 @@
 import { message } from "antd";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "./pages/Home";
+import PublicRoute from "./components/PublicRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import HomeAdmin from "./pages/admin/HomeAdmin";
 import BusesAdmin from "./pages/admin/BusesAdmin";
 import UsersAdmin from "./pages/admin/UsersAdmin";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import PublicRoute from "./components/PublicRoute";
-import ProtectedRoute from "./components/ProtectedRoute";
+import Home from "./pages/Home";
+import Bus from "./pages/Bus";
 import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
 
@@ -29,11 +30,19 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/"
+            path="/log-in"
             element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
             }
           />
           <Route
@@ -61,19 +70,19 @@ function App() {
             }
           />
           <Route
-            path="/log-in"
+            path="/"
             element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
             }
           />
           <Route
-            path="/sign-up"
+            path="/bus/:id"
             element={
-              <PublicRoute>
-                <Register />
-              </PublicRoute>
+              <ProtectedRoute>
+                <Bus />
+              </ProtectedRoute>
             }
           />
         </Routes>

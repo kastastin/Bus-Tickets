@@ -1,4 +1,4 @@
-.right .bus-wrapper.mini {
+.bus-wrapper.mini {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(5, 1fr);
@@ -6,12 +6,12 @@
   grid-row-gap: 0px;
 }
 
-.right .bus-wrapper .driver-mini {
+.bus-wrapper .driver-mini {
   grid-column: 1 / 3;
-  grid-row: 1 / 2;
+  grid-row: 1 / 2; 
 }
 
-.right .bus-wrapper .door-mini {
+.bus-wrapper .door-mini {
   grid-column: 5 / 6;
   grid-row: 2 / 3;
   position: absolute;
@@ -19,7 +19,7 @@
   transform: scale(1.3);
 }
 
-.right .bus-wrapper .front-seats-mini {
+.bus-wrapper .front-seats-mini {
   grid-column: 3 / 6;
   grid-row: 1 / 2;
   display: grid;
@@ -29,7 +29,7 @@
   grid-row-gap: 0px;
 }
 
-.right .bus-wrapper .left-seats-mini {
+.bus-wrapper .left-seats-mini {
   grid-column: 1 / 3;
   grid-row: 2 / 5;
   display: grid;
@@ -39,7 +39,7 @@
   grid-row-gap: 0px;
 }
 
-.right .bus-wrapper .right-seats-mini {
+.bus-wrapper .right-seats-mini {
   grid-column: 5 / 6;
   grid-row: 3 / 5;
   display: grid;
@@ -49,7 +49,7 @@
   grid-row-gap: 0px;
 }
 
-.right .bus-wrapper .back-seats-mini {
+.bus-wrapper .back-seats-mini {
   grid-column: 1 / 6;
   grid-row: 5 / 6;
   display: grid;

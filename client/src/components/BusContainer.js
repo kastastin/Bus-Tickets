@@ -1,11 +1,19 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { getDateAndTime } from "../../src/helpers/formatChanger";
 import "../resources/css/busContainer.css";
 
 function BusContainer({ busData }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="bus-wrapper">
+    <div
+      className="bus-book-wrapper"
+      onClick={() => {
+        navigate(`/bus/${busData._id}`);
+      }}
+    >
       <div className="direction">
         <div>
           <div className="title">Departure From</div>
@@ -18,7 +26,7 @@ function BusContainer({ busData }) {
         <div>
           <div className="title">Arrival In</div>
           <div className="data">{busData.arrivalTown}</div>
-          <div className="date">{getDateAndTime(busData.departureDate)}</div>
+          <div className="date">{getDateAndTime(busData.arrivalDate)}</div>
         </div>
       </div>
     </div>

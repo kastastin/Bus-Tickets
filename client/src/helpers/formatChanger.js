@@ -4,10 +4,15 @@ const getDateAndTime = function (value) {
   const timeOptions = { hour: "2-digit", minute: "2-digit" };
 
   const dateString = dateTime
-    .toLocaleString("en-US", dateOptions)
-    .replace(/\//g, ".");
+    .toLocaleString("uk-UA", dateOptions)
+    .split("/")
+    .reverse()
+    .join(".");
 
-  const timeString = dateTime.toLocaleString("en-US", timeOptions);
+  const timeString = dateTime.toLocaleString("en-US", {
+    hour12: false,
+    ...timeOptions,
+  });
 
   return `${dateString} | ${timeString}`;
 };

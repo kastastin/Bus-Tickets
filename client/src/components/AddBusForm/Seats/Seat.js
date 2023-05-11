@@ -7,6 +7,7 @@ function Seat({ number }) {
   return (
     <div
       className="seat-wrapper"
+      title={number}
       onMouseEnter={(e) => {
         e.target.src = reservedSeat;
       }}

@@ -7,19 +7,6 @@ import LargeBus from "./LargeBus";
 import "../../../resources/css/seats.css";
 
 function Seats({ localBus, setLocalBus }) {
-  const [component, setComponent] = useState(<StandardBus />);
-
-  useEffect(() => {
-    if (!!!localBus.type) {
-      setLocalBus((prevState) => ({
-        ...prevState,
-        seats: 23,
-        type: "standard",
-      }));
-    }
-    // eslint-disable-next-line
-  }, []);
-
   const busFormOptions = {
     mini: {
       seats: 16,
@@ -40,6 +27,21 @@ function Seats({ localBus, setLocalBus }) {
       component: <LargeBus />,
     },
   };
+
+  const [component, setComponent] = useState(
+    localBus.type ? busFormOptions[localBus.type]["component"] : <StandardBus />
+  );
+
+  useEffect(() => {
+    if (!!!localBus.type) {
+      setLocalBus((prevState) => ({
+        ...prevState,
+        seats: 23,
+        type: "standard",
+      }));
+    }
+    // eslint-disable-next-line
+  }, []);
 
   const Form = function () {
     const seatsNumberID = useId();

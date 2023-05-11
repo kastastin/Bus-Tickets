@@ -15,6 +15,7 @@ function Home() {
   const getBusesList = async () => {
     try {
       dispatch(DisplayLoader());
+
       const response = await axiosInstance.post("/api/buses/get-buses", {});
       dispatch(HideLoader());
 
@@ -33,6 +34,7 @@ function Home() {
   }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
+
   const totalBuses = buses.length;
   const busesPerPage = 4;
 
