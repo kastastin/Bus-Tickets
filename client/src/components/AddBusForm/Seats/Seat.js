@@ -3,19 +3,41 @@ import React from "react";
 import seat from "../../../resources/icons/seat.svg";
 import reservedSeat from "../../../resources/icons/reserved-seat.svg";
 
-function Seat({ number }) {
+function Seat({ bus, number, chosenSeats, setChosenSeats }) {
   return (
     <div
       className="seat-wrapper"
       title={number}
       onMouseEnter={(e) => {
-        e.target.src = reservedSeat;
+        bus && (e.target.src = reservedSeat);
       }}
       onMouseLeave={(e) => {
-        e.target.src = seat;
+        e.target.src = chosenSeats
+          ? chosenSeats.includes(number)
+            ? reservedSeat
+            : seat
+          : seat;
+      }}
+      onClick={() => {
+        if (chosenSeats) {
+          if (!chosenSeats.includes(number)) {
+            setChosenSeats([...chosenSeats, number]);
+          } else {
+            setChosenSeats(chosenSeats.filter((seat) => seat !== number));
+          }
+        }
       }}
     >
-      <img src={seat} alt="Passenger seat" />
+      <img
+        src={
+          chosenSeats
+            ? chosenSeats.includes(number)
+              ? reservedSeat
+              : seat
+            : seat
+        }
+        alt="Passenger seat"
+      />
       <span className="number">{number}</span>
     </div>
   );

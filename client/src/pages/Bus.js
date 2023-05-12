@@ -16,6 +16,7 @@ function Bus() {
   const dispatch = useDispatch();
   const params = useParams();
   const [bus, setBus] = useState(null);
+  const [chosenSeats, setChosenSeats] = useState([]);
 
   const getBus = async () => {
     try {
@@ -39,6 +40,37 @@ function Bus() {
     getBus();
     // eslint-disable-next-line
   }, []);
+
+  const getChoosenBusType = function (type) {
+    switch (type) {
+      case "mini":
+        return (
+          <MiniBus
+            bus={bus}
+            chosenSeats={chosenSeats}
+            setChosenSeats={setChosenSeats}
+          />
+        );
+      case "standard":
+        return (
+          <StandardBus
+            bus={bus}
+            chosenSeats={chosenSeats}
+            setChosenSeats={setChosenSeats}
+          />
+        );
+      case "large":
+        return (
+          <LargeBus
+            bus={bus}
+            chosenSeats={chosenSeats}
+            setChosenSeats={setChosenSeats}
+          />
+        );
+
+      default:
+    }
+  };
 
   return (
     <div className="bus-book">
@@ -80,16 +112,34 @@ function Bus() {
             </div>
             <div className="choose-seats">
               <div className="seats-wrapper">
-                <i className="ri-file-info-line"></i>
-                <div className="note">Сhoose a free seat in the bus</div>
+                {!chosenSeats.at(0) && (
+                  <div className="initial-seats">
+                    <i className="ri-file-info-line"></i>
+                    <div className="note">Сhoose a free seat in the bus</div>
+                  </div>
+                )}
+                {chosenSeats.at(0) && (
+                  <>
+                    <div className="chosen-seats">
+                      <div className="title">
+                        Chosen Seat{chosenSeats.length > 1 && "s"}:
+                      </div>
+                      <div className="values">{chosenSeats.join(", ")}</div>
+                    </div>
+                    <div
+                      className="pay"
+                      onClick={() => {
+                        if (chosenSeats) console.log(chosenSeats);
+                      }}
+                    >
+                      Pay
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
-          <div className="bus-book-seats">
-            {/* <MiniBus /> */}
-            <StandardBus />
-            {/* <LargeBus /> */}
-          </div>
+          <div className="bus-book-seats">{getChoosenBusType(bus.type)}</div>
         </>
       )}
     </div>

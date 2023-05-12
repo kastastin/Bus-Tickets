@@ -99,20 +99,42 @@
   align-items: center;
 }
 
-.bus-book .bus-book-info .choose-seats .seats-wrapper {
+.bus-book .bus-book-info .choose-seats .seats-wrapper .initial-seats {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.3rem;
 }
 
-.bus-book .bus-book-info .choose-seats .seats-wrapper i {
+.bus-book .bus-book-info .choose-seats .seats-wrapper .initial-seats i {
   font-size: 1.1rem;
   color: var(--secondary);
   opacity: 0.85;
 }
 
-.bus-book .bus-book-info .choose-seats .seats-wrapper .note {
+.bus-book .bus-book-info .choose-seats .seats-wrapper .initial-seats .note {
   font-size: 1.1rem;
   opacity: 0.85;
+}
+
+.bus-book .bus-book-info .choose-seats .chosen-seats {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bus-book .bus-book-info .choose-seats .seats-wrapper .pay {
+  background-color: var(--bg);
+  color: #fff;
+  border-radius: 0.3rem;
+  width: 6rem;
+  margin: 0.5rem auto;
+  text-align: center;
+  font-size: 1.2rem;
+  transition: 0.3s;
+}
+
+.bus-book .bus-book-info .choose-seats .seats-wrapper .pay:hover {
+  color: var(--secondary);
+  cursor: pointer;
+  transform: scale(1.05);
 }
