@@ -11,6 +11,8 @@ function Reservation() {
   const dispatch = useDispatch();
   const [pageSize, setPageSize] = useState();
   const [reservedSeats, setReservedSeats] = useState([]);
+  const [chosenReservation, setChosenReservation] = useState(null);
+  const [isModalActive, setIsModalActive] = useState(false);
 
   const getReservationSeats = async () => {
     try {
@@ -51,6 +53,11 @@ function Reservation() {
     if (window.innerWidth < 375) setPageSize(2);
   }, []);
 
+  const printHandler = function (reservation) {
+    setChosenReservation(reservation);
+    setIsModalActive(true);
+  };
+
   const columns = [
     {
       title: "№",
@@ -65,15 +72,6 @@ function Reservation() {
     {
       title: "Departure Date",
       dataIndex: "departureDate",
-      render: (text) => <span>{getDateAndTime(text)}</span>,
-    },
-    {
-      title: "Arrival In",
-      dataIndex: "arrivalTown",
-    },
-    {
-      title: "Arrival Date",
-      dataIndex: "arrivalDate",
       render: (text) => <span>{getDateAndTime(text)}</span>,
     },
     {
@@ -94,24 +92,23 @@ function Reservation() {
         return `${price * record.seats.length}$`;
       },
     },
-    // {
-    //   title: "Action",
-    //   dataIndex: "action",
-    //   render: (action, record) => (
-    //     <div className="actions">
-    //       <i
-    //         className="ri-edit-2-fill"
-    //         onClick={() => clickHandler(record)}
-    //       ></i>
-    //       <i
-    //         className="ri-delete-bin-6-fill"
-    //         onClick={() => {
-    //           removeBus(record._id);
-    //         }}
-    //       ></i>
-    //     </div>
-    //   ),
-    // },
+    {
+      title: "Payment Date",
+      dataIndex: "createdAt",
+      render: (text) => <span>{getDateAndTime(text)}</span>,
+    },
+    {
+      title: "Print",
+      dataIndex: "action",
+      render: (action, record) => (
+        <div className="actions">
+          <i
+            className="ri-printer-fill print"
+            onClick={() => printHandler(record)}
+          ></i>
+        </div>
+      ),
+    },
   ];
 
   return (

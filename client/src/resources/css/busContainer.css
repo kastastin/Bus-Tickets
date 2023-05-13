@@ -10,6 +10,18 @@
   gap: 1rem;
 }
 
+.home .buses-wrapper .no-buses {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--primary);
+  opacity: 0.6;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 0.1rem;
+}
+
 .home-pagination {
   position: absolute;
   bottom: 0;

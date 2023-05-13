@@ -25,11 +25,19 @@ function BusesAdmin() {
       const response = await axiosInstance.post("/api/buses/get-buses", {});
       dispatch(HideLoader());
 
+      const buses = response.data.data;
+
       response.data.success
-        ? setBuses(response.data.data)
+        ? setBuses(buses)
         : message.error(response.data.message);
+
+      const oldBuses = buses.filter(
+        (bus) => new Date(bus.departureDate) < new Date()
+      );
+
+      oldBuses.forEach((bus) => removeBus(bus._id));
     } catch (error) {
-      dispatch(HideLoader());
+      // dispatch(HideLoader());
       message.error(error.message);
     }
   };

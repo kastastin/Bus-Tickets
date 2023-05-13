@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Row, Col, Pagination, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
+import { isEmpty } from "../../src/helpers/cheker";
 import { axiosInstance } from "../../src/helpers/axiosInstance";
 import { HideLoader, DisplayLoader } from "../../src/redux/alertsSlice";
 import BusContainer from "../components/BusContainer";
@@ -51,6 +52,7 @@ function Home() {
     <div className="home">
       <div></div>
       <div className="buses-wrapper">
+      {isEmpty(buses) && <p className="no-buses">No Active Buses</p>}
         <Row gutter={[16, 16]}>
           {slicedBuses.map((busData) => {
             return (

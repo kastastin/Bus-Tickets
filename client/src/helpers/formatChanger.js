@@ -1,7 +1,12 @@
 const getDateAndTime = function (value) {
   const dateTime = new Date(value);
-  const dateOptions = { year: "2-digit", month: "2-digit", day: "2-digit" };
-  const timeOptions = { hour: "2-digit", minute: "2-digit" };
+  const dateOptions = {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+    hour12: false,
+  };
+  const timeOptions = { hour: "2-digit", minute: "2-digit", hour12: false };
 
   const dateString = dateTime
     .toLocaleString("uk-UA", dateOptions)
@@ -9,10 +14,7 @@ const getDateAndTime = function (value) {
     .reverse()
     .join(".");
 
-  const timeString = dateTime.toLocaleString("en-US", {
-    hour12: false,
-    ...timeOptions,
-  });
+  const timeString = dateTime.toLocaleString("uk-UA", timeOptions);
 
   return `${dateString} | ${timeString}`;
 };
