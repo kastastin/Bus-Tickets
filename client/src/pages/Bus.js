@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../src/helpers/axiosInstance";
 import { HideLoader, DisplayLoader } from "../../src/redux/alertsSlice";
 import { useParams } from "react-router-dom";
+import StripeCheckout from "react-stripe-checkout";
 
 import { getDateAndTime } from "../../src/helpers/formatChanger";
 import { getFormattedPhone } from "../../src/helpers/formatChanger";
@@ -21,7 +22,6 @@ function Bus() {
   const getBus = async () => {
     try {
       dispatch(DisplayLoader());
-
       const response = await axiosInstance.post("/api/buses/get-bus-by-id", {
         _id: params.id,
       });
@@ -30,6 +30,48 @@ function Bus() {
       response.data.success
         ? setBus(response.data.data)
         : message.error(response.data.message);
+    } catch (error) {
+      dispatch(HideLoader());
+      message.error(error.message);
+    }
+  };
+
+  const bookingSeat = async (transactionId) => {
+    try {
+      dispatch(DisplayLoader());
+      const response = await axiosInstance.post("/api/seats/book-seat", {
+        bus: bus._id,
+        seats: chosenSeats,
+        transactionId: transactionId,
+      });
+      dispatch(HideLoader());
+
+      response.data.success
+        ? message.success(response.data.message)
+        : message.error(response.data.message);
+
+      getBus();
+    } catch (error) {
+      dispatch(HideLoader());
+      message.error(error.message);
+    }
+  };
+
+  const tokenHandler = async (token) => {
+    try {
+      dispatch(DisplayLoader());
+      const response = await axiosInstance.post("/api/seats/stripe-payment", {
+        token,
+        price: bus.price * chosenSeats.length * 100,
+      });
+      dispatch(HideLoader());
+
+      if (response.data.success) {
+        message.success(response.data.message);
+        bookingSeat(response.data.data.transactionId);
+      } else {
+        message.error(response.data.message);
+      }
     } catch (error) {
       dispatch(HideLoader());
       message.error(error.message);
@@ -126,14 +168,14 @@ function Bus() {
                       </div>
                       <div className="values">{chosenSeats.join(", ")}</div>
                     </div>
-                    <div
-                      className="pay"
-                      onClick={() => {
-                        if (chosenSeats) console.log(chosenSeats);
-                      }}
+                    <StripeCheckout
+                      stripeKey="pk_test_51McWMQHNTuuJuhvlFnLZPX8ZHwsGaPa15eXT9angOsRGGukWwdBDVhDduw7uoRkq7HOM7MFWpi5gvD2KrChlIZqM00R7Xm93Cy"
+                      token={tokenHandler}
+                      billingAddress
+                      amount={bus.price * chosenSeats.length * 100}
                     >
-                      Pay
-                    </div>
+                      <div className="pay">Pay</div>
+                    </StripeCheckout>
                   </>
                 )}
               </div>

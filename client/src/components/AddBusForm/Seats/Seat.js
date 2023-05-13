@@ -1,7 +1,8 @@
 import React from "react";
 
-import seat from "../../../resources/icons/seat.svg";
-import reservedSeat from "../../../resources/icons/reserved-seat.svg";
+import seatIcon from "../../../resources/icons/seat.svg";
+import chosenSeatIcon from "../../../resources/icons/chosen-seat.svg";
+import reservedSeatIcon from "../../../resources/icons/reserved-seat.svg";
 
 function Seat({ bus, number, chosenSeats, setChosenSeats }) {
   return (
@@ -9,16 +10,18 @@ function Seat({ bus, number, chosenSeats, setChosenSeats }) {
       className="seat-wrapper"
       title={number}
       onMouseEnter={(e) => {
-        bus && (e.target.src = reservedSeat);
+        const src = e.target.src;
+        if (!src.includes("reserved")) e.target.src = chosenSeatIcon;
       }}
       onMouseLeave={(e) => {
-        e.target.src = chosenSeats
-          ? chosenSeats.includes(number)
-            ? reservedSeat
-            : seat
-          : seat;
+        const src = e.target.src;
+        if (chosenSeats) {
+          !src.includes("reserved") &&
+            !chosenSeats.includes(number) &&
+            (e.target.src = seatIcon);
+        }
       }}
-      onClick={() => {
+      onClick={(e) => {
         if (chosenSeats) {
           if (!chosenSeats.includes(number)) {
             setChosenSeats([...chosenSeats, number]);
@@ -30,11 +33,11 @@ function Seat({ bus, number, chosenSeats, setChosenSeats }) {
     >
       <img
         src={
-          chosenSeats
-            ? chosenSeats.includes(number)
-              ? reservedSeat
-              : seat
-            : seat
+          bus
+            ? bus.reservedSeats.includes(number)
+              ? reservedSeatIcon
+              : seatIcon
+            : seatIcon
         }
         alt="Passenger seat"
       />
