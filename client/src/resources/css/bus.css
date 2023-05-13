@@ -138,3 +138,18 @@
   cursor: pointer;
   transform: scale(1.05);
 }
+
+.bus-book .bus-book-info .choose-seats .seats-wrapper .your-reserved-seats {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.bus-book .bus-book-info .choose-seats .your-reserved-seats .title {
+  font-size: 1.2rem;
+}
+
+.bus-book .bus-book-info .choose-seats .your-reserved-seats .value {
+  font-size: 1.22rem;
+  font-weight: 700;
+  color: var(--primary);
+}

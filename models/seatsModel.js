@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 const seatSchema = new mongoose.Schema(
   {
     user: {
-      ref: "User",
+      ref: "users",
       type: mongoose.Schema.ObjectId,
       require: true,
     },
     bus: {
-      ref: "Bus",
+      ref: "buses",
       type: mongoose.Schema.ObjectId,
       require: true,
     },

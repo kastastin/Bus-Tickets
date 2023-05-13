@@ -3,21 +3,23 @@ import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../src/helpers/axiosInstance";
 import { HideLoader, DisplayLoader } from "../../src/redux/alertsSlice";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import StripeCheckout from "react-stripe-checkout";
 
-import { getDateAndTime } from "../../src/helpers/formatChanger";
-import { getFormattedPhone } from "../../src/helpers/formatChanger";
-import "../resources/css/bus.css";
 import MiniBus from "../components/AddBusForm/Seats/MiniBus";
 import StandardBus from "../components/AddBusForm/Seats/StandardBus";
 import LargeBus from "../components/AddBusForm/Seats/LargeBus";
+import { getDateAndTime } from "../../src/helpers/formatChanger";
+import { getFormattedPhone } from "../../src/helpers/formatChanger";
+import "../resources/css/bus.css";
 
 function Bus() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const params = useParams();
   const [bus, setBus] = useState(null);
   const [chosenSeats, setChosenSeats] = useState([]);
+  const [reservedSeats, setReservedSeats] = useState([]);
 
   const getBus = async () => {
     try {
@@ -36,13 +38,49 @@ function Bus() {
     }
   };
 
+  const getReservationSeats = async () => {
+    try {
+      dispatch(DisplayLoader());
+      const response = await axiosInstance.post(
+        "/api/seats/get-seats-by-user-id",
+        {}
+      );
+      dispatch(HideLoader());
+
+      if (response.data.success) {
+        const data = response.data.data
+          .map((seats) => {
+            return {
+              key: seats._id,
+              ...seats.bus,
+              ...seats,
+            };
+          })
+          .filter((data) => data.bus._id === params.id);
+
+        setReservedSeats(data[0]?.seats);
+      } else {
+        message.error(response.data.message);
+      }
+    } catch (error) {
+      dispatch(HideLoader());
+      message.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getBus();
+    getReservationSeats();
+    // eslint-disable-next-line
+  }, []);
+
   const bookingSeat = async (transactionId) => {
     try {
       dispatch(DisplayLoader());
       const response = await axiosInstance.post("/api/seats/book-seat", {
         bus: bus._id,
         seats: chosenSeats,
-        transactionId: transactionId,
+        transactionId,
       });
       dispatch(HideLoader());
 
@@ -50,7 +88,7 @@ function Bus() {
         ? message.success(response.data.message)
         : message.error(response.data.message);
 
-      getBus();
+      navigate("/reservation");
     } catch (error) {
       dispatch(HideLoader());
       message.error(error.message);
@@ -78,11 +116,6 @@ function Bus() {
     }
   };
 
-  useEffect(() => {
-    getBus();
-    // eslint-disable-next-line
-  }, []);
-
   const getChoosenBusType = function (type) {
     switch (type) {
       case "mini":
@@ -91,6 +124,7 @@ function Bus() {
             bus={bus}
             chosenSeats={chosenSeats}
             setChosenSeats={setChosenSeats}
+            reservedSeats={reservedSeats}
           />
         );
       case "standard":
@@ -99,6 +133,7 @@ function Bus() {
             bus={bus}
             chosenSeats={chosenSeats}
             setChosenSeats={setChosenSeats}
+            reservedSeats={reservedSeats}
           />
         );
       case "large":
@@ -107,6 +142,7 @@ function Bus() {
             bus={bus}
             chosenSeats={chosenSeats}
             setChosenSeats={setChosenSeats}
+            reservedSeats={reservedSeats}
           />
         );
 
@@ -154,7 +190,7 @@ function Bus() {
             </div>
             <div className="choose-seats">
               <div className="seats-wrapper">
-                {!chosenSeats.at(0) && (
+                {(!reservedSeats && !chosenSeats.at(0)) && (
                   <div className="initial-seats">
                     <i className="ri-file-info-line"></i>
                     <div className="note">Сhoose a free seat in the bus</div>
@@ -177,6 +213,12 @@ function Bus() {
                       <div className="pay">Pay</div>
                     </StripeCheckout>
                   </>
+                )}
+                {reservedSeats && (
+                  <div className="your-reserved-seats">
+                    <p className="title">Your reserved seats:</p>
+                    <p className="value">{reservedSeats.join(", ")}</p>
+                  </div>
                 )}
               </div>
             </div>

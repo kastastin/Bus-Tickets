@@ -6,6 +6,31 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const Seat = require("../models/seatsModel");
 const Bus = require("../models/busesModel");
 
+// <-- Get Reserved Seats By User ID -->
+router.post(
+  "/get-seats-by-user-id",
+  authMiddleware,
+  async (request, response) => {
+    try {
+      const reservedSeats = await Seat.find({ user: request.body.userID })
+        .populate("bus")
+        .populate("user");
+
+      response.status(200).send({
+        success: true,
+        message: "Reserved seats were fetched successfully",
+        data: reservedSeats,
+      });
+    } catch (error) {
+      response.status(500).send({
+        success: false,
+        message: "Reserved seats fetching was failed",
+        data: error,
+      });
+    }
+  }
+);
+
 // <-- Booking Seat -->
 router.post("/book-seat", authMiddleware, async (request, response) => {
   try {
@@ -36,7 +61,6 @@ router.post("/book-seat", authMiddleware, async (request, response) => {
 // <-- Create Stripe Payment -->
 router.post("/stripe-payment", authMiddleware, async (request, response) => {
   try {
-    console.log(request.body.price);
     const { token, price } = request.body;
 
     const customers = await stripe.customers.create({

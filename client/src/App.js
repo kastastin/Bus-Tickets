@@ -5,11 +5,11 @@ import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import HomeAdmin from "./pages/admin/HomeAdmin";
 import BusesAdmin from "./pages/admin/BusesAdmin";
 import UsersAdmin from "./pages/admin/UsersAdmin";
 import Home from "./pages/Home";
 import Bus from "./pages/Bus";
+import Reservation from "./pages/Reservation";
 import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
 
@@ -46,14 +46,6 @@ function App() {
             }
           />
           <Route
-            path="/admin"
-            element={
-              <ProtectedRoute>
-                <HomeAdmin />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/admin/buses"
             element={
               <ProtectedRoute>
@@ -82,6 +74,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Bus />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reservation"
+            element={
+              <ProtectedRoute>
+                <Reservation />
               </ProtectedRoute>
             }
           />

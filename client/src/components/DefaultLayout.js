@@ -15,20 +15,28 @@ function DefaultLayout({ children }) {
   const menu = {
     user: [
       { name: "Home", img: "ri-home-4-line", path: "/" },
-      { name: "Bookings", img: "ri-file-list-2-line", path: "/bookings" },
+      { name: "Reservation", img: "ri-file-list-2-line", path: "/reservation" },
       { name: "Logout", img: "ri-logout-circle-line", path: "/logout" },
     ],
     admin: [
-      { name: "Home", img: "ri-home-4-line", path: "/admin" },
+      { name: "Home", img: "ri-home-4-line", path: "/" },
       { name: "Buses", img: "ri-bus-2-line", path: "/admin/buses" },
       { name: "Users", img: "ri-user-3-line", path: "/admin/users" },
-      { name: "Bookings", img: "ri-file-list-2-line", path: "/admin/bookings" },
+      {
+        name: "Reservation",
+        img: "ri-file-list-2-line",
+        path: "/reservation",
+      },
       { name: "Logout", img: "ri-logout-circle-line", path: "/logout" },
     ],
   };
 
-  const currentPath = window.location.pathname;
   const currentMenu = user?.isAdmin ? menu.admin : menu.user;
+
+  let currentPath = window.location.pathname;
+  if (window.location.pathname.includes("/bus/")) {
+    currentPath = "/";
+  }
 
   return (
     <div className="layout-container">

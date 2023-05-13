@@ -14,8 +14,8 @@ function BusesAdmin() {
   const dispatch = useDispatch();
 
   const [buses, setBuses] = useState([]);
+  const [pageSize, setPageSize] = useState();
   const [chosenBus, setChosenBuses] = useState({});
-  const [pageSize, setPageSize] = useState(10);
   const [isModalActive, setIsModalActive] = useState(false);
   const [isModalEdit, setisModalEdit] = useState(false);
 
@@ -60,7 +60,7 @@ function BusesAdmin() {
 
   useEffect(() => {
     setPageSize(10);
-    if (window.innerWidth < 1440) setPageSize(5);
+    if (window.innerWidth < 1440) setPageSize(7);
     if (window.innerWidth < 1024) setPageSize(4);
     if (window.innerWidth < 768) setPageSize(3);
     if (window.innerWidth < 375) setPageSize(2);
