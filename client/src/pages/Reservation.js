@@ -95,31 +95,35 @@ function Reservation() {
       title: "№",
       key: "index",
       render: (text, record, index) => index + 1,
+      align: "center",
       responsive: ["md"],
     },
     {
       title: "Departure From",
       dataIndex: "departureTown",
+      align: "center",
     },
     {
       title: "Departure Date",
       dataIndex: "departureDate",
+      align: "center",
       render: (text) => <span>{getDateAndTime(text)}</span>,
     },
     {
       title: "Number",
       dataIndex: "number",
+      align: "center",
     },
     {
       title: "Seats",
       dataIndex: "seats",
-      render: (data) => {
-        return data.join(", ");
-      },
+      align: "center",
+      render: (data) => data.join(", "),
     },
     {
       title: "Price",
       dataIndex: "price",
+      align: "center",
       render: (price, record) => {
         return `${price * record.seats.length}$`;
       },
@@ -127,18 +131,18 @@ function Reservation() {
     {
       title: "Payment Date",
       dataIndex: "createdAt",
+      align: "center",
       render: (text) => <span>{getDateAndTime(text)}</span>,
     },
     {
       title: "Print",
       dataIndex: "action",
+      align: "center",
       render: (action, record) => (
-        <div className="actions">
-          <i
-            className="ri-printer-fill print"
-            onClick={() => printHandler(record)}
-          ></i>
-        </div>
+        <i
+          className="ri-printer-fill print"
+          onClick={() => printHandler(record)}
+        ></i>
       ),
     },
   ];

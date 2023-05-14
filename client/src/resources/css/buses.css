@@ -54,21 +54,19 @@
   }
 }
 
-.actions {
+
+/* Move to table.css */
+.table-actions-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
 }
 
-.actions i {
+.table-actions-wrapper i {
   cursor: pointer;
 }
 
-.actions i:hover {
+.table-actions-wrapper i:hover {
   color: var(--secondary);
-}
-
-.print {
-  display: flex;
 }

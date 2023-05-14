@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 import { Row, Col, Pagination, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 import { isEmpty } from "../../src/helpers/cheker";
-import { axiosInstance } from "../../src/helpers/axiosInstance";
 import { isObjectValuesEmpty } from "../../src/helpers/cheker";
 import { HideLoader, DisplayLoader } from "../../src/redux/alertsSlice";
 import BusContainer from "../components/BusContainer";
@@ -17,7 +17,16 @@ function Home() {
   const getBusesList = async () => {
     try {
       dispatch(DisplayLoader());
-      const response = await axiosInstance.post("/api/buses/get-buses", {});
+      // const response = await axiosInstance.post("/api/buses/get-buses", {});
+      const response = await axios.post(
+        "/api/buses/get-buses",
+        {},
+        {
+          headers: {
+            Authorization: `Token ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       dispatch(HideLoader());
 
       const { data } = response.data;

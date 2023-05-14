@@ -1,13 +1,12 @@
 import axios from "axios";
 import { Form, Input, message } from "antd";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
 
 import "../resources/css/auth.css";
 
 function Login() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onFinish = async function (values) {
@@ -18,9 +17,10 @@ function Login() {
       if (response.data.success) {
         message.success(response.data.message);
         localStorage.setItem("token", response.data.data);
-        navigate("/");
+        window.location.reload();
       } else {
         message.error(response.data.message);
+        dispatch(HideLoader());
       }
     } catch (error) {
       dispatch(HideLoader());

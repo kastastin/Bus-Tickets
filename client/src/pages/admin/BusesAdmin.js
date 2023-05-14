@@ -88,41 +88,50 @@ function BusesAdmin() {
     {
       title: "№",
       key: "index",
+      align: "center",
       render: (text, record, index) => index + 1,
       responsive: ["md"],
     },
     {
       title: "Departure From",
+      align: "center",
       dataIndex: "departureTown",
     },
     {
       title: "Departure Date",
       dataIndex: "departureDate",
+      align: "center",
       render: (text) => <span>{getDateAndTime(text)}</span>,
     },
     {
       title: "Arrival In",
+      align: "center",
       dataIndex: "arrivalTown",
     },
     {
       title: "Arrival Date",
       dataIndex: "arrivalDate",
+      align: "center",
       render: (text) => <span>{getDateAndTime(text)}</span>,
     },
     {
       title: "Number",
       dataIndex: "number",
+      align: "center",
     },
     {
       title: "Price",
       dataIndex: "price",
+      align: "center",
+      render: (text) => <span>{text}$</span>,
       responsive: ["md"],
     },
     {
       title: "Action",
       dataIndex: "action",
+      align: "center",
       render: (action, record) => (
-        <div className="actions">
+        <div className="table-actions-wrapper">
           <i
             className="ri-edit-2-fill"
             onClick={() => clickHandler(record)}

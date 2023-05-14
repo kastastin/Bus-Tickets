@@ -40,7 +40,7 @@ router.post("/get-buses", authMiddleware, async (request, response) => {
   }
 });
 
-// <-- Get Bus -->
+// <-- Get Bus By ID -->
 router.post("/get-bus-by-id", authMiddleware, async (request, response) => {
   try {
     const bus = await Bus.findById(request.body._id);

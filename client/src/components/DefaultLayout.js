@@ -20,13 +20,13 @@ function DefaultLayout({ children }) {
     ],
     admin: [
       { name: "Home", img: "ri-home-4-line", path: "/" },
-      { name: "Buses", img: "ri-bus-2-line", path: "/admin/buses" },
-      { name: "Users", img: "ri-user-3-line", path: "/admin/users" },
       {
         name: "Reservation",
         img: "ri-file-list-2-line",
         path: "/reservation",
       },
+      { name: "Users", img: "ri-user-3-line", path: "/admin/users" },
+      { name: "Buses", img: "ri-bus-2-line", path: "/admin/buses" },
       { name: "Logout", img: "ri-logout-circle-line", path: "/logout" },
     ],
   };

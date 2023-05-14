@@ -64,3 +64,11 @@
   border-radius: 0.3rem;
   padding: 0.1rem 0.3rem;
 }
+
+.print {
+  cursor: pointer;
+}
+
+.print:hover {
+  color: var(--secondary);
+}
