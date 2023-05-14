@@ -12,6 +12,7 @@ import "../resources/css/print.css";
 
 function Reservation() {
   const dispatch = useDispatch();
+  const printRef = useRef();
   const [pageSize, setPageSize] = useState();
   const [reservedSeats, setReservedSeats] = useState([]);
   const [chosenReservation, setChosenReservation] = useState(null);
@@ -80,9 +81,8 @@ function Reservation() {
     if (window.innerWidth < 375) setPageSize(2);
   }, []);
 
-  const componentRef = useRef();
   const reactPrintHandler = useReactToPrint({
-    content: () => componentRef.current,
+    content: () => printRef.current,
   });
 
   const printHandler = function (reservation) {
@@ -164,7 +164,7 @@ function Reservation() {
           setChosenReservation("null");
         }}
       >
-        <div className="print-modal-wrapper" ref={componentRef}>
+        <div className="print-modal-wrapper" ref={printRef}>
           <div className="ticket-header">
             <img src={logo} alt="Bus Tickets Logo" />
             <p>Bus Tickets</p>
