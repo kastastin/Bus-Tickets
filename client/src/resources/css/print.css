@@ -1,0 +1,66 @@
+.ant-modal-title {
+  font-weight: 500 !important;
+  text-align: center;
+}
+
+.print-modal-wrapper {
+  height: 60vh;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  margin: 1rem auto 1.5rem auto;
+  border-radius: 1rem;
+  background-color: var(--bg);
+  color: #fff;
+}
+
+.ticket-header {
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--secondary);
+}
+
+.ticket-header img {
+  display: block;
+  height: 50%;
+}
+
+.ticket-header p {
+  font-size: 1.8rem;
+}
+
+.ticket-content {
+  height: 100%;
+  display: flex;
+  margin: 1rem;
+}
+
+.ticket-titles,
+.ticket-values {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: space-between;
+  /* border: 1px solid red; */
+}
+
+.ticket-titles {
+  width: 35%;
+  margin-right: 5%;
+}
+
+.ticket-values {
+  width: 60%;
+}
+
+.ticket-titles p,
+.ticket-values p {
+  font-size: 0.8rem;
+  border: 1px solid var(--primary);
+  border-radius: 0.3rem;
+  padding: 0.1rem 0.3rem;
+}

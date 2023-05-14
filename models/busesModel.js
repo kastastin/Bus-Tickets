@@ -53,10 +53,6 @@ const busSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  status: {
-    type: String,
-    default: "Ready",
-  },
 });
 
 module.exports = mongoose.model("buses", busSchema);

@@ -20,9 +20,10 @@ function Seat({ bus, number, chosenSeats, setChosenSeats, reservedSeats }) {
 
   const onClickHandler = function () {
     const noChosenSeats = chosenSeats && !chosenSeats.includes(number);
+    const noReservedSeats = !bus.reservedSeats.includes(number);
 
     setChosenSeats(
-      noChosenSeats
+      noChosenSeats && noReservedSeats
         ? [...chosenSeats, number]
         : chosenSeats.filter((seat) => seat !== number)
     );

@@ -31,6 +31,20 @@ router.post(
   }
 );
 
+// <-- Remove Reserved Seats By ID -->
+router.post("/remove-seats", authMiddleware, async (request, response) => {
+  try {
+    await Seat.findByIdAndDelete(request.body._id);
+
+    return response.status(200).send({
+      success: true,
+      message: "Old reservation was successfully deleted",
+    });
+  } catch (error) {
+    response.status(500).send({ success: false, message: error.message });
+  }
+});
+
 // <-- Booking Seat -->
 router.post("/book-seat", authMiddleware, async (request, response) => {
   try {

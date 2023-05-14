@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Table, message } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Modal, Table, message } from "antd";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { useReactToPrint } from "react-to-print";
 
 import { HideLoader, DisplayLoader } from "../redux/alertsSlice";
 import { axiosInstance } from "../helpers/axiosInstance";
 import { getDateAndTime } from "../helpers/formatChanger";
+import logo from "../resources/logo.svg";
+import "../resources/css/print.css";
 
 function Reservation() {
   const dispatch = useDispatch();
@@ -23,17 +26,41 @@ function Reservation() {
       );
       dispatch(HideLoader());
 
+      const seats = response.data.data;
       response.data.success
         ? setReservedSeats(
-            response.data.data.map((seats) => {
+            seats.map((seat) => {
               return {
-                key: seats._id,
-                ...seats.bus,
-                ...seats,
+                key: seat._id,
+                ...seat.bus,
+                ...seat,
               };
             })
           )
         : message.error(response.data.message);
+
+      const seatsWithoutBus = seats.filter((seat) => seat.bus === null);
+
+      seatsWithoutBus.forEach((seat) => removeSeats(seat._id));
+    } catch (error) {
+      dispatch(HideLoader());
+      message.error(error.message);
+    }
+  };
+
+  const removeSeats = async (seatsID) => {
+    try {
+      dispatch(DisplayLoader());
+      const response = await axiosInstance.post("/api/seats/remove-seats", {
+        _id: seatsID,
+      });
+      dispatch(HideLoader());
+
+      response.data.success
+        ? message.success(response.data.message)
+        : message.error(response.data.message);
+
+      getReservationSeats();
     } catch (error) {
       dispatch(HideLoader());
       message.error(error.message);
@@ -52,6 +79,11 @@ function Reservation() {
     if (window.innerWidth < 768) setPageSize(3);
     if (window.innerWidth < 375) setPageSize(2);
   }, []);
+
+  const componentRef = useRef();
+  const reactPrintHandler = useReactToPrint({
+    content: () => componentRef.current,
+  });
 
   const printHandler = function (reservation) {
     setChosenReservation(reservation);
@@ -116,6 +148,53 @@ function Reservation() {
       <div className="buses-header">
         <h2 className="title">Reservation List</h2>
       </div>
+
+      <Modal
+        title={`Print ticket with reserved seat${
+          chosenReservation?.seats?.length > 1 ? "s" : ""
+        }`}
+        okText="Print"
+        style={{
+          top: "5rem",
+        }}
+        open={isModalActive}
+        onOk={reactPrintHandler}
+        onCancel={() => {
+          setIsModalActive(false);
+          setChosenReservation("null");
+        }}
+      >
+        <div className="print-modal-wrapper" ref={componentRef}>
+          <div className="ticket-header">
+            <img src={logo} alt="Bus Tickets Logo" />
+            <p>Bus Tickets</p>
+          </div>
+          <div className="ticket-content">
+            <div className="ticket-titles">
+              <p>Email</p>
+              <p>Departure From</p>
+              <p>Departure Date</p>
+              <p>Arrival In</p>
+              <p>Arrival Date</p>
+              <p>Bus Number</p>
+              <p>Price</p>
+              <p>Reserved</p>
+            </div>
+            <div className="ticket-values">
+              <p>{chosenReservation?.user?.email}</p>
+              <p>{chosenReservation?.departureTown}</p>
+              <p>{getDateAndTime(chosenReservation?.departureDate)}</p>
+              <p>{chosenReservation?.arrivalTown}</p>
+              <p>{getDateAndTime(chosenReservation?.arrivalDate)}</p>
+              <p>{chosenReservation?.number}</p>
+              <p>
+                {chosenReservation?.price * chosenReservation?.seats?.length}$
+              </p>
+              <p>{getDateAndTime(chosenReservation?.createdAt)}</p>
+            </div>
+          </div>
+        </div>
+      </Modal>
 
       <Table
         columns={columns}

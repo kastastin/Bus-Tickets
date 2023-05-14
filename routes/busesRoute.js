@@ -69,7 +69,7 @@ router.post("/edit-bus", authMiddleware, async (request, response) => {
   }
 });
 
-// <-- Delete Bus -->
+// <-- Remove Bus -->
 router.post("/remove-bus", authMiddleware, async (request, response) => {
   try {
     await Bus.findByIdAndDelete(request.body._id);

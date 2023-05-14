@@ -190,7 +190,7 @@ function Bus() {
             </div>
             <div className="choose-seats">
               <div className="seats-wrapper">
-                {(!reservedSeats && !chosenSeats.at(0)) && (
+                {!reservedSeats && !chosenSeats.at(0) && (
                   <div className="initial-seats">
                     <i className="ri-file-info-line"></i>
                     <div className="note">Сhoose a free seat in the bus</div>

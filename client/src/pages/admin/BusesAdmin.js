@@ -119,10 +119,6 @@ function BusesAdmin() {
       responsive: ["md"],
     },
     {
-      title: "Status",
-      dataIndex: "status",
-    },
-    {
       title: "Action",
       dataIndex: "action",
       render: (action, record) => (
