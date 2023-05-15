@@ -17,7 +17,6 @@ function Home() {
   const getBusesList = async () => {
     try {
       dispatch(DisplayLoader());
-      // const response = await axiosInstance.post("/api/buses/get-buses", {});
       const response = await axios.post(
         "/api/buses/get-buses",
         {},
