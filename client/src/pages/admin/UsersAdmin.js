@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { HideLoader, DisplayLoader } from "../../redux/alertsSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
-import "../../resources/css/buses.css";
+
+import "../../resources/css/table.css";
 
 function UsersAdmin() {
   const dispatch = useDispatch();

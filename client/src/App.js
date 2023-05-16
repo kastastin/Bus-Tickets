@@ -1,4 +1,5 @@
 import { message } from "antd";
+import { useSelector } from "react-redux";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import PublicRoute from "./components/PublicRoute";
@@ -8,12 +9,11 @@ import Register from "./pages/Register";
 import BusesAdmin from "./pages/admin/BusesAdmin";
 import UsersAdmin from "./pages/admin/UsersAdmin";
 import Home from "./pages/Home";
-import Bus from "./pages/Bus";
 import Reservation from "./pages/Reservation";
+import Bus from "./pages/Bus";
 import Loader from "./components/Loader";
-import { useSelector } from "react-redux";
 
-import "./App.css";
+
 import "./resources/css/global.css";
 
 function App() {

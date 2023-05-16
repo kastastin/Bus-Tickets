@@ -19,9 +19,11 @@ body {
   overflow-x: hidden;
 }
 
-/* Align Message Icon */
-.ant-message-custom-content {
+.App {
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
@@ -34,6 +36,12 @@ p {
 
 a {
   text-decoration: none;
+}
+
+/* Antd Styles*/
+.ant-message-custom-content {
+  display: flex;
+  align-items: center;
 }
 
 .ant-pagination-item:not(.ant-pagination-item-active) a {

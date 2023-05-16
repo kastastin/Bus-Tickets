@@ -3,12 +3,13 @@ import { Table, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 
-import Modal from "../../components/Modal/Modal";
 import { HideLoader, DisplayLoader } from "../../redux/alertsSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
 import { getDateAndTime } from "../../helpers/formatChanger";
 import { isEmpty } from "../../helpers/cheker";
-import "../../resources/css/buses.css";
+import Modal from "../../components/Modal/Modal";
+
+import "../../resources/css/table.css";
 
 function BusesAdmin() {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ function BusesAdmin() {
 
       oldBuses.forEach((bus) => removeBus(bus._id));
     } catch (error) {
-      // dispatch(HideLoader());
+      dispatch(HideLoader());
       message.error(error.message);
     }
   };
