@@ -148,8 +148,8 @@ function Reservation() {
   ];
 
   return (
-    <div className="buses-container">
-      <div className="buses-header">
+    <div className="table-container">
+      <div className="table-header">
         <h2 className="title">Reservation List</h2>
       </div>
 

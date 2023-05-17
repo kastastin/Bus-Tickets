@@ -131,8 +131,8 @@ function UsersAdmin() {
   ];
 
   return (
-    <div className="buses-container">
-      <div className="buses-header">
+    <div className="table-container">
+      <div className="table-header">
         <h2 className="title">Users List</h2>
       </div>
 

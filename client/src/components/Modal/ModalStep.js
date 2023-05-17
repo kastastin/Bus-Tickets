@@ -7,6 +7,7 @@ import BusInfo from "../AddBusForm/BusInfo";
 function ModalStep({
   taskNumber,
   localBus,
+  buses,
   setLocalBus,
   isDataCorrect,
   setIsDataCorrect,
@@ -35,6 +36,7 @@ function ModalStep({
     case 3:
       return (
         <BusInfo
+          buses={buses}
           localBus={localBus}
           setLocalBus={setLocalBus}
           isDataCorrect={isDataCorrect}

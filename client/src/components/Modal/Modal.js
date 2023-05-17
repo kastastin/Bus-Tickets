@@ -13,6 +13,7 @@ function Modal({
   setIsModalActive,
   isModalEdit,
   chosenBus,
+  buses,
   getBuses,
 }) {
   const dispatch = useDispatch();
@@ -120,6 +121,7 @@ function Modal({
                   setLocalBus={setLocalBus}
                   mapData={mapData}
                   setMapData={setMapData}
+                  buses={buses}
                   isDataCorrect={isDataCorrect}
                   setIsDataCorrect={setIsDataCorrect}
                 />

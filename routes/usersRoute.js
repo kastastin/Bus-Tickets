@@ -88,14 +88,6 @@ router.post("/log-in", async (request, response) => {
   try {
     const existingUser = await User.findOne({ email: request.body.email });
 
-    if (existingUser.isBlocked) {
-      return response.send({
-        success: false,
-        message: "User with this email was blocked",
-        data: null,
-      });
-    }
-
     if (!existingUser) {
       return response.send({
         success: false,
@@ -113,6 +105,14 @@ router.post("/log-in", async (request, response) => {
       return response.send({
         success: false,
         message: "Entered password is incorrect",
+        data: null,
+      });
+    }
+
+    if (existingUser.isBlocked) {
+      return response.send({
+        success: false,
+        message: "User with this email was blocked",
         data: null,
       });
     }

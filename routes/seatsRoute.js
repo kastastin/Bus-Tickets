@@ -95,13 +95,13 @@ router.post("/stripe-payment", authMiddleware, async (request, response) => {
     if (stripePayment) {
       response.status(200).send({
         success: true,
-        message: "Stripe Payment was successful",
+        message: "Stripe payment was successful",
         data: { transactionId: stripePayment.source.id },
       });
     } else {
       res.status(500).send({
         success: false,
-        message: "Stripe Payment was failed",
+        message: "Stripe payment was failed",
         data: error,
       });
     }

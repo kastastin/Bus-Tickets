@@ -1,15 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IMaskInput } from "react-imask";
 
 import { getFormattedPhone } from "../../helpers/formatChanger";
 import "../../resources/css/busInfo.css";
 
 function BusInfo({
+  buses,
   localBus,
   setLocalBus,
   isDataCorrect,
   setIsDataCorrect,
 }) {
+  const [existedNumbers, setExistedNumbers] = useState([]);
+
   useEffect(() => {
     if (!!!localBus.departureDate) {
       setLocalBus((prevState) => ({
@@ -18,6 +21,12 @@ function BusInfo({
         arrivalDate: new Date().toISOString().slice(0, 16),
       }));
     }
+
+    setExistedNumbers(
+      buses
+        .filter((bus) => bus.number !== localBus.number)
+        .map((bus) => bus.number)
+    );
     // eslint-disable-next-line
   }, []);
 
@@ -43,7 +52,9 @@ function BusInfo({
     // Bus Number verification
     setIsDataCorrect((prevState) => ({
       ...prevState,
-      number: localBus.number.length >= 4,
+      number:
+        localBus.number.length >= 4 &&
+        !existedNumbers.some((num) => num === localBus.number),
     }));
 
     // Driver Name verification
@@ -62,6 +73,7 @@ function BusInfo({
     localBus.departureDate,
     localBus.price,
     localBus.number,
+    existedNumbers,
     localBus.driverName,
     localBus.driverContacts,
     setIsDataCorrect,

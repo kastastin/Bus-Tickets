@@ -149,8 +149,8 @@ function BusesAdmin() {
   ];
 
   return (
-    <div className="buses-container">
-      <div className="buses-header">
+    <div className="table-container">
+      <div className="table-header">
         <h2 className="title">Buses List</h2>
         <button onClick={() => clickHandler({})}>Add New Bus</button>
       </div>
@@ -173,6 +173,7 @@ function BusesAdmin() {
           setIsModalActive={setIsModalActive}
           isModalEdit={isModalEdit}
           chosenBus={chosenBus}
+          buses={buses}
           getBuses={getBusesList}
         />
       )}
