@@ -1,7 +1,7 @@
 .bus-info-wrapper {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 
 .bus-info-wrapper input {
@@ -55,12 +55,12 @@
 }
 
 .bottom-part {
-  margin: 0 auto;
   height: 60%;
-  padding: 1rem 4.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  margin: 0 auto;
+  padding: 1rem 4.5rem;
 }
 
 .bottom-part div {

@@ -12,10 +12,10 @@
 }
 
 .bus-wrapper .door-mini {
-  grid-column: 5 / 6;
-  grid-row: 2 / 3;
   position: absolute;
   right: -52.5%;
+  grid-column: 5 / 6;
+  grid-row: 2 / 3;
   transform: scale(1.3);
 }
 

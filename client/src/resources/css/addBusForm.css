@@ -20,9 +20,9 @@
   height: 2.5rem;
   width: 5rem;
   border: 2px solid var(--bg);
-  color: var(--bg);
-  background-color: #fff;
   border-radius: 0.5rem;
+  background-color: #fff;
+  color: var(--bg);
   font-size: 1.2rem;
   font-weight: 500;
 }

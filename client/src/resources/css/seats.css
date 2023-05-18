@@ -1,15 +1,15 @@
 .left,
 .right {
   position: relative;
-  width: 50%;
   height: 67vh;
+  width: 50%;
 }
 
 .left {
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  height: 100%;
 }
 
 .left .form-wrapper {
@@ -24,9 +24,9 @@
 
 .left .form-wrapper label {
   position: relative;
+  width: 8.5rem;
   margin-right: 1rem;
   font-size: 1.1rem;
-  width: 8.5rem;
 }
 
 .left .form-wrapper input {
@@ -68,8 +68,8 @@ input::-webkit-inner-spin-button {
 }
 
 .bus-wrapper img {
-  width: 100%;
   height: 100%;
+  width: 100%;
 }
 
 .bus-wrapper .number {

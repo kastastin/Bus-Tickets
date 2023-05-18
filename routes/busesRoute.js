@@ -58,16 +58,6 @@ router.post("/get-bus-by-id", authMiddleware, async (request, response) => {
 // <-- Edit Bus -->
 router.post("/edit-bus", authMiddleware, async (request, response) => {
   try {
-    const isBusExist = await Bus.findOne({ number: request.body.number });
-    console.log("---", isBusExist);
-    // console.log(request.body.number);
-    // if (isBusExist) {
-    //   return response.status(200).send({
-    //     success: false,
-    //     message: "Bus with this number is already created.",
-    //   });
-    // }
-
     await Bus.findByIdAndUpdate(request.body._id, request.body);
 
     return response.status(200).send({

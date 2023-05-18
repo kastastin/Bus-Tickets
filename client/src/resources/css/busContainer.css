@@ -9,8 +9,8 @@
   height: 3rem;
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
   align-items: center;
+  gap: 1rem;
   margin: 0.5rem 0;
 }
 
@@ -65,10 +65,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: var(--primary);
-  opacity: 0.6;
   font-size: 3rem;
   font-weight: 900;
   letter-spacing: 0.1rem;
+  opacity: 0.6;
 }
 
 .home-pagination {
@@ -82,15 +82,15 @@
   position: relative;
   height: 6.9rem;
   display: flex;
+  justify-content: space-between;
   padding: 2rem;
   border: 2px solid var(--primary);
   border-radius: 0.5rem;
-  justify-content: space-between;
 }
 
 .bus-book-wrapper:hover {
-  cursor: pointer;
   border-color: var(--secondary);
+  cursor: pointer;
 }
 
 .bus-book-wrapper .arrow {
@@ -98,8 +98,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 3rem;
   color: var(--primary);
+  font-size: 3rem;
 }
 
 .bus-book-wrapper:hover .arrow {
@@ -119,8 +119,8 @@
 }
 
 .bus-book-wrapper .data {
-  font-size: 1.5rem;
   color: var(--primary);
+  font-size: 1.5rem;
 }
 
 .bus-book-wrapper .date {

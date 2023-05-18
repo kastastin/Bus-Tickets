@@ -1,8 +1,8 @@
 .auth {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   background: var(--bg);
 }
 
@@ -17,12 +17,12 @@
 }
 
 .container::before {
-  content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
   height: 26.25rem;
   width: 23.75rem;
+  content: "";
+  top: -50%;
+  left: -50%;
   background: linear-gradient(
     0deg,
     transparent,
@@ -36,12 +36,12 @@
 }
 
 .container::after {
-  content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
   height: 26.25rem;
   width: 23.75rem;
+  content: "";
+  top: -50%;
+  left: -50%;
   background: linear-gradient(
     0deg,
     transparent,
@@ -62,12 +62,12 @@
 }
 
 .border-line::before {
-  content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
   height: 26.25rem;
   width: 23.75rem;
+  content: "";
+  top: -50%;
+  left: -50%;
   background: linear-gradient(
     0deg,
     transparent,
@@ -82,12 +82,12 @@
 }
 
 .border-line::after {
-  content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
   height: 26.25rem;
   width: 23.75rem;
+  content: "";
+  top: -50%;
+  left: -50%;
   background: linear-gradient(
     0deg,
     transparent,
@@ -111,7 +111,6 @@
 }
 
 .container form {
-  inset: 4px;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -119,15 +118,16 @@
   padding: 2rem 2.5rem;
   border-radius: 0.5rem;
   background: var(--bg);
+  inset: 4px;
   z-index: 10;
 }
 
 .container form h2 {
+  margin: 0;
   color: #fff;
   font-weight: 500;
   letter-spacing: 0.2rem;
   text-align: center;
-  margin: 0;
 }
 
 .container form .input-container {
@@ -174,10 +174,10 @@
 
 .container form .input-container i {
   position: absolute;
-  bottom: 0;
-  left: 0;
   height: 2px;
   width: 100%;
+  bottom: 0;
+  left: 0;
   border-radius: 0.5rem;
   background: #fff;
   pointer-events: none;
@@ -227,24 +227,20 @@
 }
 
 .container .footer .link-to {
-  width: 4rem;
-  color: #fff;
-  font-size: 0.8rem;
-  transition: 0.3s;
-  text-align: center;
-
   display: block;
+  width: 4rem;
   width: fit-content;
   padding-bottom: 0.15rem;
-
-  text-decoration: none;
-
-  transition: 1s;
-  background: linear-gradient(to right, var(--primary), var(--primary));
   border-radius: 40%;
+  background: linear-gradient(to right, var(--primary), var(--primary));
   background-size: 0 0.12rem;
   background-position: 0 100%;
   background-repeat: no-repeat;
+  color: #fff;
+  font-size: 0.8rem;
+  text-decoration: none;
+  text-align: center;
+  transition: 1s;
 }
 
 .container .footer .link-to:hover,

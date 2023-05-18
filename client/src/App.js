@@ -13,9 +13,6 @@ import Reservation from "./pages/Reservation";
 import Bus from "./pages/Bus";
 import Loader from "./components/Loader";
 
-
-import "./resources/css/global.css";
-
 function App() {
   message.config({
     top: 15,
