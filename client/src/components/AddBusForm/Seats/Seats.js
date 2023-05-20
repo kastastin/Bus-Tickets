@@ -118,6 +118,7 @@ function Seats({ localBus, setLocalBus }) {
                     : busFormOptions.standard.type.toLowerCase()
                 }
                 onChange={busTypeHandler}
+                disabled={!!localBus?.reservedSeats?.length}
               >
                 <option value="mini">Mini</option>
                 <option value="standard">Standard</option>

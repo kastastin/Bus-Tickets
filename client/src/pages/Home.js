@@ -6,7 +6,7 @@ import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 import { isEmpty } from "../../src/helpers/cheker";
 import { isObjectValuesEmpty } from "../../src/helpers/cheker";
-import { HideLoader, DisplayLoader } from "../../src/redux/alertsSlice";
+import { HideLoader, DisplayLoader } from "../../src/redux/loadersSlice";
 import BusContainer from "../components/BusContainer";
 
 function Home() {

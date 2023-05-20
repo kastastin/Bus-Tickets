@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { message } from "antd";
-import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
+import { DisplayLoader, HideLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
 import DefaultLayout from "./DefaultLayout";
 

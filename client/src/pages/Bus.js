@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../src/helpers/axiosInstance";
-import { HideLoader, DisplayLoader } from "../../src/redux/alertsSlice";
+import { HideLoader, DisplayLoader } from "../../src/redux/loadersSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import StripeCheckout from "react-stripe-checkout";
 

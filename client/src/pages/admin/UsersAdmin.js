@@ -3,7 +3,7 @@ import { Table, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 
-import { HideLoader, DisplayLoader } from "../../redux/alertsSlice";
+import { HideLoader, DisplayLoader } from "../../redux/loadersSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
 
 import "../../resources/css/table.css";

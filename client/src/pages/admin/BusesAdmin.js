@@ -3,7 +3,7 @@ import { Table, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 
-import { HideLoader, DisplayLoader } from "../../redux/alertsSlice";
+import { HideLoader, DisplayLoader } from "../../redux/loadersSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
 import { getDateAndTime } from "../../helpers/formatChanger";
 import { isEmpty } from "../../helpers/cheker";
@@ -75,13 +75,17 @@ function BusesAdmin() {
     if (window.innerWidth < 375) setPageSize(2);
   }, []);
 
+  const displayError = (text) => message.error(text);
+
   const clickHandler = function (value) {
     if (window.innerWidth > 991) {
+      // Check existed bus data (value)
       if (!isEmpty(value)) setChosenBuses(value);
+
       setIsModalActive(true);
       setisModalEdit(!isEmpty(value));
     } else {
-      message.error("Your screen is too small. Try using another device!");
+      displayError("Your screen is too small. Try using another device!");
     }
   };
 
@@ -140,7 +144,12 @@ function BusesAdmin() {
           <i
             className="ri-delete-bin-6-fill"
             onClick={() => {
-              removeBus(record._id);
+              // Check reserved seats in bus
+              !isEmpty(record) && !isEmpty(record.reservedSeats)
+                ? displayError(
+                    "There are already reserved seats. You can't delete bus!"
+                  )
+                : removeBus(record._id);
             }}
           ></i>
         </div>

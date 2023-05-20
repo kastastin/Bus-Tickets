@@ -4,7 +4,7 @@ import { Modal, Table, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
 
-import { HideLoader, DisplayLoader } from "../redux/alertsSlice";
+import { HideLoader, DisplayLoader } from "../redux/loadersSlice";
 import { axiosInstance } from "../helpers/axiosInstance";
 import { getDateAndTime } from "../helpers/formatChanger";
 import logo from "../resources/logo.svg";

@@ -19,7 +19,7 @@ function App() {
     duration: 4,
   });
 
-  const loader = useSelector((state) => state.alerts.loading);
+  const loader = useSelector((state) => state.loaders.loading);
 
   return (
     <div>

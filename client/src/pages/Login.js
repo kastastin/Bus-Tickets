@@ -2,7 +2,7 @@ import axios from "axios";
 import { Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { DisplayLoader, HideLoader } from "../redux/alertsSlice";
+import { DisplayLoader, HideLoader } from "../redux/loadersSlice";
 
 import "../resources/css/auth.css";
 

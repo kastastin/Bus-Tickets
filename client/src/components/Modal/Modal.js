@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../helpers/axiosInstance";
-import { DisplayLoader, HideLoader } from "../../redux/alertsSlice";
+import { DisplayLoader, HideLoader } from "../../redux/loadersSlice";
 import { message } from "antd";
 
 import ModalStep from "./ModalStep";
