@@ -5,14 +5,32 @@ import { Row, Col, Pagination, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 import { isEmpty } from "../../src/helpers/cheker";
-import { isObjectValuesEmpty } from "../../src/helpers/cheker";
 import { HideLoader, DisplayLoader } from "../../src/redux/loadersSlice";
 import BusContainer from "../components/BusContainer";
 
 function Home() {
   const dispatch = useDispatch();
   const [buses, setBuses] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({ departure: "", arrival: "" });
+
+  const checkFiltersEmpties = function (obj, value = "default") {
+    const isValueEmpty = "" && Object.values(obj).some((value) => value !== "");
+
+    switch (value) {
+      case "departure":
+        return obj.departure !== isValueEmpty;
+
+      case "arrival":
+        return obj.arrival !== isValueEmpty;
+
+      case "both":
+        return obj.departure !== "" && obj.arrival !== "";
+
+      default:
+        return Object.values(obj).some((value) => value !== "");
+    }
+  };
 
   const getBusesList = async () => {
     try {
@@ -20,11 +38,7 @@ function Home() {
       const response = await axios.post(
         "/api/buses/get-buses",
         {},
-        {
-          headers: {
-            Authorization: `Token ${localStorage.getItem("token")}`,
-          },
-        }
+        { headers: { Authorization: `Token ${localStorage.getItem("token")}` } }
       );
       dispatch(HideLoader());
 
@@ -34,39 +48,37 @@ function Home() {
         let filteredBuses = data;
 
         const getFilteredBus = function (type) {
+          const checkDepartureTown = function (data) {
+            return data.departureTown
+              .toLowerCase()
+              .includes(filters.departure.toLowerCase());
+          };
+
+          const checkArrivalTown = function (data) {
+            return data.arrivalTown
+              .toLowerCase()
+              .includes(filters.arrival.toLowerCase());
+          };
+
           if (type === "arrival")
-            return data.filter((bus) =>
-              bus.arrivalTown
-                .toLowerCase()
-                .includes(filters.arrival.toLowerCase())
-            );
+            return data.filter((bus) => checkArrivalTown(bus));
 
           if (type === "departure")
-            return data.filter((bus) =>
-              bus.departureTown
-                .toLowerCase()
-                .includes(filters.departure.toLowerCase())
-            );
+            return data.filter((bus) => checkDepartureTown(bus));
 
           return data.filter(
-            (bus) =>
-              bus.departureTown
-                .toLowerCase()
-                .includes(filters.departure.toLowerCase()) &&
-              bus.arrivalTown
-                .toLowerCase()
-                .includes(filters.arrival.toLowerCase())
+            (bus) => checkDepartureTown(bus) && checkArrivalTown(bus)
           );
         };
 
-        if (isObjectValuesEmpty(filters)) {
-          if (isObjectValuesEmpty(filters, "both")) {
+        if (checkFiltersEmpties(filters)) {
+          if (checkFiltersEmpties(filters, "both")) {
             filteredBuses = getFilteredBus();
           } else {
-            if (isObjectValuesEmpty(filters, "departure")) {
+            if (checkFiltersEmpties(filters, "departure")) {
               filteredBuses = getFilteredBus("departure");
             }
-            if (isObjectValuesEmpty(filters, "arrival")) {
+            if (checkFiltersEmpties(filters, "arrival")) {
               filteredBuses = getFilteredBus("arrival");
             }
           }
@@ -87,15 +99,9 @@ function Home() {
     // eslint-disable-next-line
   }, []);
 
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalBuses = buses.length;
+  // Pagination settings
   const busesPerPage = 4;
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
+  const totalBuses = buses.length;
   const slicedBuses = buses.slice(
     (currentPage - 1) * busesPerPage,
     currentPage * busesPerPage
@@ -133,7 +139,7 @@ function Home() {
           </div>
         </div>
         <div className="filter-buttons">
-          {isObjectValuesEmpty(filters) && (
+          {checkFiltersEmpties(filters) && (
             <button
               onClick={() => {
                 window.location.reload();
@@ -147,7 +153,7 @@ function Home() {
       </div>
       <div className="buses-wrapper">
         {isEmpty(buses) && <p className="no-buses">No Active Buses</p>}
-        <Row gutter={[16, 16]}>
+        <Row gutter={[15, 15]}>
           {slicedBuses.map((busData) => {
             return (
               <Col lg={24} md={24} sm={24} key={busData._id}>
@@ -164,7 +170,7 @@ function Home() {
         pageSize={busesPerPage}
         prevIcon={<LeftOutlined style={{ color: "var(--primary)" }} />}
         nextIcon={<RightOutlined style={{ color: "var(--primary)" }} />}
-        onChange={handlePageChange}
+        onChange={(page) => setCurrentPage(page)}
       />
     </div>
   );
