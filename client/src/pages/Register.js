@@ -10,7 +10,7 @@ function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onFinish = async function (values) {
+  const formHandler = async function (values) {
     try {
       dispatch(DisplayLoader());
       const response = await axios.post("/api/users/sign-up", values);
@@ -32,7 +32,7 @@ function Register() {
     <div className="auth">
       <div className="container">
         <span className="border-line"></span>
-        <Form onFinish={onFinish}>
+        <Form onFinish={formHandler}>
           <h2>Sign up</h2>
           <div className="input-container">
             <Form.Item noStyle name="name">

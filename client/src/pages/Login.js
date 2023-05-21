@@ -9,18 +9,19 @@ import "../resources/css/auth.css";
 function Login() {
   const dispatch = useDispatch();
 
-  const onFinish = async function (values) {
+  const formHandler = async function (values) {
     try {
       dispatch(DisplayLoader());
       const response = await axios.post("/api/users/log-in", values);
       dispatch(HideLoader);
+
       if (response.data.success) {
         message.success(response.data.message);
         localStorage.setItem("token", response.data.data);
         window.location.reload();
       } else {
-        message.error(response.data.message);
         dispatch(HideLoader());
+        message.error(response.data.message);
       }
     } catch (error) {
       dispatch(HideLoader());
@@ -32,7 +33,7 @@ function Login() {
     <div className="auth">
       <div className="container">
         <span className="border-line"></span>
-        <Form onFinish={onFinish}>
+        <Form onFinish={formHandler}>
           <h2>Log in</h2>
           <div className="input-container">
             <Form.Item noStyle name="email">

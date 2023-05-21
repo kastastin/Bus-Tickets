@@ -92,19 +92,17 @@ router.post("/stripe-payment", authMiddleware, async (request, response) => {
       { idempotencyKey: uuidv4() }
     );
 
-    if (stripePayment) {
-      response.status(200).send({
-        success: true,
-        message: "Stripe payment was successful",
-        data: { transactionId: stripePayment.source.id },
-      });
-    } else {
-      res.status(500).send({
-        success: false,
-        message: "Stripe payment was failed",
-        data: error,
-      });
-    }
+    stripePayment
+      ? response.status(200).send({
+          success: true,
+          message: "Stripe payment was successful",
+          data: { transactionId: stripePayment.source.id },
+        })
+      : res.status(500).send({
+          success: false,
+          message: "Stripe payment was failed",
+          data: error,
+        });
   } catch (error) {
     response.status(500).send({
       success: false,
