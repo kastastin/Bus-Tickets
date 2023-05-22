@@ -22,7 +22,7 @@ function App() {
   const loader = useSelector((state) => state.loaders.loading);
 
   return (
-    <div>
+    <>
       {loader && <Loader />}
       <BrowserRouter>
         <Routes>
@@ -84,7 +84,7 @@ function App() {
           />
         </Routes>
       </BrowserRouter>
-    </div>
+    </>
   );
 }
 
