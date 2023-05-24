@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Table, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 import { HideLoader, DisplayLoader } from "../../redux/loadersSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
@@ -13,6 +14,7 @@ import "../../resources/css/table.css";
 
 function BusesAdmin() {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.users);
 
   const [buses, setBuses] = useState([]);
   const [pageSize, setPageSize] = useState();
@@ -158,35 +160,38 @@ function BusesAdmin() {
   ];
 
   return (
-    <div className="table-container">
-      <div className="table-header">
-        <h2 className="title">Buses List</h2>
-        <button onClick={() => clickHandler({})}>Add New Bus</button>
-      </div>
+    <>
+      {!user?.isAdmin && <Navigate to="/" />}
+      <div className="table-container">
+        <div className="table-header">
+          <h2 className="title">Buses List</h2>
+          <button onClick={() => clickHandler({})}>Add New Bus</button>
+        </div>
 
-      <Table
-        columns={columns}
-        scroll={{ x: true }}
-        dataSource={buses.map((bus) => ({ ...bus, key: bus._id }))}
-        pagination={{
-          position: ["topLeft"],
-          nextIcon: <RightOutlined style={{ color: "var(--primary)" }} />,
-          prevIcon: <LeftOutlined style={{ color: "var(--primary)" }} />,
-          pageSize: pageSize,
-        }}
-      />
-
-      {isModalActive && (
-        <Modal
-          isModalActive={isModalActive}
-          setIsModalActive={setIsModalActive}
-          isModalEdit={isModalEdit}
-          chosenBus={chosenBus}
-          buses={buses}
-          getBuses={getBusesList}
+        <Table
+          columns={columns}
+          scroll={{ x: true }}
+          dataSource={buses.map((bus) => ({ ...bus, key: bus._id }))}
+          pagination={{
+            position: ["topLeft"],
+            nextIcon: <RightOutlined style={{ color: "var(--primary)" }} />,
+            prevIcon: <LeftOutlined style={{ color: "var(--primary)" }} />,
+            pageSize: pageSize,
+          }}
         />
-      )}
-    </div>
+
+        {isModalActive && (
+          <Modal
+            isModalActive={isModalActive}
+            setIsModalActive={setIsModalActive}
+            isModalEdit={isModalEdit}
+            chosenBus={chosenBus}
+            buses={buses}
+            getBuses={getBusesList}
+          />
+        )}
+      </div>
+    </>
   );
 }
 

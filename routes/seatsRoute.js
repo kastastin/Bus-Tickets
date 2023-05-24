@@ -9,7 +9,7 @@ const Bus = require("../models/busesModel");
 // <-- Get Reserved Seats By User ID -->
 router.post(
   "/get-seats-by-user-id",
-  authMiddleware,
+  authMiddleware(false),
   async (request, response) => {
     try {
       const reservedSeats = await Seat.find({ user: request.body.userID })
@@ -32,7 +32,7 @@ router.post(
 );
 
 // <-- Remove Reserved Seats By ID -->
-router.post("/remove-seats", authMiddleware, async (request, response) => {
+router.post("/remove-seats", authMiddleware(false), async (request, response) => {
   try {
     await Seat.findByIdAndDelete(request.body._id);
 
@@ -46,7 +46,7 @@ router.post("/remove-seats", authMiddleware, async (request, response) => {
 });
 
 // <-- Booking Seat -->
-router.post("/book-seat", authMiddleware, async (request, response) => {
+router.post("/book-seat", authMiddleware(false), async (request, response) => {
   try {
     const newSeatBooking = new Seat({
       ...request.body,
@@ -73,7 +73,7 @@ router.post("/book-seat", authMiddleware, async (request, response) => {
 });
 
 // <-- Create Stripe Payment -->
-router.post("/stripe-payment", authMiddleware, async (request, response) => {
+router.post("/stripe-payment", authMiddleware(false), async (request, response) => {
   try {
     const { token, price } = request.body;
 

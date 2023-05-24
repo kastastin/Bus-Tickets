@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
 import { HideLoader, DisplayLoader } from "../../redux/loadersSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
@@ -131,23 +132,26 @@ function UsersAdmin() {
   ];
 
   return (
-    <div className="table-container">
-      <div className="table-header">
-        <h2 className="title">Users List</h2>
-      </div>
+    <>
+      {!currentUser?.isAdmin && <Navigate to="/" />}
+      <div className="table-container">
+        <div className="table-header">
+          <h2 className="title">Users List</h2>
+        </div>
 
-      <Table
-        columns={columns}
-        scroll={{ x: true }}
-        dataSource={users.map((user) => ({ ...user, key: user._id }))}
-        pagination={{
-          position: ["topLeft"],
-          nextIcon: <RightOutlined style={{ color: "var(--primary)" }} />,
-          prevIcon: <LeftOutlined style={{ color: "var(--primary)" }} />,
-          pageSize: pageSize,
-        }}
-      />
-    </div>
+        <Table
+          columns={columns}
+          scroll={{ x: true }}
+          dataSource={users.map((user) => ({ ...user, key: user._id }))}
+          pagination={{
+            position: ["topLeft"],
+            nextIcon: <RightOutlined style={{ color: "var(--primary)" }} />,
+            prevIcon: <LeftOutlined style={{ color: "var(--primary)" }} />,
+            pageSize: pageSize,
+          }}
+        />
+      </div>
+    </>
   );
 }
 

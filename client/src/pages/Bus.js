@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
 import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../src/helpers/axiosInstance";
@@ -207,7 +207,6 @@ function Bus() {
                     <StripeCheckout
                       stripeKey="pk_test_51McWMQHNTuuJuhvlFnLZPX8ZHwsGaPa15eXT9angOsRGGukWwdBDVhDduw7uoRkq7HOM7MFWpi5gvD2KrChlIZqM00R7Xm93Cy"
                       token={tokenHandler}
-                      billingAddress
                       amount={bus.price * chosenSeats.length * 100}
                     >
                       <div className="pay">Pay</div>

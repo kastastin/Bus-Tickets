@@ -4,7 +4,7 @@ const Bus = require("../models/busesModel");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 // <-- Get Buses -->
-router.post("/get-buses", authMiddleware, async (request, response) => {
+router.post("/get-buses", authMiddleware(false), async (request, response) => {
   try {
     const buses = await Bus.find();
 
@@ -19,7 +19,7 @@ router.post("/get-buses", authMiddleware, async (request, response) => {
 });
 
 // <-- Get Bus By ID -->
-router.post("/get-bus-by-id", authMiddleware, async (request, response) => {
+router.post("/get-bus-by-id", authMiddleware(false), async (request, response) => {
   try {
     const bus = await Bus.findById(request.body._id);
 
@@ -34,7 +34,7 @@ router.post("/get-bus-by-id", authMiddleware, async (request, response) => {
 });
 
 // <-- Add New Bus -->
-router.post("/add-bus", async (request, response) => {
+router.post("/add-bus", authMiddleware(true), async (request, response) => {
   try {
     const isBusExist = await Bus.findOne({ number: request.body.number });
     if (isBusExist)
@@ -55,7 +55,7 @@ router.post("/add-bus", async (request, response) => {
 });
 
 // <-- Edit Bus -->
-router.post("/edit-bus", authMiddleware, async (request, response) => {
+router.post("/edit-bus", authMiddleware(true), async (request, response) => {
   try {
     await Bus.findByIdAndUpdate(request.body._id, request.body);
 
@@ -69,7 +69,7 @@ router.post("/edit-bus", authMiddleware, async (request, response) => {
 });
 
 // <-- Remove Bus -->
-router.post("/remove-bus", authMiddleware, async (request, response) => {
+router.post("/remove-bus", authMiddleware(true), async (request, response) => {
   try {
     await Bus.findByIdAndDelete(request.body._id);
 

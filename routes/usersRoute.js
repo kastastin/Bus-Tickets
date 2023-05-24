@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
 
 // <-- Get Users -->
-router.post("/get-users", authMiddleware, async (request, response) => {
+router.post("/get-users", authMiddleware(true), async (request, response) => {
   try {
     const users = await User.find();
 
@@ -20,7 +20,7 @@ router.post("/get-users", authMiddleware, async (request, response) => {
 });
 
 // <-- Get User By ID -->
-router.post("/get-user-by-id", authMiddleware, async (request, response) => {
+router.post("/get-user-by-id", authMiddleware(false), async (request, response) => {
   try {
     const user = await User.findById(request.body.userID);
     response.send({
@@ -38,7 +38,7 @@ router.post("/get-user-by-id", authMiddleware, async (request, response) => {
 });
 
 // <-- Edit User -->
-router.post("/edit-user", authMiddleware, async (request, response) => {
+router.post("/edit-user", authMiddleware(true), async (request, response) => {
   try {
     await User.findByIdAndUpdate(request.body._id, request.body);
 
@@ -118,7 +118,7 @@ router.post("/log-in", async (request, response) => {
     }
 
     const token = jwt.sign(
-      { userID: existingUser._id },
+      { userID: existingUser._id, isAdmin: existingUser.isAdmin },
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1d" }
     );
