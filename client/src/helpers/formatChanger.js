@@ -19,14 +19,4 @@ const getDateAndTime = function (value) {
   return `${dateString} | ${timeString}`;
 };
 
-const getFormattedPhone = function (value) {
-  const countryCode = value.substring(0, 3);
-  const number = value.substring(3);
-
-  return `+${countryCode} (${number.substring(0, 3)}) ${number.substring(
-    3,
-    6
-  )}-${number.substring(6)}`;
-};
-
-export { getDateAndTime, getFormattedPhone };
+export { getDateAndTime };

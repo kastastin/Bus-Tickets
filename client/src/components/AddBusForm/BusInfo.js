@@ -112,6 +112,7 @@ function BusInfo({
               setLocalBus((prevState) => ({
                 ...prevState,
                 departureDate: e.target.value,
+                arrivalDate: e.target.value,
               }));
             }}
             min={new Date().toISOString().slice(0, 16)}
@@ -210,22 +211,3 @@ function BusInfo({
 }
 
 export default BusInfo;
-
-// <IMaskInput
-//             style={getBorderStyle(isDataCorrect.contact)}
-//             mask="+{38} (000) 000-00-00"
-//             unmask="typed"
-//             onAccept={(value, mask) => {
-//               value = localBus.driverContacts;
-//               const phone = mask._unmaskedValue;
-//               setLocalBus((prevData) => ({
-//                 ...prevData,
-//                 driverContacts: phone,
-//               }));
-//             }}
-//             placeholder={
-//               !!localBus.driverContacts
-//                 ? getFormattedPhone(localBus.driverContacts)
-//                 : "+38 (050) 320-10-30"
-//             }
-//           />

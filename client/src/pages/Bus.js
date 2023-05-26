@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react"; 
+import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../src/helpers/axiosInstance";
 import { HideLoader, DisplayLoader } from "../../src/redux/loadersSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import StripeCheckout from "react-stripe-checkout";
+import parsePhoneNumber from "libphonenumber-js";
 
 import MiniBus from "../components/AddBusForm/Seats/MiniBus";
 import StandardBus from "../components/AddBusForm/Seats/StandardBus";
 import LargeBus from "../components/AddBusForm/Seats/LargeBus";
 import { getDateAndTime } from "../../src/helpers/formatChanger";
-import { getFormattedPhone } from "../../src/helpers/formatChanger";
 import "../resources/css/bus.css";
 
 function Bus() {
@@ -185,7 +185,11 @@ function Bus() {
                 <p>{bus.price}$</p>
                 <p>{bus.number}</p>
                 <p>{bus.driverName}</p>
-                <p>{getFormattedPhone(bus.driverContacts)}</p>
+                <p>
+                  {parsePhoneNumber(
+                    `+${bus.driverContacts}`
+                  ).formatInternational()}
+                </p>
               </div>
             </div>
             <div className="choose-seats">

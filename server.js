@@ -4,7 +4,7 @@ const express = require("express");
 const DBConfig = require("./config/dbConfig");
 
 const app = express();
-const port = process.env.PORT || 5002;
+const port = 5001;
 app.use(express.json());
 
 const usersRoute = require("./routes/usersRoute");
@@ -25,3 +25,4 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.listen(port, () => console.log(`Server is working on port ${port}`));
+

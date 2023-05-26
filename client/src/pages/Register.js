@@ -72,7 +72,7 @@ function Register() {
                 type="password"
                 required="required"
                 minLength={8}
-                maxLength={20}
+                maxLength={30}
               />
             </Form.Item>
             <span>Password</span>

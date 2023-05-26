@@ -14,77 +14,34 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({ departure: "", arrival: "" });
 
-  const checkFiltersEmpties = function (obj, value = "default") {
-    const isValueEmpty = "" && Object.values(obj).some((value) => value !== "");
-
-    switch (value) {
-      case "departure":
-        return obj.departure !== isValueEmpty;
-
-      case "arrival":
-        return obj.arrival !== isValueEmpty;
-
-      case "both":
-        return obj.departure !== "" && obj.arrival !== "";
-
-      default:
-        return Object.values(obj).some((value) => value !== "");
-    }
+  const checkFiltersEmpties = function (obj) {
+    return Object.values(obj).some((value) => value !== "");
   };
 
   const getBusesList = async () => {
     try {
-      dispatch(DisplayLoader());
+      if (!checkFiltersEmpties(filters)) dispatch(DisplayLoader());
       const response = await axios.post(
         "/api/buses/get-buses",
         {},
         { headers: { Authorization: `Token ${localStorage.getItem("token")}` } }
       );
-      dispatch(HideLoader());
+      if (!checkFiltersEmpties(filters)) dispatch(HideLoader());
 
-      const { data } = response.data;
+      let { data } = response.data;
 
       if (response.data.success) {
-        let filteredBuses = data;
-
-        const getFilteredBus = function (type) {
-          const checkDepartureTown = function (data) {
-            return data.departureTown
+        data = data.filter(
+          (bus) =>
+            bus.departureTown
               .toLowerCase()
-              .includes(filters.departure.toLowerCase());
-          };
-
-          const checkArrivalTown = function (data) {
-            return data.arrivalTown
+              .includes(filters.departure.toLowerCase()) &&
+            bus.arrivalTown
               .toLowerCase()
-              .includes(filters.arrival.toLowerCase());
-          };
+              .includes(filters.arrival.toLowerCase())
+        );
 
-          if (type === "arrival")
-            return data.filter((bus) => checkArrivalTown(bus));
-
-          if (type === "departure")
-            return data.filter((bus) => checkDepartureTown(bus));
-
-          return data.filter(
-            (bus) => checkDepartureTown(bus) && checkArrivalTown(bus)
-          );
-        };
-
-        if (checkFiltersEmpties(filters)) {
-          if (checkFiltersEmpties(filters, "both")) {
-            filteredBuses = getFilteredBus();
-          } else {
-            if (checkFiltersEmpties(filters, "departure")) {
-              filteredBuses = getFilteredBus("departure");
-            }
-            if (checkFiltersEmpties(filters, "arrival")) {
-              filteredBuses = getFilteredBus("arrival");
-            }
-          }
-        }
-
-        setBuses(filteredBuses);
+        setBuses(data);
       } else {
         message.error(response.data.message);
       }
@@ -97,7 +54,7 @@ function Home() {
   useEffect(() => {
     getBusesList();
     // eslint-disable-next-line
-  }, []);
+  }, [filters]);
 
   // Pagination settings
   const busesPerPage = 4;
@@ -107,50 +64,31 @@ function Home() {
     currentPage * busesPerPage
   );
 
-  const enterHandler = function (e) {
-    if (e.key === "Enter") getBusesList();
-  };
-
   return (
     <div className="home">
       <div className="filter-wrapper">
-        <div className="filter-inputs">
-          <div className="departure-filter">
-            <input
-              type="text"
-              value={filters.departure}
-              onChange={(e) =>
-                setFilters({ ...filters, departure: e.target.value })
-              }
-              onKeyDown={enterHandler}
-              placeholder="Departure From..."
-            />
-          </div>
-          <div className="arrival-filter">
-            <input
-              type="text"
-              value={filters.arrival}
-              onChange={(e) =>
-                setFilters({ ...filters, arrival: e.target.value })
-              }
-              onKeyDown={enterHandler}
-              placeholder="Arrival In..."
-            />
-          </div>
+        <div className="departure-filter">
+          <input
+            type="text"
+            value={filters.departure}
+            onChange={(e) =>
+              setFilters({ ...filters, departure: e.target.value })
+            }
+            placeholder="Departure From..."
+          />
         </div>
-        <div className="filter-buttons">
-          {checkFiltersEmpties(filters) && (
-            <button
-              onClick={() => {
-                window.location.reload();
-              }}
-            >
-              Reset Filters
-            </button>
-          )}
-          <button onClick={getBusesList}>Use Filters</button>
+        <div className="arrival-filter">
+          <input
+            type="text"
+            value={filters.arrival}
+            onChange={(e) =>
+              setFilters({ ...filters, arrival: e.target.value })
+            }
+            placeholder="Arrival In..."
+          />
         </div>
       </div>
+
       <div className="buses-wrapper">
         {isEmpty(buses) && <p className="no-buses">No Active Buses</p>}
         <Row gutter={[15, 15]}>
