@@ -11,13 +11,10 @@ function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const formHandler = async function (values) {
     if (email && !/^\S{4,}@\S{2,}\.\S{2,}$/.test(email)) {
       message.error("Mail is entered in an incorrect format");
-    } else if (password.length < 5 || password.length > 20) {
-      message.error("Password is entered in an incorrect format");
     } else {
       try {
         dispatch(DisplayLoader());
@@ -45,7 +42,12 @@ function Register() {
           <h2>Sign up</h2>
           <div className="input-container">
             <Form.Item noStyle name="name">
-              <Input type="text" required="required" />
+              <Input
+                type="text"
+                required="required"
+                minLength={3}
+                maxLength={20}
+              />
             </Form.Item>
             <span>Username</span>
             <i></i>
@@ -57,6 +59,8 @@ function Register() {
                 required="required"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                minLength={8}
+                maxLength={30}
               />
             </Form.Item>
             <span>Email</span>
@@ -67,8 +71,8 @@ function Register() {
               <Input
                 type="password"
                 required="required"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                minLength={8}
+                maxLength={20}
               />
             </Form.Item>
             <span>Password</span>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { IMaskInput } from "react-imask";
+import PhoneInput from "react-phone-input-2";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
-import { getFormattedPhone } from "../../helpers/formatChanger";
+import "react-phone-input-2/lib/style.css";
 import "../../resources/css/busInfo.css";
 
 function BusInfo({
@@ -66,7 +67,7 @@ function BusInfo({
     // Driver Contacts verification
     setIsDataCorrect((prevState) => ({
       ...prevState,
-      contact: localBus.driverContacts.length === 12,
+      contact: isValidPhoneNumber(`+${localBus.driverContacts}`),
     }));
   }, [
     localBus.arrivalDate,
@@ -190,24 +191,17 @@ function BusInfo({
           />
         </div>
         <div className="driver-contacts">
-          <div className="title">Driver's contacts:</div>
-          <IMaskInput
+          <div className="title">Driver contacts:</div>
+          <PhoneInput
             style={getBorderStyle(isDataCorrect.contact)}
-            mask="+{38} (000) 000-00-00"
-            unmask="typed"
-            onAccept={(value, mask) => {
-              value = localBus.driverContacts;
-              const phone = mask._unmaskedValue;
+            country={"ua"}
+            value={localBus.driverContacts}
+            onChange={(phone) => {
               setLocalBus((prevData) => ({
                 ...prevData,
                 driverContacts: phone,
               }));
             }}
-            placeholder={
-              !!localBus.driverContacts
-                ? getFormattedPhone(localBus.driverContacts)
-                : "+38 (050) 320-10-30"
-            }
           />
         </div>
       </div>
@@ -216,3 +210,22 @@ function BusInfo({
 }
 
 export default BusInfo;
+
+// <IMaskInput
+//             style={getBorderStyle(isDataCorrect.contact)}
+//             mask="+{38} (000) 000-00-00"
+//             unmask="typed"
+//             onAccept={(value, mask) => {
+//               value = localBus.driverContacts;
+//               const phone = mask._unmaskedValue;
+//               setLocalBus((prevData) => ({
+//                 ...prevData,
+//                 driverContacts: phone,
+//               }));
+//             }}
+//             placeholder={
+//               !!localBus.driverContacts
+//                 ? getFormattedPhone(localBus.driverContacts)
+//                 : "+38 (050) 320-10-30"
+//             }
+//           />

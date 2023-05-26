@@ -1,4 +1,4 @@
-const router = require("express").Router();
+const router = require("express").Router(); 
 const { v4: uuidv4 } = require("uuid");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
