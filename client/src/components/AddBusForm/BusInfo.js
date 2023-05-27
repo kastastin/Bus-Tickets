@@ -69,21 +69,10 @@ function BusInfo({
       ...prevState,
       contact: isValidPhoneNumber(`+${localBus.driverContacts}`),
     }));
-  }, [
-    localBus.arrivalDate,
-    localBus.departureDate,
-    localBus.price,
-    localBus.number,
-    existedNumbers,
-    localBus.driverName,
-    localBus.driverContacts,
-    setIsDataCorrect,
-  ]);
+  });
 
   const getBorderStyle = function (isValid) {
-    return {
-      border: `2px solid ${isValid ? "#444" : "var(--secondary)"}`,
-    };
+    return { border: `2px solid ${isValid ? "#444" : "var(--secondary)"}` };
   };
 
   return (

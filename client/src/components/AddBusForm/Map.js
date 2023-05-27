@@ -102,17 +102,14 @@ function Map({ localBus, setLocalBus, mapData, setMapData }) {
     });
 
     useEffect(() => {
-      if (localBus.arrivalCoords.length !== 0) {
+      if (localBus.arrivalCoords.length !== 0)
         map.setView(localBus.arrivalCoords);
-      }
-
       // eslint-disable-next-line
     }, [localBus.arrivalCoords]);
 
     useEffect(() => {
-      if (mapData.arrivalCoords.length !== 0) {
+      if (mapData.arrivalCoords.length !== 0)
         map.setView(mapData.arrivalCoords);
-      }
       // eslint-disable-next-line
     }, [mapData.arrivalCoords]);
   };

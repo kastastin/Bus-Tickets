@@ -29,23 +29,19 @@ function ProtectedRoute({ children }) {
         if (response.data.success) {
           dispatch(SetUser(response.data.data));
         } else {
-          localStorage.removeItem("token");
           message.error(response.data.message);
+          localStorage.removeItem("token");
           navigate("/log-in");
         }
       } catch (error) {
         dispatch(HideLoader());
-        localStorage.removeItem("token");
         message.error(error.message);
+        localStorage.removeItem("token");
         navigate("/log-in");
       }
     };
 
-    if (localStorage.getItem("token")) {
-      checkToken();
-    } else {
-      navigate("/log-in");
-    }
+    localStorage.getItem("token") ? checkToken() : navigate("/log-in");
   }, [dispatch, navigate]);
 
   return <DefaultLayout>{children}</DefaultLayout>;
