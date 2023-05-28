@@ -60,8 +60,8 @@ function Home() {
   const busesPerPage = 4;
   const totalBuses = buses.length;
   const slicedBuses = buses.slice(
-    (currentPage - 1) * busesPerPage,
-    currentPage * busesPerPage
+    busesPerPage * (currentPage - 1),
+    busesPerPage * currentPage
   );
 
   return (
