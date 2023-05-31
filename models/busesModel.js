@@ -49,6 +49,10 @@ const busSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isDriverIdentified: {
+    type: Boolean,
+    required: false,
+  },
   reservedSeats: {
     type: Array,
     default: [],

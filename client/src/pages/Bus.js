@@ -7,54 +7,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import StripeCheckout from "react-stripe-checkout";
 import parsePhoneNumber from "libphonenumber-js";
 
-import { loadStripe } from "@stripe/stripe-js";
-
 import MiniBus from "../components/AddBusForm/Seats/MiniBus";
 import StandardBus from "../components/AddBusForm/Seats/StandardBus";
 import LargeBus from "../components/AddBusForm/Seats/LargeBus";
 import { getDateAndTime } from "../../src/helpers/formatChanger";
 import "../resources/css/bus.css";
-
-const stripeKey =
-  "pk_test_51McWMQHNTuuJuhvlFnLZPX8ZHwsGaPa15eXT9angOsRGGukWwdBDVhDduw7uoRkq7HOM7MFWpi5gvD2KrChlIZqM00R7Xm93Cy";
-const stripePromise = loadStripe(stripeKey);
-
-class VerifyButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  async componentDidMount() {
-    this.setState({ stripe: await this.props.stripePromise });
-  }
-
-  async handleClick(event) {
-    event.preventDefault();
-
-    const { stripe } = this.state;
-    if (!stripe) return;
-
-    const response = await axiosInstance.post(
-      "/api/seats/create-verification-session"
-    );
-    const result = await stripe.verifyIdentity(response.data.data.clientSecret);
-
-    result.error
-      ? message.error("User identified failed")
-      : message.success("User was identified successfully");
-  }
-
-  render() {
-    const { stripe } = this.state;
-    return (
-      <button role="link" disabled={!stripe} onClick={this.handleClick}>
-        Verify
-      </button>
-    );
-  }
-}
 
 function Bus() {
   const dispatch = useDispatch();
@@ -227,13 +184,24 @@ function Bus() {
               <div className="value-wrapper">
                 <p>{bus.price}$</p>
                 <p>{bus.number}</p>
-                <p>{bus.driverName}</p>
+                <p className="driver-name-bus">
+                  {bus.driverName}
+                  {bus.isDriverIdentified && (
+                    <i
+                      className="ri-shield-check-fill"
+                      title="Driver identified"
+                      style={{
+                        color: "var(--primary)",
+                        cursor: "default",
+                      }}
+                    />
+                  )}
+                </p>
                 <p>
                   {parsePhoneNumber(
                     `+${bus.driverContacts}`
                   ).formatInternational()}
                 </p>
-                <VerifyButton stripePromise={stripePromise} />
               </div>
             </div>
             <div className="choose-seats">
@@ -253,7 +221,7 @@ function Bus() {
                       <div className="values">{chosenSeats.join(", ")}</div>
                     </div>
                     <StripeCheckout
-                      stripeKey={stripeKey}
+                      stripeKey="pk_test_51McWMQHNTuuJuhvlFnLZPX8ZHwsGaPa15eXT9angOsRGGukWwdBDVhDduw7uoRkq7HOM7MFWpi5gvD2KrChlIZqM00R7Xm93Cy"
                       token={tokenHandler}
                       amount={bus.price * chosenSeats.length * 100}
                     >

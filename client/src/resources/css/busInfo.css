@@ -122,3 +122,19 @@
   top: -33vh;
   left: -10rem;
 }
+
+.verify-btn {
+  width: 2rem;
+  background-color: #fff;
+  border: none;
+  cursor: default !important;
+}
+
+.verify-btn i {
+  color: var(--secondary);
+  font-size: 1.5rem;
+}
+
+.verify-btn i:hover {
+  color: var(--secondary);
+}

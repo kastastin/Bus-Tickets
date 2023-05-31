@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import { isValidPhoneNumber } from "libphonenumber-js";
+import { loadStripe } from "@stripe/stripe-js";
 
+import VerifyButton from "./VerifyButton";
 import "react-phone-input-2/lib/style.css";
 import "../../resources/css/busInfo.css";
+
+const stripePromise = loadStripe(
+  "pk_test_51McWMQHNTuuJuhvlFnLZPX8ZHwsGaPa15eXT9angOsRGGukWwdBDVhDduw7uoRkq7HOM7MFWpi5gvD2KrChlIZqM00R7Xm93Cy"
+);
 
 function BusInfo({
   buses,
@@ -186,7 +192,12 @@ function BusInfo({
                 driverName: e.target.value,
               }));
             }}
-            placeholder="Bob"
+            placeholder="Oleg"
+          />
+          <VerifyButton
+            stripePromise={stripePromise}
+            localBus={localBus}
+            setLocalBus={setLocalBus}
           />
         </div>
         <div className="driver-contacts">

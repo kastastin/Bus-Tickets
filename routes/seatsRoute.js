@@ -121,6 +121,7 @@ router.post(
 );
 
 // <-- Stripe Identify -->
+
 router.post(
   "/create-verification-session",
   authMiddleware(false),
