@@ -16,10 +16,7 @@ const VerifyButton = ({ stripePromise, localBus, setLocalBus }) => {
   }, [stripePromise]);
 
   const handleClick = async (event) => {
-    event.preventDefault();
-
     if (!stripe) return;
-
     try {
       const response = await axiosInstance.post(
         "/api/seats/create-verification-session"
