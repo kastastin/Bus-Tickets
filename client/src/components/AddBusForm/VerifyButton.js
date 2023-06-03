@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { message } from "antd";
 import { axiosInstance } from "../../helpers/axiosInstance";
 
-const VerifyButton = ({ stripePromise, localBus, setLocalBus }) => {
+function VerifyButton({ stripePromise, localBus, setLocalBus }) {
   message.config({ maxCount: 1 });
   const [stripe, setStripe] = useState(null);
 
@@ -24,15 +24,11 @@ const VerifyButton = ({ stripePromise, localBus, setLocalBus }) => {
       const response = await axiosInstance.post(
         "/api/seats/create-verification-session"
       );
-      const result = await stripe.verifyIdentity(
+      const { error } = await stripe.verifyIdentity(
         response.data.data.clientSecret
       );
 
-      result.error
-        ? message.error("User identification failed")
-        : message.success("User was identified successfully");
-
-      if (result.error) {
+      if (error) {
         message.error("User identification failed");
       } else {
         message.success("User was identified successfully");
@@ -66,6 +62,6 @@ const VerifyButton = ({ stripePromise, localBus, setLocalBus }) => {
       />
     </button>
   );
-};
+}
 
 export default VerifyButton;
