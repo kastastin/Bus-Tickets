@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import PublicRoute from "./components/PublicRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
 import BusesAdmin from "./pages/admin/BusesAdmin";
 import UsersAdmin from "./pages/admin/UsersAdmin";
 import Home from "./pages/Home";
@@ -14,11 +14,7 @@ import Bus from "./pages/Bus";
 import Loader from "./components/Loader";
 
 function App() {
-  message.config({
-    top: 15,
-    duration: 4,
-  });
-
+  message.config({ top: 15, duration: 2 });
   const loader = useSelector((state) => state.loaders.loading);
 
   return (
@@ -26,6 +22,14 @@ function App() {
       {loader && <Loader />}
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/sign-up"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
           <Route
             path="/log-in"
             element={
@@ -35,11 +39,27 @@ function App() {
             }
           />
           <Route
-            path="/sign-up"
+            path="/"
             element={
-              <PublicRoute>
-                <Register />
-              </PublicRoute>
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reservation"
+            element={
+              <ProtectedRoute>
+                <Reservation />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bus/:id"
+            element={
+              <ProtectedRoute>
+                <Bus />
+              </ProtectedRoute>
             }
           />
           <Route
@@ -55,30 +75,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <UsersAdmin />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/bus/:id"
-            element={
-              <ProtectedRoute>
-                <Bus />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/reservation"
-            element={
-              <ProtectedRoute>
-                <Reservation />
               </ProtectedRoute>
             }
           />

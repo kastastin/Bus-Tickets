@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { DisplayLoader, HideLoader } from "../redux/loadersSlice";
 
 import "../resources/css/auth.css";
@@ -10,9 +10,14 @@ import "../resources/css/auth.css";
 function Register() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
+  const [fields, setFields] = useState({
+    name: { value: "", span: "Name" },
+    email: { value: "", span: "Email" },
+    password: { value: "", span: "Password" },
+  });
 
   const formHandler = async function (values) {
+    const email = fields.email.value;
     if (email && !/^\S{4,}@\S{2,}\.\S{2,}$/.test(email)) {
       message.error("Mail is entered in an incorrect format");
     } else {
@@ -21,17 +26,44 @@ function Register() {
         const response = await axios.post("/api/users/sign-up", values);
         dispatch(HideLoader());
 
-        if (response.data.success) {
-          navigate("/log-in");
-          message.success(response.data.message);
-        } else {
-          message.error(response.data.message);
-        }
+        !response.data.success
+          ? message.error(response.data.message)
+          : message.success(response.data.message) && navigate("/log-in");
       } catch (error) {
         dispatch(HideLoader());
         message.error(error.message);
       }
     }
+  };
+
+  const updateField = function (e, field) {
+    setFields((prevState) => ({
+      ...prevState,
+      [field]: {
+        ...prevState[field],
+        value: e.target.value,
+      },
+    }));
+  };
+
+  const getInputStyle = function (field) {
+    const spanStyle = {
+      color: "white",
+      fontSize: "0.75rem",
+      transform: "translateY(-2rem)",
+    };
+
+    return field.value.length ? (
+      <>
+        <span style={spanStyle}>{field.span}</span>
+        <i style={{ height: "2.7rem" }} />
+      </>
+    ) : (
+      <>
+        <span>{field.span}</span>
+        <i />
+      </>
+    );
   };
 
   return (
@@ -45,38 +77,39 @@ function Register() {
               <Input
                 type="text"
                 required="required"
+                value={fields.name.value}
+                onChange={(e) => updateField(e, "name")}
                 minLength={3}
                 maxLength={20}
               />
             </Form.Item>
-            <span>Username</span>
-            <i></i>
+            {getInputStyle(fields.name)}
           </div>
           <div className="input-container">
             <Form.Item noStyle name="email">
               <Input
-                type="email"
+                type="text"
                 required="required"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={fields.email.value}
+                onChange={(e) => updateField(e, "email")}
                 minLength={8}
                 maxLength={30}
               />
             </Form.Item>
-            <span>Email</span>
-            <i></i>
+            {getInputStyle(fields.email)}
           </div>
           <div className="input-container">
             <Form.Item noStyle name="password">
               <Input
                 type="password"
                 required="required"
+                value={fields.password.value}
+                onChange={(e) => updateField(e, "password")}
                 minLength={8}
                 maxLength={30}
               />
             </Form.Item>
-            <span>Password</span>
-            <i></i>
+            {getInputStyle(fields.password)}
           </div>
           <div className="footer">
             <button type="submit">Sign Up</button>
