@@ -9,23 +9,25 @@ import "../resources/css/auth.css";
 function Login() {
   const dispatch = useDispatch();
 
+  const displayError = function (text) {
+    dispatch(HideLoader());
+    message.error(text);
+  };
+
   const formHandler = async function (values) {
     try {
       dispatch(DisplayLoader());
       const response = await axios.post("/api/users/log-in", values);
       dispatch(HideLoader);
 
-      if (response.data.success) {
-        message.success(response.data.message);
+      if (!response.data.success) {
+        displayError(response.data.message);
+      } else {
         localStorage.setItem("token", response.data.data);
         window.location.reload();
-      } else {
-        dispatch(HideLoader());
-        message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error.message);
     }
   };
 
@@ -40,14 +42,14 @@ function Login() {
               <Input type="text" required="required" />
             </Form.Item>
             <span>Email</span>
-            <i/>
+            <i />
           </div>
           <div className="input-container">
             <Form.Item noStyle name="password">
               <Input type="password" required="required" />
             </Form.Item>
             <span>Password</span>
-            <i/>
+            <i />
           </div>
           <div className="footer">
             <button type="submit">Log in</button>
