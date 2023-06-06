@@ -33,19 +33,13 @@ function DefaultLayout({ children }) {
   const currentMenu = user?.isAdmin ? menu.admin : menu.user;
 
   let currentPath = window.location.pathname;
-  if (window.location.pathname.includes("/bus/")) {
-    currentPath = "/";
-  }
+  if (window.location.pathname.includes("/bus/")) currentPath = "/";
 
   return (
     <div className="layout-container">
       <header className={user?.isAdmin ? "admin-header" : ""}>
         <div className="logo">
-          <div
-            onClick={() => {
-              navigate("/");
-            }}
-          >
+          <div onClick={() => navigate("/")}>
             <img src={logo} alt="Bus Tickets Logo" />
             <h1>Bus Tickets</h1>
           </div>

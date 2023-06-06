@@ -10,9 +10,7 @@ function BusContainer({ busData }) {
   return (
     <div
       className="bus-book-wrapper"
-      onClick={() => {
-        navigate(`/bus/${busData._id}`);
-      }}
+      onClick={() => navigate(`/bus/${busData._id}`)}
     >
       <div className="direction">
         <div>

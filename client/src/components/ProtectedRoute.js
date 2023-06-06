@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { message } from "antd";
 import { DisplayLoader, HideLoader } from "../redux/loadersSlice";
 import { SetUser } from "../redux/usersSlice";
+import axios from "axios";
 import DefaultLayout from "./DefaultLayout";
 
 function ProtectedRoute({ children }) {
@@ -12,6 +12,12 @@ function ProtectedRoute({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const displayError = function (text) {
+      message.error(text);
+      localStorage.removeItem("token");
+      navigate("/log-in");
+    };
+
     const checkToken = async () => {
       try {
         dispatch(DisplayLoader());
@@ -26,18 +32,12 @@ function ProtectedRoute({ children }) {
         );
         dispatch(HideLoader());
 
-        if (response.data.success) {
-          dispatch(SetUser(response.data.data));
-        } else {
-          message.error(response.data.message);
-          localStorage.removeItem("token");
-          navigate("/log-in");
-        }
+        !response.data.success
+          ? displayError(response.data.message)
+          : dispatch(SetUser(response.data.data));
       } catch (error) {
         dispatch(HideLoader());
-        message.error(error.message);
-        localStorage.removeItem("token");
-        navigate("/log-in");
+        displayError(error.message);
       }
     };
 
