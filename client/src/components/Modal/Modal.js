@@ -57,15 +57,12 @@ function Modal({
     try {
       dispatch(DisplayLoader());
       let response = null;
-
-      if (!isModalEdit) {
-        response = await axiosInstance.post("/api/buses/add-bus", localBus);
-      } else {
-        response = await axiosInstance.post("/api/buses/edit-bus", {
-          ...localBus,
-          _id: localBus._id,
-        });
-      }
+      response = !isModalEdit
+        ? await axiosInstance.post("/api/buses/add-bus", localBus)
+        : await axiosInstance.post("/api/buses/edit-bus", {
+            ...localBus,
+            _id: localBus._id,
+          });
 
       response.data.success
         ? message.success(response.data.message)
@@ -73,12 +70,15 @@ function Modal({
 
       getBuses();
       setIsModalActive(false);
-
       dispatch(HideLoader());
     } catch (error) {
       message.error(error.message);
       dispatch(HideLoader());
     }
+  };
+
+  const modalMaskClickHandler = function (e) {
+    if (e.target.classList.contains(["modal-mask"])) setIsModalActive(false);
   };
 
   const tasks = [
@@ -92,10 +92,6 @@ function Modal({
     "Choose bus type",
     "Enter additional information",
   ];
-
-  const modalMaskClickHandler = function (e) {
-    if (e.target.classList.contains(["modal-mask"])) setIsModalActive(false);
-  };
 
   return (
     <>

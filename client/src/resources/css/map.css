@@ -54,7 +54,7 @@
   color: #444;
 }
 
-.color-red {
+.c-red {
   color: var(--secondary) !important;
 }
 
@@ -87,4 +87,3 @@
 .leaflet-popup-content {
   text-align: center;
 }
-
