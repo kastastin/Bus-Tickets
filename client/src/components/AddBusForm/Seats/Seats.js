@@ -1,9 +1,7 @@
 import React, { useEffect, useId, useState } from "react";
-
 import MiniBus from "./MiniBus";
 import StandardBus from "./StandardBus";
 import LargeBus from "./LargeBus";
-
 import "../../../resources/css/seats.css";
 
 function Seats({ localBus, setLocalBus }) {
@@ -74,6 +72,12 @@ function Seats({ localBus, setLocalBus }) {
       }
     };
 
+    const getDefaultValue = function (field) {
+      return !!localBus.type
+        ? busFormOptions[localBus.type][field]
+        : busFormOptions.standard.seats;
+    };
+
     return (
       <>
         <div className="form-wrapper">
@@ -83,11 +87,7 @@ function Seats({ localBus, setLocalBus }) {
               type="number"
               name="seatsNumber"
               id={seatsNumberID}
-              defaultValue={
-                !!localBus.type
-                  ? busFormOptions[localBus.type]["seats"]
-                  : busFormOptions.standard.seats
-              }
+              defaultValue={getDefaultValue("seats")}
               disabled
             />
           </div>
@@ -98,11 +98,7 @@ function Seats({ localBus, setLocalBus }) {
               type="number"
               name="doorsNumber"
               id={doorsNumberID}
-              defaultValue={
-                !!localBus.type
-                  ? busFormOptions[localBus.type]["doors"]
-                  : busFormOptions.standard.doors
-              }
+              defaultValue={getDefaultValue("doors")}
               disabled
             />
           </div>

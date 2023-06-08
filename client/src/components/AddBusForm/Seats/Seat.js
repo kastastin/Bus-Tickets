@@ -1,5 +1,4 @@
 import React from "react";
-
 import seatIcon from "../../../resources/icons/seat.svg";
 import chosenSeatIcon from "../../../resources/icons/chosen-seat.svg";
 import reservedSeatIcon from "../../../resources/icons/reserved-seat.svg";
