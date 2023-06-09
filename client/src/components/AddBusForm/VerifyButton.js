@@ -42,14 +42,17 @@ function VerifyButton({ stripePromise, localBus, setLocalBus }) {
   return (
     <button
       className="verify-btn"
-      role="link"
-      disabled={!stripe}
       onClick={(e) => {
         if (!localBus.isDriverIdentified) handleClick(e);
       }}
+      disabled={!stripe}
     >
       <i
-        className="ri-shield-check-fill"
+        className={
+          localBus.isDriverIdentified
+            ? "ri-pass-valid-line"
+            : "ri-pass-expired-line"
+        }
         style={{
           cursor: `${localBus.isDriverIdentified ? "default" : "pointer"}`,
           color: `var(--${

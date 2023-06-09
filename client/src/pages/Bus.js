@@ -188,7 +188,7 @@ function Bus() {
                   {bus.driverName}
                   {bus.isDriverIdentified && (
                     <i
-                      className="ri-shield-check-fill"
+                      className="ri-pass-valid-line"
                       title="Driver identified"
                       style={{
                         color: "var(--primary)",
