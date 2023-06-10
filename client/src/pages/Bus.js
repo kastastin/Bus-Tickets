@@ -14,9 +14,9 @@ import { getDateAndTime } from "../../src/helpers/formatChanger";
 import "../resources/css/bus.css";
 
 function Bus() {
+  const params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const params = useParams();
   const [bus, setBus] = useState(null);
   const [chosenSeats, setChosenSeats] = useState([]);
   const [reservedSeats, setReservedSeats] = useState([]);
@@ -47,7 +47,9 @@ function Bus() {
       );
       dispatch(HideLoader());
 
-      if (response.data.success) {
+      if (!response.data.success) {
+        message.error(response.data.message);
+      } else {
         const data = response.data.data
           .map((seats) => {
             return {
@@ -59,8 +61,6 @@ function Bus() {
           .filter((data) => data.bus._id === params.id);
 
         setReservedSeats(data[0]?.seats);
-      } else {
-        message.error(response.data.message);
       }
     } catch (error) {
       dispatch(HideLoader());
@@ -104,11 +104,11 @@ function Bus() {
       });
       dispatch(HideLoader());
 
-      if (response.data.success) {
+      if (!response.data.success) {
+        message.error(response.data.message);
+      } else {
         message.success(response.data.message);
         bookingSeat(response.data.data.transactionId);
-      } else {
-        message.error(response.data.message);
       }
     } catch (error) {
       dispatch(HideLoader());
