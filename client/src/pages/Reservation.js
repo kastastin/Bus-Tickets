@@ -4,10 +4,10 @@ import { Modal, Table, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
 
+import logo from "../resources/logo.svg";
 import { HideLoader, DisplayLoader } from "../redux/loadersSlice";
 import { axiosInstance } from "../helpers/axiosInstance";
 import { getDateAndTime } from "../helpers/formatChanger";
-import logo from "../resources/logo.svg";
 import "../resources/css/print.css";
 
 function Reservation() {
@@ -17,6 +17,11 @@ function Reservation() {
   const [reservedSeats, setReservedSeats] = useState([]);
   const [chosenReservation, setChosenReservation] = useState(null);
   const [isModalActive, setIsModalActive] = useState(false);
+
+  const displayError = function (error) {
+    dispatch(HideLoader());
+    message.error(error.message);
+  };
 
   const getReservationSeats = async () => {
     try {
@@ -44,8 +49,7 @@ function Reservation() {
 
       seatsWithoutBus.forEach((seat) => removeSeats(seat._id));
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error);
     }
   };
 
@@ -63,8 +67,7 @@ function Reservation() {
 
       getReservationSeats();
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error);
     }
   };
 
@@ -158,9 +161,7 @@ function Reservation() {
           chosenReservation?.seats?.length > 1 ? "s" : ""
         }`}
         okText="Print"
-        style={{
-          top: "5rem",
-        }}
+        style={{ top: "5rem" }}
         open={isModalActive}
         onOk={reactPrintHandler}
         onCancel={() => {
