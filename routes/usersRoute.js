@@ -4,48 +4,49 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
 
+const createResponse = function (msg, data, status) {
+  return {
+    success: status,
+    message: msg,
+    data: data,
+  };
+};
+
 // <-- Get Users -->
 router.post("/get-users", authMiddleware(true), async (request, response) => {
   try {
     const users = await User.find();
 
-    return response.status(200).send({
-      success: true,
-      message: "Users were fetched successfully",
-      data: users,
-    });
+    return response
+      .status(200)
+      .send(createResponse("Users were fetched successfully", users, true));
   } catch (error) {
     response.status(500).send({ success: false, message: error.message });
   }
 });
 
 // <-- Get User By ID -->
-router.post("/get-user-by-id", authMiddleware(false), async (request, response) => {
-  try {
-    const user = await User.findById(request.body.userID);
-    response.send({
-      success: true,
-      message: "User was found",
-      data: user,
-    });
-  } catch (error) {
-    response.send({
-      success: false,
-      message: error.message,
-      data: null,
-    });
+router.post(
+  "/get-user-by-id",
+  authMiddleware(false),
+  async (request, response) => {
+    try {
+      const user = await User.findById(request.body.userID);
+      response.send(createResponse("User was found", user, true));
+    } catch (error) {
+      response.send(createResponse(error.message, null, false));
+    }
   }
-});
+);
 
 // <-- Edit User -->
 router.post("/edit-user", authMiddleware(true), async (request, response) => {
   try {
     await User.findByIdAndUpdate(request.body._id, request.body);
 
-    return response.status(200).send({
-      success: true,
-      message: "User was edit successfully",
-    });
+    return response
+      .status(200)
+      .send(createResponse("User was edit successfully", null, true));
   } catch (error) {
     response.status(500).send({ success: false, message: error.message });
   }
@@ -69,17 +70,9 @@ router.post("/sign-up", async (request, response) => {
     const newUser = new User(request.body);
     await newUser.save();
 
-    response.send({
-      success: true,
-      message: "New user was created successfully",
-      data: null,
-    });
+    response.send(createResponse("User was created successfully", null, true));
   } catch (error) {
-    response.send({
-      success: false,
-      message: error.message,
-      data: null,
-    });
+    response.send(createResponse(error.message, null, false));
   }
 });
 
@@ -102,11 +95,9 @@ router.post("/log-in", async (request, response) => {
     );
 
     if (!isPasswordCorrect) {
-      return response.send({
-        success: false,
-        message: "Entered password is incorrect",
-        data: null,
-      });
+      return response.send(
+        createResponse("Entered password is incorrect", null, false)
+      );
     }
 
     if (existingUser.isBlocked) {
@@ -123,17 +114,9 @@ router.post("/log-in", async (request, response) => {
       { expiresIn: "1d" }
     );
 
-    response.send({
-      success: true,
-      message: "User login successfully",
-      data: token,
-    });
+    response.send(createResponse("User login successfully", token, true));
   } catch (error) {
-    response.send({
-      success: false,
-      message: error.message,
-      data: null,
-    });
+    createResponse(error.message, null, false);
   }
 });
 
