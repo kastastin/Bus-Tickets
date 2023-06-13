@@ -6,6 +6,14 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const Seat = require("../models/seatsModel");
 const Bus = require("../models/busesModel");
 
+const createResponse = function (msg, data, status) {
+  return {
+    success: status,
+    message: msg,
+    data: data,
+  };
+};
+
 // <-- Get Reserved Seats By User ID -->
 router.post(
   "/get-seats-by-user-id",
@@ -22,11 +30,11 @@ router.post(
         data: reservedSeats,
       });
     } catch (error) {
-      response.status(500).send({
-        success: false,
-        message: "Reserved seats fetching was failed",
-        data: error,
-      });
+      response
+        .status(500)
+        .send(
+          createResponse("Reserved seats fetching was failed", error, false)
+        );
     }
   }
 );
@@ -62,17 +70,15 @@ router.post("/book-seat", authMiddleware(false), async (request, response) => {
     bus.reservedSeats = [...bus.reservedSeats, ...request.body.seats];
     await bus.save();
 
-    response.status(200).send({
-      success: true,
-      message: "Booking seats was successful",
-      data: newSeatBooking,
-    });
+    response
+      .status(200)
+      .send(
+        createResponse("Booking seats was successful", newSeatBooking, true)
+      );
   } catch (error) {
-    response.status(500).send({
-      success: false,
-      message: "Booking seats was failed",
-      data: error,
-    });
+    response
+      .status(500)
+      .send(createResponse("Booking seats was failed", error, false));
   }
 });
 
@@ -105,17 +111,13 @@ router.post(
             message: "Stripe payment was successful",
             data: { transactionId: stripePayment.source.id },
           })
-        : res.status(500).send({
-            success: false,
-            message: "Stripe payment was failed",
-            data: error,
-          });
+        : response
+            .status(500)
+            .send(createResponse("Stripe payment was failed", error, false));
     } catch (error) {
-      response.status(500).send({
-        success: false,
-        message: "Stripe Payment was failed",
-        data: error,
-      });
+      response
+        .status(500)
+        .send(createResponse("Stripe payment was failed", error, false));
     }
   }
 );
