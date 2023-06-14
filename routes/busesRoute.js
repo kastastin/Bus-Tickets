@@ -1,7 +1,14 @@
 const router = require("express").Router();
-
 const Bus = require("../models/busesModel");
 const authMiddleware = require("../middlewares/authMiddleware");
+
+const createResponse = function (msg, data, status) {
+  return {
+    success: status,
+    message: msg,
+    data: data,
+  };
+};
 
 // <-- Get Buses -->
 router.post("/get-buses", authMiddleware(false), async (request, response) => {
@@ -19,19 +26,21 @@ router.post("/get-buses", authMiddleware(false), async (request, response) => {
 });
 
 // <-- Get Bus By ID -->
-router.post("/get-bus-by-id", authMiddleware(false), async (request, response) => {
-  try {
-    const bus = await Bus.findById(request.body._id);
+router.post(
+  "/get-bus-by-id",
+  authMiddleware(false),
+  async (request, response) => {
+    try {
+      const bus = await Bus.findById(request.body._id);
 
-    return response.status(200).send({
-      success: true,
-      message: "Bus was fetched successfully",
-      data: bus,
-    });
-  } catch (error) {
-    response.status(500).send({ success: false, message: error.message });
+      return response
+        .status(200)
+        .send(createResponse("Bus was fetched successfully", bus, true));
+    } catch (error) {
+      response.status(500).send({ success: false, message: error.message });
+    }
   }
-});
+);
 
 // <-- Add New Bus -->
 router.post("/add-bus", authMiddleware(true), async (request, response) => {
@@ -73,10 +82,9 @@ router.post("/remove-bus", authMiddleware(true), async (request, response) => {
   try {
     await Bus.findByIdAndDelete(request.body._id);
 
-    return response.status(200).send({
-      success: true,
-      message: "Bus was removed successfully",
-    });
+    return response
+      .status(200)
+      .send(createResponse("Bus was removed successfully", null, true));
   } catch (error) {
     response.status(500).send({ success: false, message: error.message });
   }
