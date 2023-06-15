@@ -3,14 +3,7 @@ const User = require("../models/usersModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authMiddleware = require("../middlewares/authMiddleware");
-
-const createResponse = function (msg, data, status) {
-  return {
-    success: status,
-    message: msg,
-    data: data,
-  };
-};
+const createResponse = require("../client/src/helpers/response");
 
 // <-- Get Users -->
 router.post("/get-users", authMiddleware(true), async (request, response) => {

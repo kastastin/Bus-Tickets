@@ -5,14 +5,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const authMiddleware = require("../middlewares/authMiddleware");
 const Seat = require("../models/seatsModel");
 const Bus = require("../models/busesModel");
-
-const createResponse = function (msg, data, status) {
-  return {
-    success: status,
-    message: msg,
-    data: data,
-  };
-};
+const createResponse = require("../client/src/helpers/response");
 
 // <-- Get Reserved Seats By User ID -->
 router.post(

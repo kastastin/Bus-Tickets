@@ -1,14 +1,7 @@
 const router = require("express").Router();
 const Bus = require("../models/busesModel");
 const authMiddleware = require("../middlewares/authMiddleware");
-
-const createResponse = function (msg, data, status) {
-  return {
-    success: status,
-    message: msg,
-    data: data,
-  };
-};
+const createResponse = require("../client/src/helpers/response");
 
 // <-- Get Buses -->
 router.post("/get-buses", authMiddleware(false), async (request, response) => {
