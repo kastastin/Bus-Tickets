@@ -22,6 +22,11 @@ function BusesAdmin() {
   const [isModalActive, setIsModalActive] = useState(false);
   const [isModalEdit, setisModalEdit] = useState(false);
 
+  const displayError = function (error) {
+    dispatch(HideLoader());
+    message.error(error);
+  };
+
   const getBusesList = async () => {
     try {
       dispatch(DisplayLoader());
@@ -40,8 +45,7 @@ function BusesAdmin() {
 
       oldBuses.forEach((bus) => removeBus(bus._id));
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error.message);
     }
   };
 
@@ -59,8 +63,7 @@ function BusesAdmin() {
 
       getBusesList();
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error.message);
     }
   };
 
@@ -77,7 +80,7 @@ function BusesAdmin() {
     if (window.innerWidth < 375) setPageSize(2);
   }, []);
 
-  const displayError = (text) => message.error(text);
+  const showError = (text) => message.error(text);
 
   const clickHandler = function (value) {
     if (window.innerWidth > 991) {
@@ -87,7 +90,7 @@ function BusesAdmin() {
       setIsModalActive(true);
       setisModalEdit(!isEmpty(value));
     } else {
-      displayError("Your screen is too small. Try using another device!");
+      showError("Your screen is too small. Try using another device!");
     }
   };
 
@@ -148,7 +151,7 @@ function BusesAdmin() {
             onClick={() => {
               // Check reserved seats in bus
               !isEmpty(record) && !isEmpty(record.reservedSeats)
-                ? displayError(
+                ? showError(
                     "There are already reserved seats. You can't delete bus!"
                   )
                 : removeBus(record._id);
