@@ -21,6 +21,11 @@ function Bus() {
   const [chosenSeats, setChosenSeats] = useState([]);
   const [reservedSeats, setReservedSeats] = useState([]);
 
+  const displayError = function (error) {
+    dispatch(HideLoader());
+    message.error(error);
+  };
+
   const getBus = async () => {
     try {
       dispatch(DisplayLoader());
@@ -33,8 +38,7 @@ function Bus() {
         ? setBus(response.data.data)
         : message.error(response.data.message);
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error.message);
     }
   };
 
@@ -63,8 +67,7 @@ function Bus() {
         setReservedSeats(data[0]?.seats);
       }
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error.message);
     }
   };
 
@@ -90,8 +93,7 @@ function Bus() {
 
       navigate("/reservation");
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error.message);
     }
   };
 
@@ -111,8 +113,7 @@ function Bus() {
         bookingSeat(response.data.data.transactionId);
       }
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error.message);
     }
   };
 
