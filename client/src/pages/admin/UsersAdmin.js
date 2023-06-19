@@ -3,10 +3,8 @@ import { Table, message } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-
 import { HideLoader, DisplayLoader } from "../../redux/loadersSlice";
 import { axiosInstance } from "../../helpers/axiosInstance";
-
 import "../../resources/css/table.css";
 
 function UsersAdmin() {
@@ -15,6 +13,11 @@ function UsersAdmin() {
 
   const [users, setUsers] = useState([]);
   const [pageSize, setPageSize] = useState();
+
+  const displayError = function (error) {
+    dispatch(HideLoader());
+    message.error(error);
+  };
 
   const getUsersList = async () => {
     try {
@@ -26,8 +29,7 @@ function UsersAdmin() {
         ? setUsers(response.data.data)
         : message.error(response.data.message);
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error.message);
     }
   };
 
@@ -47,8 +49,7 @@ function UsersAdmin() {
         message.error(response.data.message);
       }
     } catch (error) {
-      dispatch(HideLoader());
-      message.error(error.message);
+      displayError(error.message);
     }
   };
 
